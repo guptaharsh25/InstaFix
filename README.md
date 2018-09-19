@@ -13,8 +13,8 @@ Professor: Miguel Garzon
  <b>Project Details: </b>The app addresses homeowner’s needs for on-demand home services. It allows users to connect with services providers such as plumbers, electricians, locksmiths, among other.
  </br>
  </br>
- <b>Technologies Used: </b>
-  - Android Studio (Android SDK)
+ <b>Technologies Used: </b></br>
+  - Android Studio (Android SDK)</br>
   - Firebase DB & Authorization
  </br>
  </br>
