@@ -19,3 +19,10 @@ Professor: Miguel Garzon
  </br>
  </br>
 <b>Please do not plagiarize!</b>
+
+</br>
+</br>
+# Project Log
+</br>This is where we will what the status of the application is by date.
+</br>
+Sept 20, 2018: Android Studio project initialized. Connected to Firebase Authorization & Database.
