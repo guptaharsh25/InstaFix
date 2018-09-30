@@ -10,7 +10,7 @@ Professor: Miguel Garzon
  - Nischal Sharma</br>
  - Nishchal Nepal</br>
  </br>
- <b>Project Details: </b>The app addresses homeowner’s needs for on-demand home services. It allows users to connect with services providers such as plumbers, electricians, locksmiths, among other.
+ <b>Project Details: </b>The app addresses homeowner’s needs for on-demand home services. It allows users to connect with services providers such as plumbers, electricians, locksmiths, and other.
  </br>
  </br>
  <b>Technologies Used: </b></br>
