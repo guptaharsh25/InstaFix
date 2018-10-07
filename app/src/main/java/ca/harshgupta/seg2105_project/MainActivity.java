@@ -5,7 +5,6 @@ import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
 
-import com.google.android.gms.common.oob.SignUp;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -19,11 +18,12 @@ public class MainActivity extends AppCompatActivity {
         Intent intentToSignIn = new Intent(getApplicationContext(), SignIn.class);
         startActivityForResult(intentToSignIn,0);
     }
-    /*
+
     public void onSignUp(View view){
         Intent intentToSignUp = new Intent(getApplicationContext(), SignUp.class);
         startActivityForResult(intentToSignUp, 0);
     }
-    */
+
+
 
 }

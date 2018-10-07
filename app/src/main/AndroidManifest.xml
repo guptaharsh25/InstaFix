@@ -17,11 +17,7 @@
             </intent-filter>
         </activity>
         <activity android:name=".SignIn" />
-<<<<<<< HEAD
-        <activity android:name=".SignUp"></activity>
-=======
-        <activity android:name=".WelcomeActivity"></activity>
->>>>>>> a23b4bf96b9aaba79f24f05ff48d73efd5f2a6d2
+
     </application>
 
 </manifest>
