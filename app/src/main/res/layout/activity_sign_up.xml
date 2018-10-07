@@ -64,15 +64,14 @@
         android:id="@+id/txtSignUp"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="8dp"
-        android:layout_marginBottom="8dp"
+        android:layout_marginBottom="84dp"
+        android:layout_marginLeft="8dp"
+        android:layout_marginStart="8dp"
         android:text="@string/sign_up"
         android:textSize="32sp"
         android:textStyle="bold"
         app:layout_constraintBottom_toTopOf="@+id/txtErrorSignUp"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.32" />
+        app:layout_constraintStart_toStartOf="parent" />
 
     <TextView
         android:id="@+id/txtEmailSignUp"
@@ -91,17 +90,17 @@
         android:id="@+id/txtErrorSignUp"
         android:layout_width="200dp"
         android:layout_height="19dp"
-        android:layout_marginStart="8dp"
-        android:layout_marginLeft="8dp"
         android:layout_marginEnd="8dp"
+        android:layout_marginLeft="8dp"
         android:layout_marginRight="8dp"
-        android:layout_marginBottom="8dp"
+        android:layout_marginStart="8dp"
         android:text="@string/error_message"
         android:textSize="12sp"
         android:textStyle="bold"
         android:visibility="invisible"
         app:layout_constraintBottom_toTopOf="@+id/txtName"
         app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.583"
         app:layout_constraintStart_toStartOf="parent" />
 
     <TextView
@@ -168,11 +167,11 @@
 
     <EditText
         android:id="@+id/editNameLast"
-        android:layout_width="0dp"
+        android:layout_width="190dp"
         android:layout_height="45dp"
-        android:layout_marginTop="8dp"
         android:layout_marginEnd="8dp"
         android:layout_marginRight="8dp"
+        android:layout_marginTop="8dp"
         android:ems="10"
         android:hint="@string/last_name"
         android:inputType="textPersonName"
@@ -183,15 +182,14 @@
         android:id="@+id/btnSignUp"
         android:layout_width="250dp"
         android:layout_height="wrap_content"
-        android:layout_marginStart="8dp"
-        android:layout_marginLeft="8dp"
+        android:layout_marginBottom="36dp"
         android:layout_marginEnd="8dp"
+        android:layout_marginLeft="8dp"
         android:layout_marginRight="8dp"
-        android:layout_marginBottom="76dp"
+        android:layout_marginStart="8dp"
         android:text="Sign Up"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.496"
         app:layout_constraintStart_toStartOf="parent" />
 
     <RadioGroup
