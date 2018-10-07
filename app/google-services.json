@@ -46,6 +46,14 @@
       },
       "oauth_client": [
         {
+          "client_id": "194630160463-pg18baff386g7lh04lcrc8vdhfhhh2rq.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "ca.harshgupta.seg2105_project",
+            "certificate_hash": "d56eaf4770940c5f20bc06d52dd01954d7bfa75b"
+          }
+        },
+        {
           "client_id": "194630160463-o4joj8qmarkbo0pf3sd742vhf2kslbhq.apps.googleusercontent.com",
           "client_type": 3
         }
@@ -60,8 +68,13 @@
           "status": 1
         },
         "appinvite_service": {
-          "status": 1,
-          "other_platform_oauth_client": []
+          "status": 2,
+          "other_platform_oauth_client": [
+            {
+              "client_id": "194630160463-o4joj8qmarkbo0pf3sd742vhf2kslbhq.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
         },
         "ads_service": {
           "status": 2

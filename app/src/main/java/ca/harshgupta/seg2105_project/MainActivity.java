@@ -19,10 +19,11 @@ public class MainActivity extends AppCompatActivity {
         Intent intentToSignIn = new Intent(getApplicationContext(), SignIn.class);
         startActivityForResult(intentToSignIn,0);
     }
-
+    /*
     public void onSignUp(View view){
         Intent intentToSignUp = new Intent(getApplicationContext(), SignUp.class);
         startActivityForResult(intentToSignUp, 0);
     }
+    */
 
 }
