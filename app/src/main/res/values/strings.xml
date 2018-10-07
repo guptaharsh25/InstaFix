@@ -11,4 +11,17 @@
     <string name="sign_up_message">Click here to Sign Up</string>
     <string name="heading_username">Username:</string>
     <string name="heading_password">Password:</string>
+    <string name="first_name">Enter First Name</string>
+    <string name="last_name">Enter Last Name</string>
+    <string name="heading_name">Name</string>
+    <string name="hint_email">Enter your e-mail</string>
+    <string name="hint_password_verify">Verify your password</string>
+    <string name="radio_client">Client</string>
+    <string name="radio_service_provider">Service Provider</string>
+    <string name="sign_up">Sign Up</string>
+    <string name="enter_firstlast">Enter First and Last Name:</string>
+    <string name="enter_user">Username:</string>
+    <string name="enter_username">Enter Username:</string>
+    <string name="enter_email">Enter Email:</string>
+    <string name="enter_pass_verify"><![CDATA[Enter Password & Verify:]]></string>
 </resources>
