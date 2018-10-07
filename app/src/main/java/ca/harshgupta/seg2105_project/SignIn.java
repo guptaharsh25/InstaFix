@@ -20,24 +20,24 @@ import ca.harshgupta.seg2105_project.user_data_packets.SignInData;
 
 
 public class SignIn extends AppCompatActivity {
-    private FirebaseAuth mAuth;
+    //private FirebaseAuth mAuth;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_sign_in);
-        mAuth = FirebaseAuth.getInstance();
+        //mAuth = FirebaseAuth.getInstance();
     }
 
-    public SignInData pullLoginData(View view){
-        EditText userNameInput = (EditText) findViewById(R.id.editUserSignIn);
-        EditText passwordInput = (EditText) findViewById(R.id.editPassSignIn);
+    //public SignInData pullLoginData(View view){
+        //EditText userNameInput = (EditText) findViewById(R.id.editUserSignIn);
+        //EditText passwordInput = (EditText) findViewById(R.id.editPassSignIn);
 
-        return new SignInData(userNameInput.getText().toString(), passwordInput.getText().toString());
-    }
+        //return new SignInData(userNameInput.getText().toString(), passwordInput.getText().toString());
+    //}
 
-    public void onSignInButtonClick(View view){
-        SignInData loginPacket = pullLoginData(view);
+    //public void onSignInButtonClick(View view){
+        //SignInData loginPacket = pullLoginData(view);
 
         //check if this is an e-mail or username
         /*
@@ -68,5 +68,5 @@ public class SignIn extends AppCompatActivity {
         }
         */
 
-    }
+    //}
 }
