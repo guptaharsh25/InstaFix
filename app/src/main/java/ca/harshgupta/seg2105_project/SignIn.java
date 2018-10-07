@@ -40,6 +40,7 @@ public class SignIn extends AppCompatActivity {
         SignInData loginPacket = pullLoginData(view);
 
         //check if this is an e-mail or username
+        /*
         if(android.util.Patterns.EMAIL_ADDRESS.matcher(loginPacket.getUsername()).matches())                 {
             mAuth.signInWithEmailAndPassword(loginPacket.getUsername(), loginPacket.getPassword())
                     .addOnCompleteListener(this, new OnCompleteListener<AuthResult>() {
@@ -65,6 +66,7 @@ public class SignIn extends AppCompatActivity {
         else{
 
         }
+        */
 
     }
 }

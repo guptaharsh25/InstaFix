@@ -19,7 +19,7 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:srcCompat="@drawable/common_google_signin_btn_icon_dark_focused" />
+        app:srcCompat="@drawable/LogoSEG" />
 
     <TextView
         android:id="@+id/lblTitle"
@@ -41,19 +41,19 @@
         android:id="@+id/btnSignIn"
         android:layout_width="250dp"
         android:layout_height="wrap_content"
-        android:layout_marginBottom="20dp"
+        android:layout_marginBottom="12dp"
         android:layout_marginEnd="8dp"
         android:layout_marginLeft="8dp"
         android:layout_marginRight="8dp"
         android:layout_marginStart="8dp"
         android:text="@string/button_sign_in"
         android:textSize="20sp"
-        app:layout_constraintBottom_toTopOf="@+id/button2"
+        app:layout_constraintBottom_toTopOf="@+id/btnSignUp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent" />
 
     <Button
-        android:id="@+id/button2"
+        android:id="@+id/btnSignUp"
         android:layout_width="250dp"
         android:layout_height="wrap_content"
         android:layout_marginBottom="64dp"

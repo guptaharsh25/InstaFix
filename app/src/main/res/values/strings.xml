@@ -4,4 +4,11 @@
     <string name="button_sign_in">Sign In</string>
     <string name="button_sign_up">Sign Up</string>
     <string name="logo_description">Logo</string>
+    <string name="title_sign_in">Sign In</string>
+    <string name="error_message">Username and/or Password is incorrect</string>
+    <string name="username_hint">Enter Username</string>
+    <string name="password_hint">Enter Password</string>
+    <string name="sign_up_message">Click here to Sign Up</string>
+    <string name="heading_username">Username:</string>
+    <string name="heading_password">Password:</string>
 </resources>
