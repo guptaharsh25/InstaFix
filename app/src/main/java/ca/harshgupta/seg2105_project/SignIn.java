@@ -54,7 +54,22 @@ public class SignIn extends AppCompatActivity {
         button.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                startSignIn();
+                setErrorMsg(9);
+                if (TextUtils.isEmpty(username.getText().toString())){
+                    setErrorMsg(3);
+                }
+                else if (TextUtils.isEmpty(password.getText().toString())){
+                    setErrorMsg(4);
+                }
+                else if (!isValidEmail(username.getText().toString())){
+                    setErrorMsg(0);
+                }
+                else if (password.getText().toString().length() < 6){
+                    setErrorMsg(1);
+                }
+                else {
+                    startSignIn();
+                }
             }
         });
 
@@ -74,19 +89,12 @@ public class SignIn extends AppCompatActivity {
     private void startSignIn (){
         String email = username.getText().toString();
         String pass = password.getText().toString();
-        final TextView errorField = (TextView) findViewById(R.id.txtError);
 
-        if (TextUtils.isEmpty(email) || TextUtils.isEmpty(pass)){
-            errorField.setText("Field is Empty");
-            errorField.setVisibility(View.VISIBLE);
-        }
-        else {
-            mAuth.signInWithEmailAndPassword(email, pass).addOnCompleteListener(new OnCompleteListener<AuthResult>() {
+        mAuth.signInWithEmailAndPassword(email, pass).addOnCompleteListener(new OnCompleteListener<AuthResult>() {
             @Override
             public void onComplete(@NonNull Task<AuthResult> task) {
                 if (!task.isSuccessful()) {
-                    errorField.setVisibility(View.VISIBLE);
-                    errorField.setText("Username and/or Password is incorrect");
+                    setErrorMsg(2);
                 }
                 else {
                     Intent intentToSignIn = new Intent(getApplicationContext(), WelcomeActivity.class);
@@ -94,9 +102,48 @@ public class SignIn extends AppCompatActivity {
                 }
             }
         });
-        }
+
 
 
     }
 
+    private boolean isValidEmail (String email){
+
+        return android.util.Patterns.EMAIL_ADDRESS.matcher(email).matches();
+    }
+
+    /* 0 = Enter a valid Email
+       1 = Enter a valid Password
+       2 = Incorrect email and/or Password
+       3 = Field is empty (username)
+       4 = Field is empty (password)
+       9 = CLEAR
+
+     */
+    private void setErrorMsg (int code){
+        final TextView mainErrorField = (TextView) findViewById(R.id.txtError);
+        final TextView usernameErrorField = (TextView) findViewById(R.id.txtUsernameError);
+        final TextView passwordErrorField = (TextView) findViewById(R.id.txtPasswordError);
+
+        if (code == 0){
+            usernameErrorField.setText("Enter a valid email");
+        }
+        else if (code == 1) {
+            passwordErrorField.setText("Enter a valid password");
+        }
+        else if (code == 2) {
+            mainErrorField.setText("Incorrect email and/or Password");
+        }
+        else if (code == 3) {
+            usernameErrorField.setText("Field is empty");
+        }
+        else if (code == 4) {
+            passwordErrorField.setText("Field is empty");
+        }
+        else if (code == 9){
+            mainErrorField.setText("");
+            usernameErrorField.setText("");
+            passwordErrorField.setText("");
+        }
+    }
 }
