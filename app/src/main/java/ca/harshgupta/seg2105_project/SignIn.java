@@ -4,30 +4,66 @@ import android.content.Intent;
 import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
-import android.util.Log;
+import android.text.TextUtils;
+
 import android.view.View;
+import android.widget.Button;
 import android.widget.EditText;
-import android.widget.Toast;
-import android.support.v4.app.FragmentActivity;
+import android.widget.TextView;
 
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
-import com.google.firebase.FirebaseError;
-//import com.google.firebase.auth.AuthResult;
-//import com.google.firebase.auth.FirebaseAuth;
-//import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.auth.AuthResult;
+import com.google.firebase.auth.FirebaseAuth;
 
-import ca.harshgupta.seg2105_project.user_data_packets.SignInData;
 
 
 public class SignIn extends AppCompatActivity {
-    //private FirebaseAuth mAuth;
+
+
+    private EditText username;
+    private EditText password;
+    private Button button;
+
+    private FirebaseAuth mAuth;
+    private FirebaseAuth.AuthStateListener mAuthListener;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_sign_in);
-        //mAuth = FirebaseAuth.getInstance();
+
+        mAuth = FirebaseAuth.getInstance();
+
+        username = findViewById(R.id.editUser);
+        password = findViewById(R.id.editPass);
+
+        button = findViewById(R.id.btnSignIn1);
+
+        mAuthListener = new FirebaseAuth.AuthStateListener() {
+            @Override
+            public void onAuthStateChanged(@NonNull FirebaseAuth firebaseAuth) {
+                if (firebaseAuth.getCurrentUser()!= null){
+                    Intent intentToSignIn = new Intent(getApplicationContext(), WelcomeActivity.class);
+                    startActivityForResult(intentToSignIn,0);
+                }
+            }
+        };
+
+        button.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                startSignIn();
+            }
+        });
+
+    }
+
+    @Override
+    protected void onStart() {
+        super.onStart();
+        mAuth.addAuthStateListener(mAuthListener);
     }
 
     public void onSignUp(View view){
@@ -35,44 +71,32 @@ public class SignIn extends AppCompatActivity {
         startActivityForResult(intentToSignUp, 0);
     }
 
-    //public SignInData pullLoginData(View view){
-        //EditText userNameInput = (EditText) findViewById(R.id.editUserSignIn);
-        //EditText passwordInput = (EditText) findViewById(R.id.editPassSignIn);
+    private void startSignIn (){
+        String email = username.getText().toString();
+        String pass = password.getText().toString();
+        final TextView errorField = (TextView) findViewById(R.id.txtError);
 
-        //return new SignInData(userNameInput.getText().toString(), passwordInput.getText().toString());
-    //}
-
-    //public void onSignInButtonClick(View view){
-        //SignInData loginPacket = pullLoginData(view);
-
-        //check if this is an e-mail or username
-        /*
-        if(android.util.Patterns.EMAIL_ADDRESS.matcher(loginPacket.getUsername()).matches())                 {
-            mAuth.signInWithEmailAndPassword(loginPacket.getUsername(), loginPacket.getPassword())
-                    .addOnCompleteListener(this, new OnCompleteListener<AuthResult>() {
-                        @Override
-                        public void onComplete(@NonNull Task<AuthResult> task) {
-                            if (task.isSuccessful()) {
-                                // Sign in success, update UI with the signed-in user's information
-                                Log.d(TAG, "signInWithEmail:success");
-                                FirebaseUser user = mAuth.getCurrentUser();
-                                //updateUI(user);
-                            } else {
-                                // If sign in fails, display a message to the user.
-                                Log.w(TAG, "signInWithEmail:failure", task.getException());
-                                Toast.makeText(EmailPasswordActivity.this, "Authentication failed.",
-                                        Toast.LENGTH_SHORT).show();
-                                updateUI(null);
-                            }
-
-                            // ...
-                        }
-                    });
+        if (TextUtils.isEmpty(email) || TextUtils.isEmpty(pass)){
+            errorField.setText("Field is Empty");
+            errorField.setVisibility(View.VISIBLE);
         }
-        else{
-
+        else {
+            mAuth.signInWithEmailAndPassword(email, pass).addOnCompleteListener(new OnCompleteListener<AuthResult>() {
+            @Override
+            public void onComplete(@NonNull Task<AuthResult> task) {
+                if (!task.isSuccessful()) {
+                    errorField.setVisibility(View.VISIBLE);
+                    errorField.setText("Username and/or Password is incorrect");
+                }
+                else {
+                    Intent intentToSignIn = new Intent(getApplicationContext(), WelcomeActivity.class);
+                    startActivityForResult(intentToSignIn,0);
+                }
+            }
+        });
         }
-        */
 
-    //}
+
+    }
+
 }
