@@ -1,6 +1,5 @@
-# SEG2105 Group Project
+# InstaFix
 
-This is the repo for the SEG2105 group project, Fall 2018.</br>
 Professor: Miguel Garzon
 </br></br>
 <b>Group Members:</b></br>
