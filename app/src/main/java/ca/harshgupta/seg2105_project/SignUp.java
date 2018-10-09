@@ -69,8 +69,8 @@ public class SignUp extends AppCompatActivity {
                     error.setText("Please verify your password");
                 } else if (TextUtils.isEmpty(email.getText().toString())){
                     error.setText("Please enter your email");
-                } else if ((password.getText().toString().length() < 6)||(password != vpassword)){
-                    error.setText("Enter a valid password which is 6 letters long");
+                //} else if ((password.getText().toString().length() < 6)||(password.getText().toString() != vpassword.getText().toString())){
+                //    error.setText("Enter a valid password which is 6 letters long");
                 } else {
                     startSignUp();
                 }
