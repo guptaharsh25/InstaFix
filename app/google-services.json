@@ -62,6 +62,14 @@
           }
         },
         {
+          "client_id": "194630160463-imu07qlglrspnosch3fpg75mmtqu17ht.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "ca.harshgupta.seg2105_project",
+            "certificate_hash": "70fb4fbbfc3d5d26a4927730d5260f310e104270"
+          }
+        },
+        {
           "client_id": "194630160463-o4joj8qmarkbo0pf3sd742vhf2kslbhq.apps.googleusercontent.com",
           "client_type": 3
         }
