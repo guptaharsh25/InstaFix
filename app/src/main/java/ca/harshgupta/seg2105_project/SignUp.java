@@ -50,15 +50,6 @@ public class SignUp extends AppCompatActivity {
 
         button = findViewById(R.id.btnSignUp);
         mAuth = FirebaseAuth.getInstance();
-        mAuthListener = new FirebaseAuth.AuthStateListener(){
-            @Override
-            public void onAuthStateChanged(@NonNull FirebaseAuth firebaseAuth) {
-                if (firebaseAuth.getCurrentUser()!= null){
-                    Intent intentToSignIn = new Intent(getApplicationContext(), WelcomeActivity.class);
-                    startActivityForResult(intentToSignIn,0);
-                }
-            }
-        };
 
         button.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -88,10 +79,10 @@ public class SignUp extends AppCompatActivity {
     }
 
     public void startSignUp(){
-        final String email = username.getText().toString();
-        final String pass = password.getText().toString();
+        String emailSignUp = email.getText().toString();
+        String passSignUp = password.getText().toString();
 
-        mAuth.createUserWithEmailAndPassword(email, pass).addOnCompleteListener(
+        mAuth.createUserWithEmailAndPassword(emailSignUp, passSignUp).addOnCompleteListener(
                 new OnCompleteListener<AuthResult>() {
                     @Override
                     public void onComplete(@NonNull Task<AuthResult> task) {
@@ -109,9 +100,8 @@ public class SignUp extends AppCompatActivity {
                                 error.setText(e.getMessage());
                             }
                         } else{
-                            signInWithNewAccount(email,pass);
+                            signInWithNewAccount(email.getText().toString(),password.getText().toString());
                         }
-
                     }
                 }
         );
@@ -127,11 +117,16 @@ public class SignUp extends AppCompatActivity {
                 else {
                     FirebaseUser user = mAuth.getCurrentUser();
 
+                    //Update user profile
                     UserProfileChangeRequest profileUpdates = new UserProfileChangeRequest.Builder()
                             .setDisplayName(firstname.toString() + " " + lastname.toString())
                             .build();
+                    user.updateProfile(profileUpdates);
 
-                    
+                    // update database info with admin, client, first Name, last Name, username, email, Service Provider
+                    // I dont know how to work with database stuffs -Nischal Sharma. Someone teach
+
+                    //Welcome Page
                     Intent intentToSignIn = new Intent(getApplicationContext(), WelcomeActivity.class);
                     startActivityForResult(intentToSignIn,0);
                 }
