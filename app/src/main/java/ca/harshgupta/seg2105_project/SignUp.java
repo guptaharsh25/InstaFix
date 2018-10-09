@@ -4,6 +4,15 @@ import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.widget.EditText;
+import android.content.Intent;
+import android.support.annotation.NonNull;
+import android.support.v7.app.AppCompatActivity;
+import android.os.Bundle;
+import android.text.TextUtils;
+import android.view.View;
+import android.widget.Button;
+import android.widget.EditText;
+import android.widget.TextView;
 
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
@@ -13,52 +22,98 @@ import com.google.firebase.auth.FirebaseAuthInvalidCredentialsException;
 import com.google.firebase.auth.FirebaseAuthUserCollisionException;
 import com.google.firebase.auth.FirebaseAuthWeakPasswordException;
 
+
 public class SignUp extends AppCompatActivity {
-    private FirebaseAuth mAuth = FirebaseAuth.getInstance();
-    private FirebaseAuth.AuthStateListener mAuthListener
-    private EditText username;
-    private EditText password;
+    private EditText firstname, lastname, username, email, password, vpassword;
+    private TextView error;
+    private Button button;
+    private FirebaseAuth mAuth;
+    private FirebaseAuth.AuthStateListener mAuthListener;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_sign_up);
+
+        firstname = findViewById(R.id.editNameFirst);
+        lastname = findViewById(R.id.editNameLast);
+        username = findViewById(R.id.editUsernameSignUp);
+        email = findViewById(R.id.editEmailSignUp);
+        password = findViewById(R.id.editPassSignUp);
+        vpassword = findViewById(R.id.editPassVerifySignUp);
+        error = findViewById(R.id.txtSignUpError);
+
+        button = findViewById(R.id.btnSignUp);
+        mAuth = FirebaseAuth.getInstance();
+        mAuthListener = new FirebaseAuth.AuthStateListener(){
+            @Override
+            public void onAuthStateChanged(@NonNull FirebaseAuth firebaseAuth) {
+                if (firebaseAuth.getCurrentUser()!= null){
+                    Intent intentToSignIn = new Intent(getApplicationContext(), WelcomeActivity.class);
+                    startActivityForResult(intentToSignIn,0);
+                }
+            }
+        };
+
+        button.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+
+                if (TextUtils.isEmpty(firstname.getText().toString())){
+                    error.setText("Please enter your first Name");
+                } else if (TextUtils.isEmpty(lastname.getText().toString())){
+                    error.setText("Please enter your last Name");
+                } else if (TextUtils.isEmpty(username.getText().toString())){
+                    error.setText("Please enter the username");
+                } else if (!isValidEmail(email.getText().toString())){
+                    error.setText("Incorrect email and/or password");
+                } else if (TextUtils.isEmpty(password.getText().toString())){
+                    error.setText("Please enter the password");
+                } else if (TextUtils.isEmpty(vpassword.getText().toString())) {
+                    error.setText("Please verify your password");
+                } else if (TextUtils.isEmpty(email.getText().toString())){
+                    error.setText("Please enter your email");
+                } else if ((password.getText().toString().length() < 6)||(password != vpassword)){
+                    error.setText("Enter a valid password");
+                } else {
+                    startSignUp();
+                }
+            }
+        });
     }
 
-    public void createAccount(){
-        username = findViewById(R.id.editEmailSignUp);
-        password = findViewById(R.id.editPassSignUp);
-
-        String user = username.getText().toString();
+    public void startSignUp(){
+        String email = username.getText().toString();
         String pass = password.getText().toString();
 
-        mAuth.createUserWithEmailAndPassword(user, pass).addOnCompleteListener(
+        mAuth.createUserWithEmailAndPassword(email, pass).addOnCompleteListener(
                 new OnCompleteListener<AuthResult>() {
                     @Override
                     public void onComplete(@NonNull Task<AuthResult> task) {
-                        if (!task.isSuccessful()){
-                            try{
+                        if (!task.isSuccessful()) {
+                            try {
                                 throw task.getException();
-                            }
-                            catch (FirebaseAuthWeakPasswordException weakPass){
+                            } catch (FirebaseAuthWeakPasswordException weakPass) {
                                 //password is weak
-                            }
-                            catch (FirebaseAuthInvalidCredentialsException malformedEmail){
+                            } catch (FirebaseAuthInvalidCredentialsException emailWrong) {
                                 //malformed email
-                            }
-                            catch(FirebaseAuthUserCollisionException alreadyExist){
+                            } catch (FirebaseAuthUserCollisionException alreadyExist) {
                                 //email already exists
-                            }
-                            catch(Exception e){
+                            } catch (Exception e) {
                                 //some other error
                                 //e.getMessage()
                             }
 
+                        }
                     }
                 }
-        )
-        }
+        );
+    }
+
+    private boolean isValidEmail (String email) {
+        return android.util.Patterns.EMAIL_ADDRESS.matcher(email).matches();
     }
 }
+
 
 

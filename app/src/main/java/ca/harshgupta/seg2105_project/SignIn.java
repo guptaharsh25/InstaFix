@@ -103,8 +103,6 @@ public class SignIn extends AppCompatActivity {
             }
         });
 
-
-
     }
 
     private boolean isValidEmail (String email){
