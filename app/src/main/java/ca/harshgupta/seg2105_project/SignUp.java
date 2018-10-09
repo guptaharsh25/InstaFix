@@ -1,5 +1,8 @@
 package ca.harshgupta.seg2105_project;
 
+import android.app.AlertDialog;
+import android.app.Dialog;
+import android.content.DialogInterface;
 import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -21,6 +24,8 @@ import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseAuthInvalidCredentialsException;
 import com.google.firebase.auth.FirebaseAuthUserCollisionException;
 import com.google.firebase.auth.FirebaseAuthWeakPasswordException;
+import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.auth.UserProfileChangeRequest;
 
 
 public class SignUp extends AppCompatActivity {
@@ -65,7 +70,7 @@ public class SignUp extends AppCompatActivity {
                     error.setText("Please enter your last Name");
                 } else if (TextUtils.isEmpty(username.getText().toString())){
                     error.setText("Please enter the username");
-                } else if (!isValidEmail(email.getText().toString())){
+                } else if (!isValidEmail(email.getText().toString())) {
                     error.setText("Incorrect email and/or password");
                 } else if (TextUtils.isEmpty(password.getText().toString())){
                     error.setText("Please enter the password");
@@ -74,7 +79,7 @@ public class SignUp extends AppCompatActivity {
                 } else if (TextUtils.isEmpty(email.getText().toString())){
                     error.setText("Please enter your email");
                 } else if ((password.getText().toString().length() < 6)||(password != vpassword)){
-                    error.setText("Enter a valid password");
+                    error.setText("Enter a valid password which is 6 letters long");
                 } else {
                     startSignUp();
                 }
@@ -83,8 +88,8 @@ public class SignUp extends AppCompatActivity {
     }
 
     public void startSignUp(){
-        String email = username.getText().toString();
-        String pass = password.getText().toString();
+        final String email = username.getText().toString();
+        final String pass = password.getText().toString();
 
         mAuth.createUserWithEmailAndPassword(email, pass).addOnCompleteListener(
                 new OnCompleteListener<AuthResult>() {
@@ -94,20 +99,44 @@ public class SignUp extends AppCompatActivity {
                             try {
                                 throw task.getException();
                             } catch (FirebaseAuthWeakPasswordException weakPass) {
-                                //password is weak
+                                error.setText("The password is weak. Please try again");
                             } catch (FirebaseAuthInvalidCredentialsException emailWrong) {
-                                //malformed email
+                                error.setText("Please enter a valid e-mail");
                             } catch (FirebaseAuthUserCollisionException alreadyExist) {
-                                //email already exists
+                                error.setText("Your email account already exists. Please enter another e-mail");
                             } catch (Exception e) {
                                 //some other error
-                                //e.getMessage()
+                                error.setText(e.getMessage());
                             }
-
+                        } else{
+                            signInWithNewAccount(email,pass);
                         }
+
                     }
                 }
         );
+    }
+
+    private void signInWithNewAccount(String email, String pass){
+        mAuth.signInWithEmailAndPassword(email, pass).addOnCompleteListener(new OnCompleteListener<AuthResult>() {
+            @Override
+            public void onComplete(@NonNull Task<AuthResult> task) {
+                if (!task.isSuccessful()) {
+                    error.setText("There seems to be an error logging in to your new account");
+                }
+                else {
+                    FirebaseUser user = mAuth.getCurrentUser();
+
+                    UserProfileChangeRequest profileUpdates = new UserProfileChangeRequest.Builder()
+                            .setDisplayName(firstname.toString() + " " + lastname.toString())
+                            .build();
+
+                    
+                    Intent intentToSignIn = new Intent(getApplicationContext(), WelcomeActivity.class);
+                    startActivityForResult(intentToSignIn,0);
+                }
+            }
+        });
     }
 
     private boolean isValidEmail (String email) {
