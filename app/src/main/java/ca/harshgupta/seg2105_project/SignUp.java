@@ -15,7 +15,11 @@ import android.text.TextUtils;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.RadioButton;
+import android.widget.RadioGroup;
+import android.widget.Switch;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
@@ -35,6 +39,10 @@ public class SignUp extends AppCompatActivity {
     private FirebaseAuth mAuth;
     private FirebaseAuth.AuthStateListener mAuthListener;
 
+    private RadioGroup radioGroup;
+    private RadioButton radioButton;
+    private String radioValue = "";
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -47,13 +55,17 @@ public class SignUp extends AppCompatActivity {
         password = findViewById(R.id.editPassSignUp);
         vpassword = findViewById(R.id.editPassVerifySignUp);
         error = findViewById(R.id.txtSignUpError);
-
         button = findViewById(R.id.btnSignUp);
+
         mAuth = FirebaseAuth.getInstance();
 
+        radioGroup = (RadioGroup) findViewById(R.id.radioGroupSignUp);
+
+        //Verifying Inputs
         button.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                int selectedID = radioGroup.getCheckedRadioButtonId(); //get selected radio button
 
                 if (TextUtils.isEmpty(firstname.getText().toString())){
                     error.setText("Please enter your first Name");
@@ -69,9 +81,17 @@ public class SignUp extends AppCompatActivity {
                     error.setText("Please verify your password");
                 } else if (TextUtils.isEmpty(email.getText().toString())){
                     error.setText("Please enter your email");
-                //} else if ((password.getText().toString().length() < 6)||(password.getText().toString() != vpassword.getText().toString())){
-                //    error.setText("Enter a valid password which is 6 letters long");
+                } else if (TextUtils.isEmpty(password.getText().toString())){
+                    error.setText("Please enter a password");
+                } else if (TextUtils.isEmpty(vpassword.getText().toString())){
+                    error.setText("Please verify your password");
+                } else if (!password.getText().toString().equals(vpassword.getText().toString())) {
+                    error.setText("Your passwords do not match. Please try again");
+                } else if(selectedID == -1){
+                    error.setText("Please select eiher Client or Service Provider");
                 } else {
+                    radioButton = (RadioButton) findViewById(selectedID);  //find the radio button by returned id
+                    radioValue = radioButton.getText().toString();
                     startSignUp();
                 }
             }
@@ -90,7 +110,7 @@ public class SignUp extends AppCompatActivity {
                             try {
                                 throw task.getException();
                             } catch (FirebaseAuthWeakPasswordException weakPass) {
-                                error.setText("The password is weak. Please try again");
+                                error.setText("The password is weak. You need atleast 6 characters. Please try again");
                             } catch (FirebaseAuthInvalidCredentialsException emailWrong) {
                                 error.setText("Please enter a valid e-mail");
                             } catch (FirebaseAuthUserCollisionException alreadyExist) {
@@ -124,7 +144,7 @@ public class SignUp extends AppCompatActivity {
                     user.updateProfile(profileUpdates);
 
                     // update database info with admin, client, first Name, last Name, username, email, Service Provider
-                    // I dont know how to work with database stuffs -Nischal Sharma. Someone teach
+
 
                     //Welcome Page
                     Intent intentToSignIn = new Intent(getApplicationContext(), WelcomeActivity.class);
