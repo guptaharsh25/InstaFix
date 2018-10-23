@@ -50,7 +50,8 @@ public class SignUp extends AppCompatActivity {
     private String radioValue = "";
 
     private DatabaseReference mRootRef;;
-    private DatabaseReference mConditionRef;
+    private DatabaseReference mAccountsRef;
+    private DatabaseReference mNewUsernameRef;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -68,8 +69,7 @@ public class SignUp extends AppCompatActivity {
 
         mAuth = FirebaseAuth.getInstance();
         mRootRef = FirebaseDatabase.getInstance().getReference();
-        mConditionRef = mRootRef.child("Accounts");
-
+        mAccountsRef = mRootRef.child("Accounts");
 
         radioGroup = (RadioGroup) findViewById(R.id.radioGroupSignUp);
         //Verifying Inputs
@@ -111,18 +111,6 @@ public class SignUp extends AppCompatActivity {
 
     public void onStart(){
         super.onStart();
-
-        mConditionRef.addValueEventListener(new ValueEventListener() {
-            @Override
-            public void onDataChange(DataSnapshot dataSnapshot) {
-                String testText = dataSnapshot.getValue(String.class);
-                error.setText(testText);
-            }
-            @Override
-            public void onCancelled(DatabaseError databaseError) {
-
-            }
-        });
     }
 
     public void startSignUp(){
@@ -154,8 +142,9 @@ public class SignUp extends AppCompatActivity {
         );
     }
 
-    private void signInWithNewAccount(String email, String pass){
-        mAuth.signInWithEmailAndPassword(email, pass).addOnCompleteListener(new OnCompleteListener<AuthResult>() {
+    private void signInWithNewAccount(final String getEmail, String pass){
+        //Login with the newly created ID
+        mAuth.signInWithEmailAndPassword(getEmail, pass).addOnCompleteListener(new OnCompleteListener<AuthResult>() {
             @Override
             public void onComplete(@NonNull Task<AuthResult> task) {
                 if (!task.isSuccessful()) {
@@ -171,7 +160,14 @@ public class SignUp extends AppCompatActivity {
                     user.updateProfile(profileUpdates);
 
                     // update database info with admin, client, first Name, last Name, username, email, Service Provider
-
+                    mNewUsernameRef = mAccountsRef.child(username.getText().toString());
+                    mNewUsernameRef.child("FirstName").setValue(firstname.getText().toString());
+                    mNewUsernameRef.child("LastName").setValue(lastname.getText().toString());
+                    mNewUsernameRef.child("Email").setValue(email.getText().toString());
+                    mNewUsernameRef.child("Admin").setValue(false);
+                    mNewUsernameRef.child("Client").setValue(radioValue.equals("Client"));
+                    mNewUsernameRef.child("ServiceProvider").setValue(radioValue.equals("Service Provider"));
+                    mNewUsernameRef.child("Password").setValue(password.getText().toString());
 
                     //Welcome Page
                     Intent intentToSignIn = new Intent(getApplicationContext(), WelcomeActivity.class);
