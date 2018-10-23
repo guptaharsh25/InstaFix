@@ -31,17 +31,26 @@ import com.google.firebase.auth.FirebaseAuthWeakPasswordException;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.auth.UserProfileChangeRequest;
 
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
 
 public class SignUp extends AppCompatActivity {
     private EditText firstname, lastname, username, email, password, vpassword;
     private TextView error;
     private Button button;
+
     private FirebaseAuth mAuth;
     private FirebaseAuth.AuthStateListener mAuthListener;
 
     private RadioGroup radioGroup;
     private RadioButton radioButton;
     private String radioValue = "";
+
+    private DatabaseReference mRootRef;;
+    private DatabaseReference mConditionRef;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -58,9 +67,11 @@ public class SignUp extends AppCompatActivity {
         button = findViewById(R.id.btnSignUp);
 
         mAuth = FirebaseAuth.getInstance();
+        mRootRef = FirebaseDatabase.getInstance().getReference();
+        mConditionRef = mRootRef.child("Accounts");
+
 
         radioGroup = (RadioGroup) findViewById(R.id.radioGroupSignUp);
-
         //Verifying Inputs
         button.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -94,6 +105,22 @@ public class SignUp extends AppCompatActivity {
                     radioValue = radioButton.getText().toString();
                     startSignUp();
                 }
+            }
+        });
+    }
+
+    public void onStart(){
+        super.onStart();
+
+        mConditionRef.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                String testText = dataSnapshot.getValue(String.class);
+                error.setText(testText);
+            }
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+
             }
         });
     }
