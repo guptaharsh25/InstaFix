@@ -25,4 +25,6 @@
     <string name="enter_email">Enter Email:</string>
     <string name="enter_pass_verify"><![CDATA[Enter Password & Verify:]]></string>
     <string name="heading_email">Email:</string>
+    <string name="SignUPButton">Sign Up</string>
+    <string name="radio_admin">Admin</string>
 </resources>

@@ -164,7 +164,7 @@ public class SignUp extends AppCompatActivity {
                     mNewUsernameRef.child("FirstName").setValue(firstname.getText().toString());
                     mNewUsernameRef.child("LastName").setValue(lastname.getText().toString());
                     mNewUsernameRef.child("Email").setValue(email.getText().toString());
-                    mNewUsernameRef.child("Admin").setValue(false);
+                    mNewUsernameRef.child("Admin").setValue(radioValue.equals("Admin"));
                     mNewUsernameRef.child("Client").setValue(radioValue.equals("Client"));
                     mNewUsernameRef.child("ServiceProvider").setValue(radioValue.equals("Service Provider"));
                     mNewUsernameRef.child("Password").setValue(password.getText().toString());
