@@ -1,7 +1,5 @@
 # InstaFix
 
-Professor: Miguel Garzon
-</br></br>
 <b>Group Members:</b></br>
  - Harsh Gupta</br>
  - Bhalachandra Malghan</br>
