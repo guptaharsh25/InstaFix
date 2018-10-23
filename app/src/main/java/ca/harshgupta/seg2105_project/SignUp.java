@@ -160,7 +160,10 @@ public class SignUp extends AppCompatActivity {
                     user.updateProfile(profileUpdates);
 
                     // update database info with admin, client, first Name, last Name, username, email, Service Provider
-                    mNewUsernameRef = mAccountsRef.child(username.getText().toString());
+
+                    //Create a child of the Users UID
+                    mNewUsernameRef = mAccountsRef.child(user.getUid());
+                    //Add Information of that UID
                     mNewUsernameRef.child("FirstName").setValue(firstname.getText().toString());
                     mNewUsernameRef.child("LastName").setValue(lastname.getText().toString());
                     mNewUsernameRef.child("Email").setValue(email.getText().toString());
@@ -168,6 +171,7 @@ public class SignUp extends AppCompatActivity {
                     mNewUsernameRef.child("Client").setValue(radioValue.equals("Client"));
                     mNewUsernameRef.child("ServiceProvider").setValue(radioValue.equals("Service Provider"));
                     mNewUsernameRef.child("Password").setValue(password.getText().toString());
+                    mNewUsernameRef.child("Username").setValue(username.getText().toString());
 
                     //Welcome Page
                     Intent intentToSignIn = new Intent(getApplicationContext(), WelcomeActivity.class);
