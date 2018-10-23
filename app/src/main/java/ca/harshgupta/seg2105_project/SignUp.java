@@ -15,7 +15,11 @@ import android.text.TextUtils;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.RadioButton;
+import android.widget.RadioGroup;
+import android.widget.Switch;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
@@ -27,13 +31,28 @@ import com.google.firebase.auth.FirebaseAuthWeakPasswordException;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.auth.UserProfileChangeRequest;
 
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
 
 public class SignUp extends AppCompatActivity {
     private EditText firstname, lastname, username, email, password, vpassword;
     private TextView error;
     private Button button;
+
     private FirebaseAuth mAuth;
     private FirebaseAuth.AuthStateListener mAuthListener;
+
+    private RadioGroup radioGroup;
+    private RadioButton radioButton;
+    private String radioValue = "";
+
+    private DatabaseReference mRootRef;;
+    private DatabaseReference mAccountsRef;
+    private DatabaseReference mNewUsernameRef;
+    private DatabaseReference mAdminInitializedRef;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -47,13 +66,19 @@ public class SignUp extends AppCompatActivity {
         password = findViewById(R.id.editPassSignUp);
         vpassword = findViewById(R.id.editPassVerifySignUp);
         error = findViewById(R.id.txtSignUpError);
-
         button = findViewById(R.id.btnSignUp);
-        mAuth = FirebaseAuth.getInstance();
 
+        mAuth = FirebaseAuth.getInstance();
+        mRootRef = FirebaseDatabase.getInstance().getReference();
+        mAccountsRef = mRootRef.child("Accounts");
+        mAdminInitializedRef = mRootRef.child("Admin_Initialized");
+
+        radioGroup = (RadioGroup) findViewById(R.id.radioGroupSignUp);
+        //Verifying Inputs
         button.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                int selectedID = radioGroup.getCheckedRadioButtonId(); //get selected radio button
 
                 if (TextUtils.isEmpty(firstname.getText().toString())){
                     error.setText("Please enter your first Name");
@@ -69,12 +94,36 @@ public class SignUp extends AppCompatActivity {
                     error.setText("Please verify your password");
                 } else if (TextUtils.isEmpty(email.getText().toString())){
                     error.setText("Please enter your email");
-                //} else if ((password.getText().toString().length() < 6)||(password.getText().toString() != vpassword.getText().toString())){
-                //    error.setText("Enter a valid password which is 6 letters long");
+                } else if (TextUtils.isEmpty(password.getText().toString())){
+                    error.setText("Please enter a password");
+                } else if (TextUtils.isEmpty(vpassword.getText().toString())){
+                    error.setText("Please verify your password");
+                } else if (!password.getText().toString().equals(vpassword.getText().toString())) {
+                    error.setText("Your passwords do not match. Please try again");
+                } else if(selectedID == -1){
+                    error.setText("Please select eiher Client or Service Provider");
                 } else {
+                    radioButton = (RadioButton) findViewById(selectedID);  //find the radio button by returned id
+                    radioValue = radioButton.getText().toString();
                     startSignUp();
                 }
             }
+        });
+    }
+
+    public void onStart(){
+        super.onStart();
+        mAdminInitializedRef.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+            boolean adminStatus = dataSnapshot.getValue(Boolean.class);
+            if (adminStatus)
+                findViewById(R.id.radioAdmin).setVisibility(View.GONE);
+            else
+                findViewById(R.id.radioAdmin).setVisibility(View.VISIBLE);
+            }
+            @Override
+            public void onCancelled(@NonNull DatabaseError databaseError) { }
         });
     }
 
@@ -90,7 +139,7 @@ public class SignUp extends AppCompatActivity {
                             try {
                                 throw task.getException();
                             } catch (FirebaseAuthWeakPasswordException weakPass) {
-                                error.setText("The password is weak. Please try again");
+                                error.setText("The password is weak. You need atleast 6 characters. Please try again");
                             } catch (FirebaseAuthInvalidCredentialsException emailWrong) {
                                 error.setText("Please enter a valid e-mail");
                             } catch (FirebaseAuthUserCollisionException alreadyExist) {
@@ -107,8 +156,9 @@ public class SignUp extends AppCompatActivity {
         );
     }
 
-    private void signInWithNewAccount(String email, String pass){
-        mAuth.signInWithEmailAndPassword(email, pass).addOnCompleteListener(new OnCompleteListener<AuthResult>() {
+    private void signInWithNewAccount(final String getEmail, String pass){
+        //Login with the newly created ID
+        mAuth.signInWithEmailAndPassword(getEmail, pass).addOnCompleteListener(new OnCompleteListener<AuthResult>() {
             @Override
             public void onComplete(@NonNull Task<AuthResult> task) {
                 if (!task.isSuccessful()) {
@@ -124,7 +174,21 @@ public class SignUp extends AppCompatActivity {
                     user.updateProfile(profileUpdates);
 
                     // update database info with admin, client, first Name, last Name, username, email, Service Provider
-                    // I dont know how to work with database stuffs -Nischal Sharma. Someone teach
+
+                    //Create a child of the Users UID
+                    mNewUsernameRef = mAccountsRef.child(user.getUid());
+                    //Add Information of that UID
+                    mNewUsernameRef.child("FirstName").setValue(firstname.getText().toString());
+                    mNewUsernameRef.child("LastName").setValue(lastname.getText().toString());
+                    mNewUsernameRef.child("Email").setValue(email.getText().toString());
+                    mNewUsernameRef.child("Client").setValue(radioValue.equals("Client"));
+                    mNewUsernameRef.child("ServiceProvider").setValue(radioValue.equals("Service Provider"));
+                    mNewUsernameRef.child("Password").setValue(password.getText().toString());
+                    mNewUsernameRef.child("Username").setValue(username.getText().toString());
+                    mNewUsernameRef.child("Admin").setValue(radioValue.equals("Admin"));
+
+                    //Set if there is a admin in the database. Next run, there will be no admin
+                    mAdminInitializedRef.setValue(radioValue.equals("Admin"));
 
                     //Welcome Page
                     Intent intentToSignIn = new Intent(getApplicationContext(), WelcomeActivity.class);
