@@ -38,15 +38,16 @@ class CreateAccount
 
 class Profile
 {
-  firstname;
-  lastname;
-  username;
-  email;
-  password;
-  Bool client;
-  Bool serviceProvider;
+  String firstname;
+  String lastname;
+  String username;
+  String email;
+  String password;
+  Boolean client;
+  Boolean serviceProvider;
 }
 
 class Welcome
 {
 }
+
