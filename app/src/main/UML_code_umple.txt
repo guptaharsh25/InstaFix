@@ -24,7 +24,7 @@ class ServiceProvider
 
 class Login
 {
-  username;
+  email;
   password;
   1 -- 1 Welcome;
 }
@@ -34,6 +34,7 @@ class CreateAccount
   1 -- * ServiceProvider;
   1 -- 1 Profile;
   1 -- 1 Welcome;
+  * -- 1 Login;
 }
 
 class Profile
