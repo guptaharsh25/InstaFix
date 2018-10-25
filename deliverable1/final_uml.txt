@@ -1,0 +1,42 @@
+class User{
+  1--1 Profile;
+  1--1 MainActivity;
+}
+
+class Admin{
+  isA User;
+}
+
+class Client{
+  isA User;
+}
+
+class ServiceProvider{
+  isA User;
+}
+
+class Profile{
+  String firstname;
+  String lastname;
+  String email;
+  String password;
+  String accountType;
+}
+
+class MainActivity{
+  1--0..1 SignIn;
+  1--0..1 SignUp;
+}
+
+class SignIn{
+  0..1--1 WelcomeActivity;
+  0..1--0..1 SignUp;
+}
+
+class SignUp{
+  0..1--1 WelcomeActivity;
+}
+
+class WelcomeActivity{
+  1--1 MainActivity;
+}
