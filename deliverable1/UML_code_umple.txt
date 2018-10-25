@@ -1,0 +1,55 @@
+class User
+{
+}
+
+class Administrator
+{
+  isA User;
+  1 -- 1 Login;
+  1 -- * Profile;
+  1 -- 1 CreateAccount;
+}
+
+class Client
+{
+  isA User;
+  * -- 1 Login;
+  * -- 1 CreateAccount;
+}
+
+class ServiceProvider
+{
+  isA User;
+  * -- 1 Login;
+}
+
+class Login
+{
+  email;
+  password;
+  1 -- 1 Welcome;
+}
+
+class CreateAccount
+{
+  1 -- * ServiceProvider;
+  1 -- 1 Profile;
+  1 -- 1 Welcome;
+  * -- 1 Login;
+}
+
+class Profile
+{
+  String firstname;
+  String lastname;
+  String username;
+  String email;
+  String password;
+  Boolean client;
+  Boolean serviceProvider;
+}
+
+class Welcome
+{
+}
+

@@ -38,7 +38,7 @@ import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
 public class SignUp extends AppCompatActivity {
-    private EditText firstname, lastname, username, email, password, vpassword;
+    private EditText firstname, lastname, email, password, vpassword;
     private TextView error;
     private Button button;
 
@@ -61,7 +61,6 @@ public class SignUp extends AppCompatActivity {
 
         firstname = findViewById(R.id.editNameFirst);
         lastname = findViewById(R.id.editNameLast);
-        username = findViewById(R.id.editUsernameSignUp);
         email = findViewById(R.id.editEmailSignUp);
         password = findViewById(R.id.editPassSignUp);
         vpassword = findViewById(R.id.editPassVerifySignUp);
@@ -84,8 +83,6 @@ public class SignUp extends AppCompatActivity {
                     error.setText("Please enter your first Name");
                 } else if (TextUtils.isEmpty(lastname.getText().toString())){
                     error.setText("Please enter your last Name");
-                } else if (TextUtils.isEmpty(username.getText().toString())){
-                    error.setText("Please enter the username");
                 } else if (!isValidEmail(email.getText().toString())) {
                     error.setText("Incorrect email and/or password");
                 } else if (TextUtils.isEmpty(password.getText().toString())){
@@ -173,7 +170,7 @@ public class SignUp extends AppCompatActivity {
                             .build();
                     user.updateProfile(profileUpdates);
 
-                    // update database info with admin, client, first Name, last Name, username, email, Service Provider
+                    // update database info with admin, client, first Name, last Name, email, Service Provider
 
                     //Create a child of the Users UID
                     mNewUsernameRef = mAccountsRef.child(user.getUid());
@@ -181,11 +178,14 @@ public class SignUp extends AppCompatActivity {
                     mNewUsernameRef.child("FirstName").setValue(firstname.getText().toString());
                     mNewUsernameRef.child("LastName").setValue(lastname.getText().toString());
                     mNewUsernameRef.child("Email").setValue(email.getText().toString());
-                    mNewUsernameRef.child("Client").setValue(radioValue.equals("Client"));
-                    mNewUsernameRef.child("ServiceProvider").setValue(radioValue.equals("Service Provider"));
                     mNewUsernameRef.child("Password").setValue(password.getText().toString());
-                    mNewUsernameRef.child("Username").setValue(username.getText().toString());
-                    mNewUsernameRef.child("Admin").setValue(radioValue.equals("Admin"));
+                    if (radioValue.equals("Admin")){
+                        mNewUsernameRef.child("UserType").setValue("Admin");
+                    } else if(radioValue.equals("ServiceProvider")){
+                        mNewUsernameRef.child("UserType").setValue("ServiceProvider");
+                    } else if(radioValue.equals("Client")){
+                        mNewUsernameRef.child("UserType").setValue("Client");
+                    }
 
                     //Set if there is a admin in the database. Next run, there will be no admin
                     mAdminInitializedRef.setValue(radioValue.equals("Admin"));
