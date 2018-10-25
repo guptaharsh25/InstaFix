@@ -7,6 +7,7 @@ class Administrator
   isA User;
   1 -- 1 Login;
   1 -- * Profile;
+  1 -- 1 CreateAccount;
 }
 
 class Client
