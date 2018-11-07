@@ -49,7 +49,7 @@ public class SignUp extends AppCompatActivity {
     private RadioButton radioButton;
     private String radioValue = "";
 
-    private DatabaseReference mRootRef;;
+    private DatabaseReference mRootRef;
     private DatabaseReference mAccountsRef;
     private DatabaseReference mNewUsernameRef;
     private DatabaseReference mAdminInitializedRef;
