@@ -19,8 +19,7 @@
         <activity android:name=".SignIn" />
         <activity android:name=".SignUp" />
         <activity android:name=".WelcomeActivity" />
-
-
+        <activity android:name=".AdminActivity"></activity>
     </application>
 
 </manifest>
