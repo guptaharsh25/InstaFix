@@ -17,6 +17,7 @@ import android.widget.AdapterView;
 import android.widget.ListView;
 
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
@@ -79,7 +80,7 @@ public class AdminActivity extends AppCompatActivity {
         }});*/
     }
 
-    public void addService(){
+    public void addService(android.view.View view){
         final String[] serviceName = {""};
         final double[] serviceRate = {0};
 
@@ -96,6 +97,25 @@ public class AdminActivity extends AppCompatActivity {
             @Override
             public void onClick(DialogInterface dialog, int which) {
                 serviceName[0] = getServiceName.getText().toString();
+                boolean duplicateFound = false;
+                int i = -1;
+                while(i < keys.length || !duplicateFound){
+                    i++;
+                    String name = FirebaseDatabase.getInstance().getReference().child("Services").child(keys[i]).child("name").toString();
+                    if(serviceName[0].equals(name)){
+                        duplicateFound = true;
+                    }
+                }
+
+                if(duplicateFound){
+                    Context context = getApplicationContext();
+                    CharSequence text = "Please Enter a Valid Service Rate";
+                    int duration = Toast.LENGTH_LONG;
+
+                    Toast toast = Toast.makeText(context, text, duration);
+                    toast.show();
+                }
+
                 try{
                     serviceRate[0] = Double.parseDouble(getServiceRate.getText().toString());
                 } catch (Exception exception){
@@ -106,6 +126,7 @@ public class AdminActivity extends AppCompatActivity {
                     Toast toast = Toast.makeText(context, text, duration);
                     toast.show();
                 }
+
             }
         });
 
@@ -115,6 +136,11 @@ public class AdminActivity extends AppCompatActivity {
                 dialog.cancel();
             }
         });
+
+        if(!serviceName[0].equals("") || serviceRate[0]!=0) {
+            mServicesRef.child("name").setValue(serviceName[0]);
+            mServicesRef.child("rate").setValue(serviceRate[0]);
+        }
     }
 
     private void collectServiceNames(Map<String,Object> services) {
