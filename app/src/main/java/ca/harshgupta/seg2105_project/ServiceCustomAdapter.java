@@ -17,7 +17,8 @@ import com.google.firebase.database.ValueEventListener;
 
 public class ServiceCustomAdapter extends ArrayAdapter{
     private final Context context;
-    private String[] myKeys;
+    private final String[] myKeys;
+    private String rate;
 
     public ServiceCustomAdapter(Context context, String[] serviceList){
         super(context, R.layout.service_layout, serviceList);
@@ -39,11 +40,12 @@ public class ServiceCustomAdapter extends ArrayAdapter{
         mServices.child(myKeys[position]).child("rate").addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                serviceRateText.setText(dataSnapshot.getValue(Integer.class).toString());
+                rate = dataSnapshot.getValue(Integer.class).toString();
             }
             @Override
             public void onCancelled(@NonNull DatabaseError databaseError) { }
         });
+        serviceRateText.setText(rate);
         return rowView;
     }
 }
