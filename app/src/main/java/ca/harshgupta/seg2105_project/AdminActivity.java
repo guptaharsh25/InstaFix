@@ -8,6 +8,7 @@ import android.os.Bundle;
 import android.text.InputType;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.LinearLayout;
 import android.widget.Toast;
 
 import android.content.Intent;
@@ -88,7 +89,7 @@ public class AdminActivity extends AppCompatActivity {
         }});*/
     }
 
-    public void addService(android.view.View view){
+    public void addService(final View view){
         final String[] serviceName = {""};
         final double[] serviceRate = {0};
 
@@ -97,46 +98,63 @@ public class AdminActivity extends AppCompatActivity {
 
         final EditText getServiceName = new EditText(this);
         final EditText getServiceRate = new EditText(this);
+        getServiceName.setHint("Service Name");
+        getServiceRate.setHint("Rate");
 
         getServiceName.setInputType(InputType.TYPE_CLASS_TEXT);
         getServiceRate.setInputType(InputType.TYPE_CLASS_TEXT);
-        serviceAdd.setView(getServiceName);
+
+        LinearLayout linLayout = new LinearLayout(this);
+        linLayout.setOrientation(LinearLayout.VERTICAL);
+
+        linLayout.addView(getServiceName);
+        linLayout.addView(getServiceRate);
+
+        serviceAdd.setView(linLayout);
 
         serviceAdd.setPositiveButton("Add", new DialogInterface.OnClickListener() {
             public void onClick(DialogInterface dialog, int which) {
-                serviceName[0] = getServiceName.getText().toString();
+                String newService = getServiceName.getText().toString();
+                Context context = getApplicationContext();
+                CharSequence text = "Method working";
+                int duration = Toast.LENGTH_LONG;
+
+                Toast toast = Toast.makeText(context, text, duration);
+                toast.show();
                 boolean duplicateFound = false;
-                int i = -1;
-                while(i < keys.length || !duplicateFound){
-                    i++;
-                    String name = FirebaseDatabase.getInstance().getReference().child("Services").child(keys[i]).child("name").toString();
-                    if(serviceName[0].equals(name)){
-                        duplicateFound = true;
+                if (keys!=null){
+                    for(int i=0; i< keys.length; i++){
+                        String name = FirebaseDatabase.getInstance().getReference().child("Services").child(keys[i]).child("name").toString();
+                        if(serviceName[0].equals(name)){
+                            duplicateFound = true;
+                        }
                     }
                 }
 
                 if(duplicateFound){
-                    Context context = getApplicationContext();
-                    CharSequence text = "Please Enter a Valid Service Rate";
-                    int duration = Toast.LENGTH_LONG;
+                    CharSequence textDuplicateService = "Please Enter a Valid Service Rate";
 
-                    Toast toast = Toast.makeText(context, text, duration);
-                    toast.show();
+                    Toast toastService = Toast.makeText(context, textDuplicateService, duration);
+                    toastService.show();
+                } else {
+                    serviceName[0] = newService;
                 }
 
                 try{
-                    serviceRate[0] = Double.parseDouble(getServiceRate.getText().toString());
+                    double newRate = Double.parseDouble(getServiceRate.getText().toString());
+                    serviceRate[0] = newRate;
                 } catch (Exception exception){
-                    Context context = getApplicationContext();
-                    CharSequence text = "Please Enter a Valid Service Rate";
-                    int duration = Toast.LENGTH_LONG;
+                    CharSequence textValidRate = "Please Enter a Valid Service Rate";
+                    Toast toastValidRate = Toast.makeText(context, textValidRate, duration);
+                    toastValidRate.show();
 
-                    Toast toast = Toast.makeText(context, text, duration);
-                    toast.show();
+                    addService(view);
                 }
 
             }
         });
+
+
 
         serviceAdd.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
             @Override
@@ -152,6 +170,12 @@ public class AdminActivity extends AppCompatActivity {
             mServicesRef.child("name").setValue(serviceName[0]);
             mServicesRef.child("rate").setValue(serviceRate[0]);
         }
+        Context context = getApplicationContext();
+        CharSequence text = String.format(serviceName[0], serviceRate[0]);
+        int duration = Toast.LENGTH_LONG;
+
+        Toast toast = Toast.makeText(context, text, duration);
+        toast.show();
     }
 
     private void collectServiceNames(Map<String,Object> services) {
