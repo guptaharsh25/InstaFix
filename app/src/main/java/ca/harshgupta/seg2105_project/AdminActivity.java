@@ -6,6 +6,7 @@ import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.text.InputType;
+import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
 
@@ -38,6 +39,8 @@ public class AdminActivity extends AppCompatActivity {
     private ArrayList<String> serviceNames;
     private ArrayList<Double> serviceRates;
     private String[] keys;
+
+    private Button add;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -53,7 +56,8 @@ public class AdminActivity extends AppCompatActivity {
                     @Override
                     public void onDataChange(DataSnapshot dataSnapshot) {
                         //Get map of users in datasnapshot
-                        keys = (String[])((Map<String,Object>) dataSnapshot.getValue()).keySet().toArray();
+                        if(dataSnapshot.getValue() != null){
+                        keys = (String[])((Map<String,Object>) dataSnapshot.getValue()).keySet().toArray();}
                         //collectServiceNames((Map<String,Object>) dataSnapshot.getValue());
                     }
 
@@ -67,8 +71,12 @@ public class AdminActivity extends AppCompatActivity {
         //serviceNameArr = (String[])serviceNames.toArray();
 
         ListView serviceList = (ListView) findViewById(R.id.serviceList);
-        ServiceCustomAdapter adapter = new ServiceCustomAdapter(this, keys);
-        serviceList.setAdapter(adapter);
+        if (keys!=null){
+            ServiceCustomAdapter adapter = new ServiceCustomAdapter(this, keys);
+            serviceList.setAdapter(adapter);
+        }
+
+        add = findViewById(R.id.add);
 
         //serviceList.setOnItemClickListener(new AdapterView.OnItemClickListener() { @Override
         /*public void onItemClick(AdapterView<?> parent, final View view, int position, long id){
@@ -92,9 +100,9 @@ public class AdminActivity extends AppCompatActivity {
 
         getServiceName.setInputType(InputType.TYPE_CLASS_TEXT);
         getServiceRate.setInputType(InputType.TYPE_CLASS_TEXT);
+        serviceAdd.setView(getServiceName);
 
         serviceAdd.setPositiveButton("Add", new DialogInterface.OnClickListener() {
-            @Override
             public void onClick(DialogInterface dialog, int which) {
                 serviceName[0] = getServiceName.getText().toString();
                 boolean duplicateFound = false;
@@ -136,6 +144,9 @@ public class AdminActivity extends AppCompatActivity {
                 dialog.cancel();
             }
         });
+
+        final AlertDialog ad = serviceAdd.create();
+        ad.show();
 
         if(!serviceName[0].equals("") || serviceRate[0]!=0) {
             mServicesRef.child("name").setValue(serviceName[0]);
