@@ -49,7 +49,7 @@ public class SignUp extends AppCompatActivity {
     private RadioButton radioButton;
     private String radioValue = "";
 
-    private DatabaseReference mRootRef;;
+    private DatabaseReference mRootRef;
     private DatabaseReference mAccountsRef;
     private DatabaseReference mNewUsernameRef;
     private DatabaseReference mAdminInitializedRef;
@@ -166,7 +166,7 @@ public class SignUp extends AppCompatActivity {
 
                     //Update user profile
                     UserProfileChangeRequest profileUpdates = new UserProfileChangeRequest.Builder()
-                            .setDisplayName(firstname.toString() + " " + lastname.toString())
+                            .setDisplayName(firstname.getText().toString() + " " + lastname.getText().toString())
                             .build();
                     user.updateProfile(profileUpdates);
 

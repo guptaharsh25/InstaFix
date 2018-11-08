@@ -46,6 +46,10 @@ public class WelcomeActivity extends AppCompatActivity {
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
                 String userType = dataSnapshot.getValue().toString();
                 roleText.setText("You are logged in as " + userType);
+                if(userType.equals("Admin")){
+                    Intent intentToSignIn = new Intent(getApplicationContext(), AdminActivity.class);
+                    startActivityForResult(intentToSignIn,0);
+                }
             }
 
             @Override

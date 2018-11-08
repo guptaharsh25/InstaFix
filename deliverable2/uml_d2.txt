@@ -1,0 +1,27 @@
+class User{
+  firstName;
+  lastName;
+  email;
+  password;
+}
+
+class Client{
+  isA User;
+}
+
+class ServiceProvider{
+  isA User;
+
+  *--* Service;
+}
+
+class Admin{
+  isA User;
+
+  1--* Service;
+}
+
+class Service{
+  String name;
+  Double rate;
+}
