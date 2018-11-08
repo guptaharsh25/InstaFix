@@ -2,6 +2,8 @@ package ca.harshgupta.seg2105_project;
 
 import android.content.Context;
 import android.content.DialogInterface;
+import android.graphics.Color;
+import android.support.annotation.NonNull;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -38,7 +40,6 @@ public class AdminActivity extends AppCompatActivity {
     private DatabaseReference mServicesRef;
 
     private ArrayList<String> serviceNames;
-    private ArrayList<Double> serviceRates;
     private String[] keys;
 
     private FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
@@ -47,31 +48,39 @@ public class AdminActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        add = findViewById(R.id.btnAdd);
         setContentView(R.layout.activity_admin);
 
         mAuth = FirebaseAuth.getInstance();
         mRootRef = FirebaseDatabase.getInstance().getReference();
         mServicesRef = mRootRef.child("Services");
 
-        DatabaseReference ref = FirebaseDatabase.getInstance().getReference().child("Services");
-        ref.addListenerForSingleValueEvent(
-                new ValueEventListener() {
-                    @Override
-                    public void onDataChange(DataSnapshot dataSnapshot) {
-                        //Get map of users in datasnapshot
-                        if(dataSnapshot.getValue() != null){
-                        keys = (String[])((Map<String,Object>) dataSnapshot.getValue()).keySet().toArray();}
-                        //collectServiceNames((Map<String,Object>) dataSnapshot.getValue());
+        mServicesRef.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+
+                    int i = 0;
+                    keys = new String[(int) dataSnapshot.getChildrenCount()];
+                    for (DataSnapshot postSnapShot : dataSnapshot.getChildren()) {
+                        keys[i] = postSnapShot.getKey();
+                        //Print out Keys
+                        System.out.println(keys[i]);
+                        i++;
                     }
 
-                    @Override
-                    public void onCancelled(DatabaseError databaseError) {
-                        //handle databaseError
-                    }
-                });
 
-        //String[] serviceNameArr = new String[serviceNames.size()];
-        //serviceNameArr = (String[])serviceNames.toArray();
+
+                //Get map of users in data snapshot
+                //if(dataSnapshot.getValue() != null){
+                //keys = (String[]) ((Map<String, Object>) dataSnapshot.getValue()).keySet().toArray();
+                //collectServiceNames((Map<String,Object>) dataSnapshot.getValue());
+            }
+            @Override
+            public void onCancelled(@NonNull DatabaseError databaseError) {}
+        });
+
+       // //String[] serviceNameArr = new String[serviceNames.size()];
+       // //serviceNameArr = (String[])serviceNames.toArray();
 
         ListView serviceList = (ListView) findViewById(R.id.serviceList);
         if (keys!=null){
@@ -79,7 +88,7 @@ public class AdminActivity extends AppCompatActivity {
             serviceList.setAdapter(adapter);
         }
 
-        add = findViewById(R.id.add);
+
 
         //serviceList.setOnItemClickListener(new AdapterView.OnItemClickListener() { @Override
         /*public void onItemClick(AdapterView<?> parent, final View view, int position, long id){

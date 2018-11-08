@@ -39,7 +39,7 @@ public class ServiceCustomAdapter extends ArrayAdapter{
         mServices.child(myKeys[position]).child("rate").addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                serviceRateText.setText(dataSnapshot.getValue(Integer.class));
+                serviceRateText.setText(dataSnapshot.getValue(Integer.class).toString());
             }
             @Override
             public void onCancelled(@NonNull DatabaseError databaseError) { }
