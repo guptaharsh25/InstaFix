@@ -41,6 +41,8 @@ public class AdminActivity extends AppCompatActivity {
     private ArrayList<Double> serviceRates;
     private String[] keys;
 
+    private FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
+
     private Button add;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -151,6 +153,12 @@ public class AdminActivity extends AppCompatActivity {
                     addService(view);
                 }
 
+                if(!serviceName[0].equals("") || serviceRate[0]!=0) {
+                    mServicesRef.child(serviceName[0]);
+                    mServicesRef.child(serviceName[0]).child("rate").setValue(serviceRate[0]);
+                    mServicesRef.child(serviceName[0]).child("user").setValue(user.getDisplayName());
+                }
+
             }
         });
 
@@ -170,12 +178,7 @@ public class AdminActivity extends AppCompatActivity {
             mServicesRef.child("name").setValue(serviceName[0]);
             mServicesRef.child("rate").setValue(serviceRate[0]);
         }
-        Context context = getApplicationContext();
-        CharSequence text = String.format(serviceName[0], serviceRate[0]);
-        int duration = Toast.LENGTH_LONG;
 
-        Toast toast = Toast.makeText(context, text, duration);
-        toast.show();
     }
 
     private void collectServiceNames(Map<String,Object> services) {
