@@ -166,7 +166,7 @@ public class SignUp extends AppCompatActivity {
 
                     //Update user profile
                     UserProfileChangeRequest profileUpdates = new UserProfileChangeRequest.Builder()
-                            .setDisplayName(firstname.toString() + " " + lastname.toString())
+                            .setDisplayName(firstname.getText().toString() + " " + lastname.getText().toString())
                             .build();
                     user.updateProfile(profileUpdates);
 
