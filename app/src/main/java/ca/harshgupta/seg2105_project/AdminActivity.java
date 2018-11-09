@@ -65,8 +65,6 @@ public class AdminActivity extends AppCompatActivity {
                 keys = new String[(int) dataSnapshot.getChildrenCount()];
                 for (DataSnapshot postSnapShot : dataSnapshot.getChildren()) {
                     keys[i] = postSnapShot.getKey();
-                    //Print out Keys
-                    System.out.println(keys[i]);
                     i++;
                 }
             }
