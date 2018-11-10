@@ -68,6 +68,7 @@ public class AdminActivity extends AppCompatActivity {
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
                 int i = 0;
                 keys = new String[(int) dataSnapshot.getChildrenCount()];
+                System.out.println(keys[0]);
                 for (DataSnapshot postSnapShot : dataSnapshot.getChildren()) {
                     keys[i] = postSnapShot.getKey();
                     i++;
@@ -111,10 +112,10 @@ public class AdminActivity extends AppCompatActivity {
                                 public void onClick(DialogInterface dialogInterface, int i) { removeService(selectedListItem); }
                             });
 
-                            alertDialog.setButton(Dialog.BUTTON2, "Edit", new DialogInterface.OnClickListener() {
+                            /*alertDialog.setButton(Dialog.BUTTON2, "Edit", new DialogInterface.OnClickListener() {
                                 @Override
                                 public void onClick(DialogInterface dialogInterface, int i) { editService(selectedListItem); }
-                            });
+                            });*/
 
                             alertDialog.show();
                         }
@@ -130,8 +131,9 @@ public class AdminActivity extends AppCompatActivity {
         updateList();
     }
 
-    public void editService(final String service){
-        final DatabaseReference mEdit = mServicesRef.child(service);
+    public void editService(final View view){
+        final double[] serviceRate = {0};
+        //final DatabaseReference mEdit = mServicesRef.child(service);
 
         final AlertDialog.Builder serviceAdd = new AlertDialog.Builder(this);
         serviceAdd.setTitle("Add New Service");
@@ -152,12 +154,40 @@ public class AdminActivity extends AppCompatActivity {
 
         serviceAdd.setView(linLayout);
 
-        serviceAdd.setPositiveButton("Add", new DialogInterface.OnClickListener() {
+        serviceAdd.setPositiveButton("Edit", new DialogInterface.OnClickListener() {
             public void onClick(DialogInterface dialog, int which) {
-                String newService = getServiceName.getText().toString();
-                String newRate = getServiceRate.getText().toString();
+                String getService = getServiceName.getText().toString();
+                Context context = getApplicationContext();
+                double newRate = Double.parseDouble(getServiceRate.getText().toString());
 
-                //mEdit.child("rate").setValue(newRate);
+                int duration = Toast.LENGTH_LONG;
+                boolean duplicateFound = false;
+                System.out.println(keys[0]);
+                if (keys!=null){
+                    for(int i=0; i< keys.length; i++){
+                        String name = FirebaseDatabase.getInstance().getReference().child("Services").child(keys[i]).child("name").toString();
+                        if(getService.equals(name)){
+                            duplicateFound = true;
+                        }
+                    }
+                }
+                if(!duplicateFound){
+                    CharSequence textDuplicateService = "Please Enter an Existing Service to Edit";
+
+                    Toast toastService = Toast.makeText(context, textDuplicateService, duration);
+                    toastService.show();
+                    editService(view);
+                } else {
+                    if(newRate!=0){
+                        mServicesRef.child(getService).child("rate").setValue(serviceRate[0]);
+                    } else {
+                        CharSequence textRate = "Please Enter a Valid Service Rate (Has to be greater than 0)";
+
+                        Toast toastRate = Toast.makeText(context, textRate, duration);
+                        toastRate.show();
+                        editService(view);
+                    }
+                }
 
             }
         });
@@ -199,11 +229,7 @@ public class AdminActivity extends AppCompatActivity {
             public void onClick(DialogInterface dialog, int which) {
                 String newService = getServiceName.getText().toString();
                 Context context = getApplicationContext();
-                CharSequence text = "Method working";
                 int duration = Toast.LENGTH_LONG;
-
-                Toast toast = Toast.makeText(context, text, duration);
-                toast.show();
                 boolean duplicateFound = false;
                 if (keys!=null){
                     for(int i=0; i< keys.length; i++){
@@ -215,7 +241,7 @@ public class AdminActivity extends AppCompatActivity {
                 }
 
                 if(duplicateFound){
-                    CharSequence textDuplicateService = "Please Enter a Valid Service Rate";
+                    CharSequence textDuplicateService = "Service Exits: Please Enter a New Service";
 
                     Toast toastService = Toast.makeText(context, textDuplicateService, duration);
                     toastService.show();
@@ -253,11 +279,6 @@ public class AdminActivity extends AppCompatActivity {
         final AlertDialog ad = serviceAdd.create();
         ad.show();
         updateList();
-
-        if(!serviceName[0].equals("") || serviceRate[0]!=0) {
-            mServicesRef.child("name").setValue(serviceName[0]);
-            mServicesRef.child("rate").setValue(serviceRate[0]);
-        }
     }
 
     private void collectServiceNames(Map<String,Object> services) {
