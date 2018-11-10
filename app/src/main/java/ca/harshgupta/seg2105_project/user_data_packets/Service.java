@@ -3,7 +3,11 @@ package ca.harshgupta.seg2105_project.user_data_packets;
 public class Service {
     String name;
     Double rate;
-    final String id;
+    String id;
+
+    public Service (){
+
+    }
 
     public Service(String id, String name, double rate) {
         this.name = name;

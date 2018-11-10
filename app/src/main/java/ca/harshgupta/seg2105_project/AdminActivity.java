@@ -35,6 +35,7 @@ import com.google.firebase.database.ValueEventListener;
 
 import java.util.ArrayList;
 import java.util.Map;
+import java.util.concurrent.TimeUnit;
 
 import ca.harshgupta.seg2105_project.user_data_packets.Service;
 
@@ -74,16 +75,16 @@ public class AdminActivity extends AppCompatActivity {
         addButton = (Button) findViewById(R.id.btnAdd);
         serviceNames = new ArrayList<>();
 
-        addButton.setOnClickListener(new View.OnClickListener(){
+        /*addButton.setOnClickListener(new View.OnClickListener(){
             @Override
             public void onClick(View view){
                 addService ();
             }
-        });
+        });*/
 
     }
 
-    public void addService () {
+    public void addService (View view) {
         final AlertDialog.Builder serviceAdd = new AlertDialog.Builder(this);
         serviceAdd.setTitle("Add New Service");
 
@@ -152,9 +153,9 @@ public class AdminActivity extends AppCompatActivity {
                 }
 
                 //creating adapter
-                ServiceCustomAdapter productsAdapter = new ServiceCustomAdapter(AdminActivity.this, serviceNames);
+                ServiceCustomAdapter serviceCustomAdapter = new ServiceCustomAdapter(getApplicationContext(), serviceNames);
                 //attaching adapter to the listview
-                serviceList.setAdapter(productsAdapter);
+                serviceList.setAdapter(serviceCustomAdapter);
             }
 
             @Override
