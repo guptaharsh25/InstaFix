@@ -265,6 +265,7 @@ public class AdminActivity extends AppCompatActivity {
                     mServicesRef.child(serviceName[0]).child("rate").setValue(serviceRate[0]);
                     mServicesRef.child(serviceName[0]).child("user").setValue(user.getDisplayName());
                     updateList();
+                    //update list
                 }
             }
         });
