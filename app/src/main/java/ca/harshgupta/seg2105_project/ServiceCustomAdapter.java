@@ -42,8 +42,11 @@ public class ServiceCustomAdapter extends ArrayAdapter{
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
                 serviceRateText = (TextView) rowView.findViewById(R.id.serviceRate);
-                String value = dataSnapshot.getValue(Double.class).toString();
-                serviceRateText.setText(value);
+                //if (dataSnapshot.getValue() != null) {
+                    String value = dataSnapshot.getValue().toString();
+                    serviceRateText.setText(value);
+                //}
+
             }
             @Override
             public void onCancelled(@NonNull DatabaseError databaseError) { }
