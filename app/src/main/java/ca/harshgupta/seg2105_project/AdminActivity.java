@@ -83,7 +83,7 @@ public class AdminActivity extends AppCompatActivity {
 
     }
 
-    public void addService (){
+    public void addService () {
         final AlertDialog.Builder serviceAdd = new AlertDialog.Builder(this);
         serviceAdd.setTitle("Add New Service");
 
@@ -110,20 +110,18 @@ public class AdminActivity extends AppCompatActivity {
                 String name = getServiceName.getText().toString();
                 double rate = Double.parseDouble(String.valueOf(getServiceRate.getText().toString()));
 
-                if(!TextUtils.isEmpty(name)){
+                if (!TextUtils.isEmpty(name)) {
                     String id = serviceDB.push().getKey();
                     Service s = new Service(id, name, rate);
                     serviceDB.child(id).setValue(s);
 
 
                     Toast.makeText(getApplicationContext(), "Product Added", Toast.LENGTH_LONG).show();
-                }
-                else{
+                } else {
                     Toast.makeText(getApplicationContext(), "Please enter a name", Toast.LENGTH_LONG).show();
                 }
             }
         });
-
 
         serviceAdd.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
             @Override
@@ -131,8 +129,43 @@ public class AdminActivity extends AppCompatActivity {
                 dialog.cancel();
             }
         });
-
     }
+
+
+    @Override
+    protected void onStart() {
+        super.onStart();
+        //attaching value event listener
+        serviceDB.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+
+                //clearing the previous artist list
+                serviceNames.clear();
+
+                //iterating through all the nodes
+                for (DataSnapshot postSnapshot : dataSnapshot.getChildren()) {
+                    //getting product
+                    Service product = postSnapshot.getValue(Service.class);
+                    //adding product to the list
+                    serviceNames.add(product);
+                }
+
+                //creating adapter
+                ServiceCustomAdapter productsAdapter = new ServiceCustomAdapter(AdminActivity.this, serviceNames);
+                //attaching adapter to the listview
+                serviceList.setAdapter(productsAdapter);
+            }
+
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+
+            }
+        });
+    }
+
+
+
 //        serviceList = (ListView) findViewById(R.id.serviceList);
 //        add = findViewById(R.id.btnAdd);
 //        setContentView(R.layout.activity_admin);
