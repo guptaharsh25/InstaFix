@@ -1,5 +1,6 @@
 package ca.harshgupta.seg2105_project;
 
+import android.annotation.SuppressLint;
 import android.content.Context;
 import android.support.annotation.NonNull;
 import android.view.LayoutInflater;
@@ -24,7 +25,7 @@ public class ServiceCustomAdapter extends ArrayAdapter{
     private DatabaseReference mServices;
     public TextView serviceRateText;
 
-    public ServiceCustomAdapter(Context context, String[] serviceList, Node[] keys){
+    public ServiceCustomAdapter(Context context, String[] serviceList){
         super(context, R.layout.service_layout, serviceList);
         this.context = context;
         this.myKeys = serviceList;
@@ -35,12 +36,8 @@ public class ServiceCustomAdapter extends ArrayAdapter{
         final View rowView = inflater.inflate(R.layout.service_layout, parent, false);
 
         TextView serviceNameText = (TextView) rowView.findViewById(R.id.serviceName);
-
-
         mServices = FirebaseDatabase.getInstance().getReference().child("Services");
-
         serviceNameText.setText(mServices.child(myKeys[position]).getKey());
-
         mServices.child(myKeys[position]).child("rate").addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {

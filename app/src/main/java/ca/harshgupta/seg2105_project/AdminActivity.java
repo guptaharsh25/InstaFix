@@ -1,5 +1,6 @@
 package ca.harshgupta.seg2105_project;
 
+import android.app.Dialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.graphics.Color;
@@ -12,6 +13,7 @@ import android.text.InputType;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.LinearLayout;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import android.content.Intent;
@@ -44,13 +46,16 @@ public class AdminActivity extends AppCompatActivity {
     private String[] keys;
 
     private FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
-    ServiceCustomAdapter adapter;
+
+    private ServiceCustomAdapter adapter;
 
     private Button add;
     private ListView serviceList;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        setContentView(R.layout.service_layout);
+        serviceList = (ListView) findViewById(R.id.serviceList);
         add = findViewById(R.id.btnAdd);
         setContentView(R.layout.activity_admin);
 
@@ -72,18 +77,6 @@ public class AdminActivity extends AppCompatActivity {
             public void onCancelled(@NonNull DatabaseError databaseError) {}
         });
         updateList();
-
-       // //String[] serviceNameArr = new String[serviceNames.size()];
-       // //serviceNameArr = (String[])serviceNames.toArray();
-
-        //serviceList.setOnItemClickListener(new AdapterView.OnItemClickListener() { @Override
-        /*public void onItemClick(AdapterView<?> parent, final View view, int position, long id){
-            //Here we insert some code to do something!
-            Intent editorLaunchInterest = new Intent(getApplicationContext(), ChoreEditorActivity.class);
-            editorLaunchInterest.putExtra("position",position);
-            editorLaunchInterest.putExtra("name",choreList[position]);
-            startActivityForResult(editorLaunchInterest, 0);
-        }});*/
     }
 
     public void onStart(){
@@ -103,11 +96,80 @@ public class AdminActivity extends AppCompatActivity {
                     adapter = new ServiceCustomAdapter(AdminActivity.this, keys);
                     serviceList.setAdapter(adapter);
                     adapter.notifyDataSetChanged();
+                    serviceList.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+                        @Override
+                        public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
+                            final String selectedListItem = ((TextView) view.findViewById(R.id.serviceName)).getText().toString();
+
+                            AlertDialog alertDialog = new AlertDialog.Builder(AdminActivity.this).create();
+
+                            alertDialog.setTitle("Service");
+                            alertDialog.setMessage("Select what you would like to do with the service: " + selectedListItem);
+
+                            alertDialog.setButton(Dialog.BUTTON1, "Remove", new DialogInterface.OnClickListener() {
+                                @Override
+                                public void onClick(DialogInterface dialogInterface, int i) { removeService(selectedListItem); }
+                            });
+
+                            alertDialog.setButton(Dialog.BUTTON2, "Edit", new DialogInterface.OnClickListener() {
+                                @Override
+                                public void onClick(DialogInterface dialogInterface, int i) { editService(selectedListItem); }
+                            });
+
+                            alertDialog.show();
+                        }
+                    });
                 }
             }
-        },1000); //1000ms = 1sec
+        },500); //1000ms = 1sec
     }
 
+    public void removeService(String service){
+        mServicesRef.child(service).removeValue();
+        adapter.notifyDataSetChanged();
+        updateList();
+    }
+
+    public void editService(final String service){
+        final DatabaseReference mEdit = mServicesRef.child(service);
+
+        final AlertDialog.Builder serviceAdd = new AlertDialog.Builder(this);
+        serviceAdd.setTitle("Add New Service");
+
+        final EditText getServiceName = new EditText(this);
+        final EditText getServiceRate = new EditText(this);
+        getServiceName.setHint("Service Name");
+        getServiceRate.setHint("Rate");
+
+        getServiceName.setInputType(InputType.TYPE_CLASS_TEXT);
+        getServiceRate.setInputType(InputType.TYPE_CLASS_TEXT);
+
+        LinearLayout linLayout = new LinearLayout(this);
+        linLayout.setOrientation(LinearLayout.VERTICAL);
+
+        linLayout.addView(getServiceName);
+        linLayout.addView(getServiceRate);
+
+        serviceAdd.setView(linLayout);
+
+        serviceAdd.setPositiveButton("Add", new DialogInterface.OnClickListener() {
+            public void onClick(DialogInterface dialog, int which) {
+                String newService = getServiceName.getText().toString();
+                String newRate = getServiceRate.getText().toString();
+
+                //mEdit.child("rate").setValue(newRate);
+
+            }
+        });
+
+        serviceAdd.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) { dialog.cancel(); }
+        });
+
+        serviceAdd.show();
+
+    }
 
     public void addService(final View view){
         final String[] serviceName = {""};
@@ -181,8 +243,6 @@ public class AdminActivity extends AppCompatActivity {
             }
         });
 
-
-
         serviceAdd.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int which) {
@@ -213,18 +273,4 @@ public class AdminActivity extends AppCompatActivity {
             serviceNames.add((String) singleService.get("name"));
         }
     }
-
-    /*private void collectServiceRates(Map<String,Object> services) {
-
-        serviceRates = new ArrayList<>();
-
-        //iterate through each user, ignoring their UID
-        for (Map.Entry<String, Object> entry : services.entrySet()){
-
-            //Get user map
-            Map singleService = (Map) entry.getValue();
-            //Get phone field and append to list
-            serviceRates.add((Double) singleService.get("rate"));
-        }
-    }*/
 }
