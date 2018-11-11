@@ -14,4 +14,21 @@ public class ExampleUnitTest {
     public void addition_isCorrect() {
         assertEquals(4, 2 + 2);
     }
+
+    public void testGetID(){
+        Service s = new Service("efkwefwe", "service", 40);
+        assertEquals("Check the name of the product", "efkwefwe", s.getId());
+    }
+
+    public void testGetName(){
+        Service s = new Service("efkwefwe", "service", 40);
+        assertEquals("Check the name of the product", "service", s.getName());
+    }
+
+    public void testGetRate(){
+        Service s = new Service("efkwefwe", "service", 40);
+        Double a = new Double((double) s.getRate());
+        String actual = a.toString();
+        assertEquals("Check the price of the product", "40.0", actual);
+    }
 }
