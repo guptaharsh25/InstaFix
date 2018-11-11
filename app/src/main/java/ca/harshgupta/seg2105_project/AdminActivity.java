@@ -158,8 +158,26 @@ public class AdminActivity extends AppCompatActivity {
 
         final EditText getServiceName = new EditText(this);
         final EditText getServiceRate = new EditText(this);
+        mEdit.child("name").addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                getServiceName.setText(dataSnapshot.getValue(String.class)); }
+            @Override
+            public void onCancelled(@NonNull DatabaseError databaseError) {}
+        });
+
+        mEdit.child("rate").addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                getServiceRate.setText(dataSnapshot.getValue(Double.class).toString());
+            }
+            @Override
+            public void onCancelled(@NonNull DatabaseError databaseError) { }
+        });
+
         getServiceName.setHint("Service Name");
         getServiceRate.setHint("Rate");
+
 
         getServiceName.setInputType(InputType.TYPE_CLASS_TEXT);
         getServiceRate.setInputType(InputType.TYPE_CLASS_TEXT);
@@ -172,7 +190,7 @@ public class AdminActivity extends AppCompatActivity {
 
         serviceAdd.setView(linLayout);
 
-        serviceAdd.setPositiveButton("Add", new DialogInterface.OnClickListener() {
+        serviceAdd.setPositiveButton("Edit", new DialogInterface.OnClickListener() {
             public void onClick(DialogInterface dialog, int which) {
                 String newService = getServiceName.getText().toString();
                 String newRate = getServiceRate.getText().toString();
