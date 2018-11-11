@@ -52,6 +52,9 @@ public class AdminActivity extends AppCompatActivity {
 
     private Button add;
     private ListView serviceList;
+    public String tempName;
+    public boolean duplicateFound;
+    public boolean loopDone;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -202,9 +205,6 @@ public class AdminActivity extends AppCompatActivity {
                     Toast.makeText(AdminActivity.this, "Please Enter a Valid Rate", Toast.LENGTH_LONG).show();
                     editService(service);
                 }
-
-
-
             }
         });
 
@@ -251,43 +251,57 @@ public class AdminActivity extends AppCompatActivity {
 
                 Toast toast = Toast.makeText(context, text, duration);
                 toast.show();
-                boolean duplicateFound = false;
+
                 if (keys!=null){
-                    for(int i=0; i< keys.length; i++){
-                        String name = FirebaseDatabase.getInstance().getReference().child("Services").child(keys[i]).child("name").toString();
-                        if(serviceName[0].equals(name)){
-                            duplicateFound = true;
-                        }
+                    for(final String key: keys){
+                        String name;
+                        FirebaseDatabase.getInstance().getReference().child("Services").child(key).child("name").addValueEventListener(new ValueEventListener() {
+                            @Override
+                            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                                tempName = dataSnapshot.getValue(String.class);
+                                //Toast.makeText(AdminActivity.this, tempName, Toast.LENGTH_LONG).show();
+                                if(serviceName[0].equals(tempName)){
+                                    System.out.println(serviceName[0]);
+                                    System.out.println(tempName);
+                                    AdminActivity.this.setDuplicateFound();
+                                    System.out.println("Inside loop " + duplicateFound);
+                                    System.out.println("Inside Loop for actual case : " + serviceName[0].equals(tempName));
+
+                                }
+                            }
+                            @Override
+                            public void onCancelled(@NonNull DatabaseError databaseError) { }
+                        });
                     }
-                }
+                            System.out.println("Outside loop: " + duplicateFound);
+                            if(duplicateFound){
+                                CharSequence textDuplicateService = "Please Enter a Valid Service Rate";
 
-                if(duplicateFound){
-                    CharSequence textDuplicateService = "Please Enter a Valid Service Rate";
+                                Toast toastService = Toast.makeText(AdminActivity.this, textDuplicateService, Toast.LENGTH_LONG);
+                                toastService.show();
+                            } else {
+                                serviceName[0] = newService;
 
-                    Toast toastService = Toast.makeText(context, textDuplicateService, duration);
-                    toastService.show();
-                } else {
-                    serviceName[0] = newService;
-                }
+                                try{
+                                    double newRate = Double.parseDouble(getServiceRate.getText().toString());
+                                    serviceRate[0] = newRate;
 
-                try{
-                    double newRate = Double.parseDouble(getServiceRate.getText().toString());
-                    serviceRate[0] = newRate;
-                } catch (Exception exception){
-                    CharSequence textValidRate = "Please Enter a Valid Service Rate";
-                    Toast toastValidRate = Toast.makeText(context, textValidRate, duration);
-                    toastValidRate.show();
+                                    if(!serviceName[0].equals("") || serviceRate[0]!=0) {
+                                        String serviceID = mServicesRef.push().getKey();
+                                        mServicesRef.child(serviceID);
+                                        mServicesRef.child(serviceID).child("name").setValue(serviceName[0]);
+                                        mServicesRef.child(serviceID).child("rate").setValue(serviceRate[0]);
+                                        mServicesRef.child(serviceID).child("user").setValue(user.getDisplayName());
+                                        updateList();
+                                    }
+                                } catch (Exception exception){
+                                    CharSequence textValidRate = "Please Enter a Valid Service Rate";
+                                    Toast toastValidRate = Toast.makeText(AdminActivity.this, textValidRate, Toast.LENGTH_LONG);
+                                    toastValidRate.show();
 
-                    addService(view);
-                }
-
-                if(!serviceName[0].equals("") || serviceRate[0]!=0) {
-                    String serviceID = mServicesRef.push().getKey();
-                    mServicesRef.child(serviceID);
-                    mServicesRef.child(serviceID).child("name").setValue(serviceName[0]);
-                    mServicesRef.child(serviceID).child("rate").setValue(serviceRate[0]);
-                    mServicesRef.child(serviceID).child("user").setValue(user.getDisplayName());
-                    updateList();
+                                    addService(view);
+                                }
+                            }
                 }
             }
         });
@@ -321,5 +335,10 @@ public class AdminActivity extends AppCompatActivity {
             //Get phone field and append to list
             serviceNames.add((String) singleService.get("name"));
         }
+    }
+
+    public void setDuplicateFound() {
+        duplicateFound = true;
+        loopDone = true;
     }
 }
