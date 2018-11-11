@@ -24,6 +24,7 @@ public class ServiceCustomAdapter extends ArrayAdapter{
     private String rate;
     private DatabaseReference mServices;
     public TextView serviceRateText;
+    public TextView serviceNameText;
 
     public ServiceCustomAdapter(Context context, String[] serviceList){
         super(context, R.layout.service_layout, serviceList);
@@ -35,9 +36,21 @@ public class ServiceCustomAdapter extends ArrayAdapter{
         LayoutInflater inflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
         final View rowView = inflater.inflate(R.layout.service_layout, parent, false);
 
-        TextView serviceNameText = (TextView) rowView.findViewById(R.id.serviceName);
+
         mServices = FirebaseDatabase.getInstance().getReference().child("Services");
-        serviceNameText.setText(mServices.child(myKeys[position]).getKey());
+
+        mServices.child(myKeys[position]).child("name").addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                serviceNameText = (TextView) rowView.findViewById(R.id.serviceName);
+                String name = dataSnapshot.getValue(String.class).toString();
+                serviceNameText.setText(name);
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError databaseError) { }
+        });
+
         mServices.child(myKeys[position]).child("rate").addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
@@ -51,3 +64,5 @@ public class ServiceCustomAdapter extends ArrayAdapter{
         return rowView;
     }
 }
+
+
