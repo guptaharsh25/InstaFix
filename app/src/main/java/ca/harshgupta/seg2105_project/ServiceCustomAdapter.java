@@ -43,8 +43,13 @@ public class ServiceCustomAdapter extends ArrayAdapter{
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
                 serviceNameText = (TextView) rowView.findViewById(R.id.serviceName);
-                String name = dataSnapshot.getValue(String.class).toString();
-                serviceNameText.setText(name);
+                try{
+                    String name = dataSnapshot.getValue(String.class);
+                    serviceNameText.setText(name);
+                } catch (NullPointerException e){
+                    String name = "";
+                    serviceNameText.setText(name);
+                }
             }
 
             @Override
@@ -55,8 +60,13 @@ public class ServiceCustomAdapter extends ArrayAdapter{
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
                 serviceRateText = (TextView) rowView.findViewById(R.id.serviceRate);
-                String value = dataSnapshot.getValue(Double.class).toString();
-                serviceRateText.setText(value);
+                try {
+                    String value = dataSnapshot.getValue(Double.class).toString();
+                    serviceRateText.setText(value);
+                } catch (NullPointerException e){
+                    String value = "";
+                    serviceRateText.setText(value);
+                }
             }
             @Override
             public void onCancelled(@NonNull DatabaseError databaseError) { }

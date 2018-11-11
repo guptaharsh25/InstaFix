@@ -10,6 +10,7 @@ import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.text.InputType;
+import android.widget.Adapter;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.LinearLayout;
@@ -62,7 +63,11 @@ public class AdminActivity extends AppCompatActivity {
         mAuth = FirebaseAuth.getInstance();
         mRootRef = FirebaseDatabase.getInstance().getReference();
         mServicesRef = mRootRef.child("Services");
+        instantiateKeys();
+        updateList();
+    }
 
+    public void instantiateKeys(){
         mServicesRef.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
@@ -76,7 +81,6 @@ public class AdminActivity extends AppCompatActivity {
             @Override
             public void onCancelled(@NonNull DatabaseError databaseError) {}
         });
-        updateList();
     }
 
     public void onStart(){
@@ -104,7 +108,7 @@ public class AdminActivity extends AppCompatActivity {
                                 mServicesRef.child(key).child("name").addValueEventListener(new ValueEventListener() {
                                     @Override
                                     public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                                        if(dataSnapshot.getValue(String.class).equals(selectedListItem)){
+                                        if(dataSnapshot.getValue()!=null && dataSnapshot.getValue(String.class).equals(selectedListItem)){
                                             final String selectedItemKey = key;
                                             //Toast.makeText(AdminActivity.this,selectedItemKey,Toast.LENGTH_LONG).show();
 
@@ -140,7 +144,9 @@ public class AdminActivity extends AppCompatActivity {
 
     public void removeService(String service){
         mServicesRef.child(service).removeValue();
-        adapter.notifyDataSetChanged();
+        ServiceCustomAdapter tempAdapter = new ServiceCustomAdapter(AdminActivity.this, new String[0]);
+        serviceList.setAdapter(tempAdapter);
+        instantiateKeys();
         updateList();
     }
 
