@@ -18,57 +18,36 @@ import com.google.firebase.database.ValueEventListener;
 
 import org.w3c.dom.Node;
 
-import java.util.ArrayList;
-
-import ca.harshgupta.seg2105_project.user_data_packets.Service;
-
 public class ServiceCustomAdapter extends ArrayAdapter{
     private final Context context;
+    private final String[] myKeys;
     private String rate;
     private DatabaseReference mServices;
     public TextView serviceRateText;
-    private ArrayList<Service> services;
 
-    public ServiceCustomAdapter(Context context, ArrayList services){
-        super(context, R.layout.service_layout, services);
+    public ServiceCustomAdapter(Context context, String[] serviceList){
+        super(context, R.layout.service_layout, serviceList);
         this.context = context;
-        this.services = services;
+        this.myKeys = serviceList;
     }
 
-    @Override
-    public View getView(int position, View convertView, ViewGroup parent) {
+    public View getView(int position, View convertView, ViewGroup parent){
         LayoutInflater inflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-        View listViewItem = inflater.inflate(R.layout.service_layout, null, true);
+        final View rowView = inflater.inflate(R.layout.service_layout, parent, false);
 
-        TextView textViewName = (TextView) listViewItem.findViewById(R.id.serviceName);
-        TextView textViewRate = (TextView) listViewItem.findViewById(R.id.serviceRate);
-
-        Service service = services.get(position);
-        textViewName.setText(service.getName());
-        textViewRate.setText(String.valueOf(service.getRate()));
-        return listViewItem;
+        TextView serviceNameText = (TextView) rowView.findViewById(R.id.serviceName);
+        mServices = FirebaseDatabase.getInstance().getReference().child("Services");
+        serviceNameText.setText(mServices.child(myKeys[position]).getKey());
+        mServices.child(myKeys[position]).child("rate").addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                serviceRateText = (TextView) rowView.findViewById(R.id.serviceRate);
+                String value = dataSnapshot.getValue(Double.class).toString();
+                serviceRateText.setText(value);
+            }
+            @Override
+            public void onCancelled(@NonNull DatabaseError databaseError) { }
+        });
+        return rowView;
     }
-
-//    public View getView(int position, View convertView, ViewGroup parent){
-//
-//        final View rowView = inflater.inflate(R.layout.service_layout, parent, false);
-//
-//        TextView serviceNameText = (TextView) rowView.findViewById(R.id.serviceName);
-//        mServices = FirebaseDatabase.getInstance().getReference().child("Services");
-//        serviceNameText.setText(mServices.child(myKeys[position]).getKey());
-//        mServices.child(myKeys[position]).child("rate").addValueEventListener(new ValueEventListener() {
-//            @Override
-//            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-//                serviceRateText = (TextView) rowView.findViewById(R.id.serviceRate);
-//                //if (dataSnapshot.getValue() != null) {
-//                    String value = dataSnapshot.getValue().toString();
-//                    serviceRateText.setText(value);
-//                //}
-//
-//            }
-//            @Override
-//            public void onCancelled(@NonNull DatabaseError databaseError) { }
-//        });
-//        return rowView;
-//    }
 }
