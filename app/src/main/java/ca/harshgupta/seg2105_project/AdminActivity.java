@@ -1,6 +1,5 @@
 package ca.harshgupta.seg2105_project;
 
-import android.app.Dialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.graphics.Color;
@@ -14,8 +13,12 @@ import android.text.TextUtils;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.LinearLayout;
+<<<<<<< HEAD
 import android.widget.TextView;
 
+=======
+import android.widget.Toast;
+>>>>>>> parent of a6912e6... Clicking on list item now opens edit and remove window. Remove will remove the item from firebase but listView breaks and crashes. Edit method is left to be implemented
 
 import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
@@ -50,8 +53,7 @@ public class AdminActivity extends AppCompatActivity {
     private String[] keys;
 
     private FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
-
-    private ServiceCustomAdapter adapter;
+    ServiceCustomAdapter adapter;
 
     private Button add;
 
@@ -67,7 +69,12 @@ public class AdminActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+<<<<<<< HEAD
         setContentView(R.layout.service_layout);
+=======
+        add = findViewById(R.id.btnAdd);
+        setContentView(R.layout.activity_admin);
+>>>>>>> parent of a6912e6... Clicking on list item now opens edit and remove window. Remove will remove the item from firebase but listView breaks and crashes. Edit method is left to be implemented
 
         serviceDB = FirebaseDatabase.getInstance().getReference("Services");
         serviceList = (ListView) findViewById(R.id.serviceList);
@@ -80,15 +87,57 @@ public class AdminActivity extends AppCompatActivity {
                 addService ();
             }
         });
+<<<<<<< HEAD
+=======
+        updateList();
+
+       // //String[] serviceNameArr = new String[serviceNames.size()];
+       // //serviceNameArr = (String[])serviceNames.toArray();
+
+        //serviceList.setOnItemClickListener(new AdapterView.OnItemClickListener() { @Override
+        /*public void onItemClick(AdapterView<?> parent, final View view, int position, long id){
+            //Here we insert some code to do something!
+            Intent editorLaunchInterest = new Intent(getApplicationContext(), ChoreEditorActivity.class);
+            editorLaunchInterest.putExtra("position",position);
+            editorLaunchInterest.putExtra("name",choreList[position]);
+            startActivityForResult(editorLaunchInterest, 0);
+        }});*/
+    }
+
+    public void onStart(){
+        super.onStart();
+    }
+>>>>>>> parent of a6912e6... Clicking on list item now opens edit and remove window. Remove will remove the item from firebase but listView breaks and crashes. Edit method is left to be implemented
 
     }
 
+<<<<<<< HEAD
     public void addService (){
         final AlertDialog.Builder serviceAdd = new AlertDialog.Builder(this);
         serviceAdd.setTitle("Add New Service");
 
         getServiceName = new EditText(this);
         getServiceRate = new EditText(this);
+=======
+    public void updateList(){
+        new Handler().postDelayed(new Runnable(){
+            @Override
+            public void run() {
+                serviceList = (ListView) findViewById(R.id.serviceList);
+                if (keys!=null){
+                    adapter = new ServiceCustomAdapter(AdminActivity.this, keys);
+                    serviceList.setAdapter(adapter);
+                    adapter.notifyDataSetChanged();
+                }
+            }
+        },1000); //1000ms = 1sec
+    }
+
+
+    public void addService(final View view){
+        final String[] serviceName = {""};
+        final double[] serviceRate = {0};
+>>>>>>> parent of a6912e6... Clicking on list item now opens edit and remove window. Remove will remove the item from firebase but listView breaks and crashes. Edit method is left to be implemented
 
         getServiceName.setHint("Name");
         getServiceRate.setHint("Rate");
@@ -125,6 +174,10 @@ public class AdminActivity extends AppCompatActivity {
         });
 
 
+<<<<<<< HEAD
+=======
+
+>>>>>>> parent of a6912e6... Clicking on list item now opens edit and remove window. Remove will remove the item from firebase but listView breaks and crashes. Edit method is left to be implemented
         serviceAdd.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int which) {
@@ -133,6 +186,7 @@ public class AdminActivity extends AppCompatActivity {
         });
 
     }
+<<<<<<< HEAD
 //        serviceList = (ListView) findViewById(R.id.serviceList);
 //        add = findViewById(R.id.btnAdd);
 //        setContentView(R.layout.activity_admin);
@@ -378,4 +432,20 @@ public class AdminActivity extends AppCompatActivity {
 //            serviceNames.add((String) singleService.get("name"));
 //        }
 //    }
+=======
+
+    /*private void collectServiceRates(Map<String,Object> services) {
+
+        serviceRates = new ArrayList<>();
+
+        //iterate through each user, ignoring their UID
+        for (Map.Entry<String, Object> entry : services.entrySet()){
+
+            //Get user map
+            Map singleService = (Map) entry.getValue();
+            //Get phone field and append to list
+            serviceRates.add((Double) singleService.get("rate"));
+        }
+    }*/
+>>>>>>> parent of a6912e6... Clicking on list item now opens edit and remove window. Remove will remove the item from firebase but listView breaks and crashes. Edit method is left to be implemented
 }
