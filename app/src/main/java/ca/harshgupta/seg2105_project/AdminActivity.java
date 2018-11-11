@@ -10,6 +10,7 @@ import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.text.InputType;
+import android.widget.Adapter;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.LinearLayout;
@@ -51,7 +52,6 @@ public class AdminActivity extends AppCompatActivity {
 
     private Button add;
     private ListView serviceList;
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -63,7 +63,11 @@ public class AdminActivity extends AppCompatActivity {
         mAuth = FirebaseAuth.getInstance();
         mRootRef = FirebaseDatabase.getInstance().getReference();
         mServicesRef = mRootRef.child("Services");
+        instantiateKeys();
+        updateList();
+    }
 
+    public void instantiateKeys(){
         mServicesRef.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
@@ -74,28 +78,25 @@ public class AdminActivity extends AppCompatActivity {
                     i++;
                 }
             }
-
             @Override
-            public void onCancelled(@NonNull DatabaseError databaseError) {
-            }
+            public void onCancelled(@NonNull DatabaseError databaseError) {}
         });
-        updateList();
     }
 
-    public void onStart() {
+    public void onStart(){
         super.onStart();
     }
 
-    public void onResume() {
+    public void onResume(){
         super.onResume();
     }
 
-    public void updateList() {
-        new Handler().postDelayed(new Runnable() {
+    public void updateList(){
+        new Handler().postDelayed(new Runnable(){
             @Override
             public void run() {
                 serviceList = (ListView) findViewById(R.id.serviceList);
-                if (keys != null) {
+                if (keys!=null){
                     adapter = new ServiceCustomAdapter(AdminActivity.this, keys);
                     serviceList.setAdapter(adapter);
                     adapter.notifyDataSetChanged();
@@ -103,45 +104,57 @@ public class AdminActivity extends AppCompatActivity {
                         @Override
                         public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
                             final String selectedListItem = ((TextView) view.findViewById(R.id.serviceName)).getText().toString();
+                            for(final String key: keys){
+                                mServicesRef.child(key).child("name").addValueEventListener(new ValueEventListener() {
+                                    @Override
+                                    public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                                        if(dataSnapshot.getValue()!=null && dataSnapshot.getValue(String.class).equals(selectedListItem)){
+                                            final String selectedItemKey = key;
+                                            //Toast.makeText(AdminActivity.this,selectedItemKey,Toast.LENGTH_LONG).show();
 
-                            AlertDialog alertDialog = new AlertDialog.Builder(AdminActivity.this).create();
+                                            AlertDialog alertDialog = new AlertDialog.Builder(AdminActivity.this).create();
 
-                            alertDialog.setTitle("Service");
-                            alertDialog.setMessage("Select what you would like to do with the service: " + selectedListItem);
+                                            alertDialog.setTitle("Service");
+                                            alertDialog.setMessage("Select what you would like to do with the service: " + selectedListItem);
 
-                            alertDialog.setButton(Dialog.BUTTON1, "Remove", new DialogInterface.OnClickListener() {
-                                @Override
-                                public void onClick(DialogInterface dialogInterface, int i) {
-                                    removeService(selectedListItem);
-                                }
-                            });
+                                            alertDialog.setButton(Dialog.BUTTON1, "Remove", new DialogInterface.OnClickListener() {
+                                                @Override
+                                                public void onClick(DialogInterface dialogInterface, int i) { removeService(selectedItemKey); }
+                                            });
 
-                            alertDialog.setButton(Dialog.BUTTON2, "Edit", new DialogInterface.OnClickListener() {
-                                @Override
-                                public void onClick(DialogInterface dialogInterface, int i) {
-                                    editService(selectedListItem);
-                                }
-                            });
+                                            alertDialog.setButton(Dialog.BUTTON2, "Edit", new DialogInterface.OnClickListener() {
+                                                @Override
+                                                public void onClick(DialogInterface dialogInterface, int i) { editService(selectedItemKey); }
+                                            });
 
-                            alertDialog.show();
+                                            alertDialog.show();
+                                        }
+                                    }
+                                    @Override
+                                    public void onCancelled(@NonNull DatabaseError databaseError) { }
+                                });
+                            }
+
                         }
                     });
                 }
             }
-        }, 500); //1000ms = 1sec
+        },500); //1000ms = 1sec
     }
 
-    public void removeService(String service) {
+    public void removeService(String service){
         mServicesRef.child(service).removeValue();
-        adapter.notifyDataSetChanged();
+        ServiceCustomAdapter tempAdapter = new ServiceCustomAdapter(AdminActivity.this, new String[0]);
+        serviceList.setAdapter(tempAdapter);
+        instantiateKeys();
         updateList();
     }
 
-    public void editService(final String service) {
+    public void editService(final String service){
         final DatabaseReference mEdit = mServicesRef.child(service);
 
         final AlertDialog.Builder serviceAdd = new AlertDialog.Builder(this);
-        serviceAdd.setTitle("Add New Service");
+        serviceAdd.setTitle("Edit Service");
 
         final EditText getServiceName = new EditText(this);
         final EditText getServiceRate = new EditText(this);
@@ -164,23 +177,23 @@ public class AdminActivity extends AppCompatActivity {
                 String newService = getServiceName.getText().toString();
                 String newRate = getServiceRate.getText().toString();
 
-                //mEdit.child("rate").setValue(newRate);
+                mEdit.child("rate").setValue(Double.parseDouble(newRate));
+                mEdit.child("name").setValue(newService);
 
             }
         });
 
         serviceAdd.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
             @Override
-            public void onClick(DialogInterface dialog, int which) {
-                dialog.cancel();
-            }
+            public void onClick(DialogInterface dialog, int which) { dialog.cancel(); }
         });
 
         serviceAdd.show();
+        updateList();
 
     }
 
-    public void addService(final View view) {
+    public void addService(final View view){
         final String[] serviceName = {""};
         final double[] serviceRate = {0};
 
@@ -214,16 +227,16 @@ public class AdminActivity extends AppCompatActivity {
                 Toast toast = Toast.makeText(context, text, duration);
                 toast.show();
                 boolean duplicateFound = false;
-                if (keys != null) {
-                    for (int i = 0; i < keys.length; i++) {
+                if (keys!=null){
+                    for(int i=0; i< keys.length; i++){
                         String name = FirebaseDatabase.getInstance().getReference().child("Services").child(keys[i]).child("name").toString();
-                        if (serviceName[0].equals(name)) {
+                        if(serviceName[0].equals(name)){
                             duplicateFound = true;
                         }
                     }
                 }
 
-                if (duplicateFound) {
+                if(duplicateFound){
                     CharSequence textDuplicateService = "Please Enter a Valid Service Rate";
 
                     Toast toastService = Toast.makeText(context, textDuplicateService, duration);
@@ -232,10 +245,10 @@ public class AdminActivity extends AppCompatActivity {
                     serviceName[0] = newService;
                 }
 
-                try {
+                try{
                     double newRate = Double.parseDouble(getServiceRate.getText().toString());
                     serviceRate[0] = newRate;
-                } catch (Exception exception) {
+                } catch (Exception exception){
                     CharSequence textValidRate = "Please Enter a Valid Service Rate";
                     Toast toastValidRate = Toast.makeText(context, textValidRate, duration);
                     toastValidRate.show();
@@ -243,10 +256,12 @@ public class AdminActivity extends AppCompatActivity {
                     addService(view);
                 }
 
-                if (!serviceName[0].equals("") || serviceRate[0] != 0) {
-                    mServicesRef.child(serviceName[0]);
-                    mServicesRef.child(serviceName[0]).child("rate").setValue(serviceRate[0]);
-                    mServicesRef.child(serviceName[0]).child("user").setValue(user.getDisplayName());
+                if(!serviceName[0].equals("") || serviceRate[0]!=0) {
+                    String serviceID = mServicesRef.push().getKey();
+                    mServicesRef.child(serviceID);
+                    mServicesRef.child(serviceID).child("name").setValue(serviceName[0]);
+                    mServicesRef.child(serviceID).child("rate").setValue(serviceRate[0]);
+                    mServicesRef.child(serviceID).child("user").setValue(user.getDisplayName());
                     updateList();
                 }
             }
@@ -263,18 +278,18 @@ public class AdminActivity extends AppCompatActivity {
         ad.show();
         updateList();
 
-        if (!serviceName[0].equals("") || serviceRate[0] != 0) {
+        if(!serviceName[0].equals("") || serviceRate[0]!=0) {
             mServicesRef.child("name").setValue(serviceName[0]);
             mServicesRef.child("rate").setValue(serviceRate[0]);
         }
     }
 
-    private void collectServiceNames(Map<String, Object> services) {
+    private void collectServiceNames(Map<String,Object> services) {
 
         serviceNames = new ArrayList<>();
 
         //iterate through each user, ignoring their UID
-        for (Map.Entry<String, Object> entry : services.entrySet()) {
+        for (Map.Entry<String, Object> entry : services.entrySet()){
 
             //Get user map
             Map singleService = (Map) entry.getValue();

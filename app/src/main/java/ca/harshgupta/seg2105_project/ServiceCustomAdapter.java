@@ -1,5 +1,6 @@
 package ca.harshgupta.seg2105_project;
 
+import android.annotation.SuppressLint;
 import android.content.Context;
 import android.support.annotation.NonNull;
 import android.view.LayoutInflater;
@@ -23,8 +24,9 @@ public class ServiceCustomAdapter extends ArrayAdapter{
     private String rate;
     private DatabaseReference mServices;
     public TextView serviceRateText;
+    public TextView serviceNameText;
 
-    public ServiceCustomAdapter(Context context, String[] serviceList, Node[] keys){
+    public ServiceCustomAdapter(Context context, String[] serviceList){
         super(context, R.layout.service_layout, serviceList);
         this.context = context;
         this.myKeys = serviceList;
@@ -34,19 +36,37 @@ public class ServiceCustomAdapter extends ArrayAdapter{
         LayoutInflater inflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
         final View rowView = inflater.inflate(R.layout.service_layout, parent, false);
 
-        TextView serviceNameText = (TextView) rowView.findViewById(R.id.serviceName);
-
 
         mServices = FirebaseDatabase.getInstance().getReference().child("Services");
 
-        serviceNameText.setText(mServices.child(myKeys[position]).getKey());
+        mServices.child(myKeys[position]).child("name").addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                serviceNameText = (TextView) rowView.findViewById(R.id.serviceName);
+                try{
+                    String name = dataSnapshot.getValue(String.class);
+                    serviceNameText.setText(name);
+                } catch (NullPointerException e){
+                    String name = "";
+                    serviceNameText.setText(name);
+                }
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError databaseError) { }
+        });
 
         mServices.child(myKeys[position]).child("rate").addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
                 serviceRateText = (TextView) rowView.findViewById(R.id.serviceRate);
-                String value = dataSnapshot.getValue(Double.class).toString();
-                serviceRateText.setText(value);
+                try {
+                    String value = dataSnapshot.getValue(Double.class).toString();
+                    serviceRateText.setText(value);
+                } catch (NullPointerException e){
+                    String value = "";
+                    serviceRateText.setText(value);
+                }
             }
             @Override
             public void onCancelled(@NonNull DatabaseError databaseError) { }
@@ -54,3 +74,5 @@ public class ServiceCustomAdapter extends ArrayAdapter{
         return rowView;
     }
 }
+
+
