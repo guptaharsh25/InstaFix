@@ -193,10 +193,17 @@ public class AdminActivity extends AppCompatActivity {
         serviceAdd.setPositiveButton("Edit", new DialogInterface.OnClickListener() {
             public void onClick(DialogInterface dialog, int which) {
                 String newService = getServiceName.getText().toString();
-                String newRate = getServiceRate.getText().toString();
+                Double newRate;
+                try {
+                    newRate = Double.parseDouble(getServiceRate.getText().toString());
+                    mEdit.child("rate").setValue(newRate);
+                    mEdit.child("name").setValue(newService);
+                } catch (Exception e) {
+                    Toast.makeText(AdminActivity.this, "Please Enter a Valid Rate", Toast.LENGTH_LONG).show();
+                    editService(service);
+                }
 
-                mEdit.child("rate").setValue(Double.parseDouble(newRate));
-                mEdit.child("name").setValue(newService);
+
 
             }
         });
