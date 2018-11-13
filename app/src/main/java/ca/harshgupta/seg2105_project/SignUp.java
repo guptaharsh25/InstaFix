@@ -172,7 +172,7 @@ public class SignUp extends AppCompatActivity {
                     mNewUsernameRef.child("Password").setValue(password.getText().toString());
                     if (radioValue.equals("Admin")){
                         mNewUsernameRef.child("UserType").setValue("Admin");
-                    } else if(radioValue.equals("ServiceProvider")){
+                    } else if(radioValue.equals("Service Provider")){
                         mNewUsernameRef.child("UserType").setValue("ServiceProvider");
                     } else if(radioValue.equals("Client")){
                         mNewUsernameRef.child("UserType").setValue("Client");
