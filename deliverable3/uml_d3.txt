@@ -11,7 +11,7 @@ class Client{
 
 class ServiceProvider{
   isA User;
-
+  *--* Service;
 }
 
 class Admin{

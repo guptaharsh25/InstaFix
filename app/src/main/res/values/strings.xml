@@ -27,4 +27,20 @@
     <string name="heading_email">Email:</string>
     <string name="SignUPButton">Sign Up</string>
     <string name="radio_admin">Admin</string>
+    <string name="title_activity_service_provider">ServiceProviderActivity</string>
+    <string name="Service_Provider_Services">Your Services:</string>
+    <string name="Service_Provider_Information">Service Provider Information</string>
+    <string name="Address">Address</string>
+    <string name="Hint_Address">Enter Address</string>
+    <string name="Phone">Phone</string>
+    <string name="hint_Phone" />
+    <string name="hint__Phone">Enter Phone Number</string>
+    <string name="Company">Company</string>
+    <string name="hint_Company">Enter Company Name</string>
+    <string name="Description">Description</string>
+    <string name="hint_description">e.g. I have 20 years of experience fixing washer and dryers</string>
+    <string name="Licensed">Licensed</string>
+    <string name="btn_Next">Next</string>
+    <string name="Availability">Availability</string>
+    <string name="availaibility">Set Availability</string>
 </resources>

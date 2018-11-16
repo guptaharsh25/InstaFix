@@ -170,20 +170,21 @@ public class SignUp extends AppCompatActivity {
                     mNewUsernameRef.child("LastName").setValue(lastname.getText().toString());
                     mNewUsernameRef.child("Email").setValue(email.getText().toString());
                     mNewUsernameRef.child("Password").setValue(password.getText().toString());
+                    mAdminInitializedRef.setValue(radioValue.equals("Admin"));
                     if (radioValue.equals("Admin")){
                         mNewUsernameRef.child("UserType").setValue("Admin");
-                    } else if(radioValue.equals("ServiceProvider")){
+                        Intent intentToSignIn = new Intent(getApplicationContext(), WelcomeActivity.class);
+                        startActivityForResult(intentToSignIn,0);
+                    } else if(radioValue.equals("Service Provider")){
                         mNewUsernameRef.child("UserType").setValue("ServiceProvider");
+                        mNewUsernameRef.child("providedServices");
+                        Intent intentToSPinfo = new Intent(getApplicationContext(), ServiceProviderInfo.class);
+                        startActivityForResult(intentToSPinfo, 0);
                     } else if(radioValue.equals("Client")){
                         mNewUsernameRef.child("UserType").setValue("Client");
+                        Intent intentToSignIn = new Intent(getApplicationContext(), WelcomeActivity.class);
+                        startActivityForResult(intentToSignIn,0);
                     }
-
-                    //Set if there is a admin in the database. Next run, there will be no admin
-                    mAdminInitializedRef.setValue(radioValue.equals("Admin"));
-
-                    //Welcome Page
-                    Intent intentToSignIn = new Intent(getApplicationContext(), WelcomeActivity.class);
-                    startActivityForResult(intentToSignIn,0);
                 }
             }
         });
