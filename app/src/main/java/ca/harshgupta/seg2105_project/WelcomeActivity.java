@@ -74,6 +74,10 @@ public class WelcomeActivity extends AppCompatActivity {
                     btnTimeStart.setVisibility(View.GONE);
                     btnTimeEnd.setVisibility(View.GONE);
                 }
+                else if (userType.equals("ServiceProvider")){
+                    setTextAvailability("Start", startText);
+                    setTextAvailability("End", endText);
+                }
             }
 
             @Override
