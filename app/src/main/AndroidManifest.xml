@@ -19,7 +19,10 @@
         <activity android:name=".SignIn" />
         <activity android:name=".SignUp" />
         <activity android:name=".WelcomeActivity" />
-        <activity android:name=".AdminActivity"></activity>
+        <activity android:name=".AdminActivity" />
+        <activity
+            android:name=".ServiceProviderActivity"
+            android:label="@string/title_activity_service_provider"></activity>
     </application>
 
 </manifest>

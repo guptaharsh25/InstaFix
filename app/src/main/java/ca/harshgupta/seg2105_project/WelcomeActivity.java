@@ -16,16 +16,17 @@ import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
 public class WelcomeActivity extends AppCompatActivity {
-
+    FirebaseUser user;
+    DatabaseReference userInfo;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_welcome);
 
-        FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
+        user = FirebaseAuth.getInstance().getCurrentUser();
         final TextView welcomeText = (TextView) findViewById(R.id.txtWelcome);
         final TextView roleText = (TextView) findViewById(R.id.txtRole);
-        DatabaseReference userInfo = FirebaseDatabase.getInstance().getReference().child("Accounts")
+        userInfo = FirebaseDatabase.getInstance().getReference().child("Accounts")
                 .child(user.getUid());
 
         userInfo.child("FirstName").addValueEventListener(new ValueEventListener() {
@@ -46,10 +47,6 @@ public class WelcomeActivity extends AppCompatActivity {
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
                 String userType = dataSnapshot.getValue().toString();
                 roleText.setText("You are logged in as " + userType);
-                if(userType.equals("Admin")){
-                    Intent intentToSignIn = new Intent(getApplicationContext(), AdminActivity.class);
-                    startActivityForResult(intentToSignIn,0);
-                }
             }
 
             @Override
@@ -63,5 +60,26 @@ public class WelcomeActivity extends AppCompatActivity {
         FirebaseAuth.getInstance().signOut();
         Intent intentToSignOut = new Intent(getApplicationContext(), MainActivity.class);
         startActivityForResult(intentToSignOut,0);
+    }
+
+    public void openServices(View view){
+        userInfo.child("UserType").addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                String userType = dataSnapshot.getValue().toString();
+                if(userType.equals("Admin")){
+                    Intent intentToSignIn = new Intent(getApplicationContext(), AdminActivity.class);
+                    startActivityForResult(intentToSignIn,0);
+                } else if(userType.equals("ServiceProvider")){
+                    Intent intentSPServices = new Intent(getApplicationContext(), ServiceProviderActivity.class);
+                    startActivityForResult(intentSPServices,0);
+                }
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError databaseError) {
+                System.out.println(databaseError);
+            }
+        });
     }
 }

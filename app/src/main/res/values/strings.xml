@@ -27,4 +27,6 @@
     <string name="heading_email">Email:</string>
     <string name="SignUPButton">Sign Up</string>
     <string name="radio_admin">Admin</string>
+    <string name="title_activity_service_provider">ServiceProviderActivity</string>
+    <string name="Service_Provider_Services">Your Services:</string>
 </resources>
