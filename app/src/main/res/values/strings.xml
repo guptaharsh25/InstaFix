@@ -41,4 +41,6 @@
     <string name="hint_description">e.g. I have 20 years of experience fixing washer and dryers</string>
     <string name="Licensed">Licensed</string>
     <string name="btn_Next">Next</string>
+    <string name="Availability">Availability</string>
+    <string name="availaibility">Set Availability</string>
 </resources>
