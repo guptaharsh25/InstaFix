@@ -12,6 +12,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.Button;
 import android.widget.DatePicker;
+import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.TimePicker;
 
@@ -35,6 +36,7 @@ public class WelcomeActivity extends AppCompatActivity {
 
     private TextView startText;
     private TextView endText;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -114,63 +116,8 @@ public class WelcomeActivity extends AppCompatActivity {
         });
     }
 
-    public void setAvailabilityStart(View view){
-        setAvailability("Start");
-        setTextAvailability("Start", startText);
 
-    }
-    public void setAvailabilityEnd(View view){
-        setAvailability("End");
-        setTextAvailability("End", endText);
-    }
-
-    public void setTextAvailability(final String type, final TextView textViewSetter){
-        userInfo.child("Availability").child(type).child("Date").addValueEventListener(new ValueEventListener() {
-            @Override
-            public void onDataChange(@NonNull DataSnapshot dataSnapshot1) {
-                final String date = ("Date: " + dataSnapshot1.getValue(String.class));
-                userInfo.child("Availability").child(type).child("Time").addValueEventListener(new ValueEventListener() {
-                    @Override
-                    public void onDataChange(@NonNull DataSnapshot dataSnapshot2) {
-                        textViewSetter.setText(date + ", Time: " + dataSnapshot2.getValue(String.class));
-                    }
-                    @Override
-                    public void onCancelled(@NonNull DatabaseError databaseError) { }
-                }); }
-            @Override
-            public void onCancelled(@NonNull DatabaseError databaseError) { }
-        });
-    }
-
-    public void setAvailability(final String type){
-        final Calendar calendar = Calendar.getInstance();
-        int year = calendar.get(Calendar.YEAR);
-        int month = calendar.get(Calendar.MONTH);
-        int day = calendar.get(Calendar.DAY_OF_MONTH);
-
-        DatePickerDialog datePickerDialog = new DatePickerDialog(this, new DatePickerDialog.OnDateSetListener() {
-            @Override
-            public void onDateSet(DatePicker datePicker, int iYear, int iMonth, int iDay) {
-                //Get selected year date month
-                userInfo.child("Availability").child(type).child("Date").setValue(iYear+":"+iMonth+":"+iDay);
-            }
-        }, year, month, day);
-        datePickerDialog.show();
-
-        int hour = calendar.get(Calendar.HOUR_OF_DAY);
-        int minute = calendar.get(Calendar.MINUTE);
-
-        TimePickerDialog timePickerDialog = new TimePickerDialog(this, new TimePickerDialog.OnTimeSetListener() {
-            @Override
-            public void onTimeSet(TimePicker timePicker, int iHour, int iMinute) {
-                //Get Time
-                userInfo.child("Availability").child(type).child("Time").setValue(iHour+":"+iMinute);
-            }
-        }, hour, minute, true);
-        timePickerDialog.show();
-    }
-
-    public void addAvailability (View view){
+    public void addAvailability (View view) {
         LayoutInflater factory = LayoutInflater.from(this);
         view = factory.inflate(R.layout.add_availability_dialog, null);
         final AlertDialog addDialog = new AlertDialog.Builder(this).create();
@@ -178,30 +125,67 @@ public class WelcomeActivity extends AppCompatActivity {
         addDialog.show();
 
         final Availability availability = new Availability();
+        //setContentView(R.layout.add_availability_dialog);
 
-        setStartTime = findViewById(R.id.btnSetStart);
-        setStartTime.setOnClickListener(new View.OnClickListener() {
+        //setStartTime = (Button) findViewById(R.id.btnSetStart);
+        addDialog.findViewById(R.id.btnSetStart).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                final Calendar calendar = Calendar.getInstance();
+                int hour = calendar.get(Calendar.HOUR_OF_DAY);
+                int minute = calendar.get(Calendar.MINUTE);
 
-                public void onClick(View v) {
-                    final Calendar calendar = Calendar.getInstance();
-                    int hour = calendar.get(Calendar.HOUR_OF_DAY);
-                    int minute = calendar.get(Calendar.MINUTE);
+                TimePickerDialog timePickerDialog = new TimePickerDialog(WelcomeActivity.this, new TimePickerDialog.OnTimeSetListener() {
+                    @Override
+                    public void onTimeSet(TimePicker timePicker, int iHour, int iMinute) {
+                        //Get Time
+                        //userInfo.child("Availability").child(type).child("Time").setValue(iHour+":"+iMinute);
+                        availability.setTimeStart(iHour + ":" + iMinute);
+                        Button button = addDialog.findViewById(R.id.btnSetStart);
+                        button.setText("Start: " + availability.getTimeStart());
+                    }
+                }, hour, minute, true);
+                timePickerDialog.show();
+            }
+        });
 
-                    TimePickerDialog timePickerDialog = new TimePickerDialog(WelcomeActivity.this, new TimePickerDialog.OnTimeSetListener() {
-                        @Override
-                        public void onTimeSet(TimePicker timePicker, int iHour, int iMinute) {
-                            //Get Time
-                            //userInfo.child("Availability").child(type).child("Time").setValue(iHour+":"+iMinute);
-                            availability.setTimeStart(Integer.toString(iHour)+":"+Integer.toString(iMinute));
-                        }
-                    }, hour, minute, true);
-                    timePickerDialog.show();
-                }
-            });
+        addDialog.findViewById(R.id.btnSetEnd).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                final Calendar calendar = Calendar.getInstance();
+                int hour = calendar.get(Calendar.HOUR_OF_DAY);
+                int minute = calendar.get(Calendar.MINUTE);
 
+                TimePickerDialog timePickerDialog = new TimePickerDialog(WelcomeActivity.this, new TimePickerDialog.OnTimeSetListener() {
+                    @Override
+                    public void onTimeSet(TimePicker timePicker, int iHour, int iMinute) {
+                        //Get Time
+                        //userInfo.child("Availability").child(type).child("Time").setValue(iHour+":"+iMinute);
+                        availability.setTimeEnd(iHour + ":" + iMinute);
+                        Button button = addDialog.findViewById(R.id.btnSetEnd);
+                        button.setText("End: " + availability.getTimeEnd());
+                    }
+                }, hour, minute, true);
+                timePickerDialog.show();
+            }
+        });
 
+        addDialog.findViewById(R.id.btnAdd).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Spinner spinner = addDialog.findViewById(R.id.spinner1);
+                availability.setDate(spinner.getSelectedItem().toString());
+                addAvailabilityFirebase(availability);
+                addDialog.dismiss();
 
+            }
+        });
 
+    }
 
+    public void addAvailabilityFirebase (Availability availability){
+        userInfo.child("Availability").child(Integer.toString(availability.getKey())).child("Date").setValue(availability.getDate());
+        userInfo.child("Availability").child(Integer.toString(availability.getKey())).child("Start Time").setValue(availability.getTimeStart());
+        userInfo.child("Availability").child(Integer.toString(availability.getKey())).child("End Time").setValue(availability.getTimeEnd());
     }
 }
