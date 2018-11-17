@@ -8,12 +8,15 @@
 
     <RelativeLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
+        android:layout_height="match_parent"
+        android:layout_alignParentStart="true"
+        android:layout_alignParentTop="true">
 
         <TextView
             android:id="@+id/txtWelcome"
             android:layout_width="match_parent"
             android:layout_height="40dp"
+            android:layout_alignParentStart="true"
             android:layout_marginTop="125dp"
             android:gravity="center_horizontal"
             android:textSize="24sp" />
@@ -22,6 +25,8 @@
             android:id="@+id/txtRole"
             android:layout_width="match_parent"
             android:layout_height="40dp"
+            android:layout_alignParentStart="true"
+            android:layout_marginStart="0dp"
             android:layout_marginTop="200dp"
             android:gravity="center_horizontal"
             android:textSize="18sp" />
@@ -48,57 +53,65 @@
 
         <Button
             android:id="@+id/btnServices"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
+            android:layout_width="150dp"
+            android:layout_height="45dp"
             android:layout_alignParentStart="true"
             android:layout_alignParentLeft="true"
             android:layout_alignParentTop="true"
-            android:layout_alignParentEnd="true"
-            android:layout_alignParentRight="true"
-            android:layout_marginStart="163dp"
-            android:layout_marginLeft="163dp"
-            android:layout_marginTop="446dp"
-            android:layout_marginEnd="160dp"
-            android:layout_marginRight="160dp"
+            android:layout_marginStart="27dp"
+            android:layout_marginLeft="27dp"
+            android:layout_marginTop="502dp"
             android:onClick="openServices"
             android:text="Services" />
 
         <Button
             android:id="@+id/btnAddAvailability"
+            android:layout_width="150dp"
+            android:layout_height="45dp"
+            android:layout_alignParentTop="true"
+            android:layout_alignParentEnd="true"
+            android:layout_alignParentRight="true"
+            android:layout_marginStart="49dp"
+            android:layout_marginLeft="49dp"
+            android:layout_marginTop="502dp"
+            android:layout_marginEnd="35dp"
+            android:layout_marginRight="35dp"
+            android:layout_toEndOf="@+id/btnServices"
+            android:layout_toRightOf="@+id/btnServices"
+            android:onClick="addAvailability"
+            android:text="Add Availability"
+            android:visibility="visible" />
+
+        <ListView
+            android:id="@+id/availabilitiesListView"
+
             android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
+            android:layout_height="194dp"
             android:layout_alignParentStart="true"
             android:layout_alignParentLeft="true"
             android:layout_alignParentEnd="true"
             android:layout_alignParentRight="true"
             android:layout_alignParentBottom="true"
-            android:layout_marginStart="134dp"
-            android:layout_marginLeft="134dp"
-            android:layout_marginEnd="131dp"
-            android:layout_marginRight="131dp"
-            android:layout_marginBottom="108dp"
-            android:onClick="addAvailability"
-            android:text="Add Availability"
-            android:visibility="visible" />
+            android:layout_marginStart="26dp"
+            android:layout_marginLeft="26dp"
+            android:layout_marginEnd="25dp"
+            android:layout_marginRight="25dp"
+            android:layout_marginBottom="173dp" />
 
         <TextView
-            android:id="@+id/txtStartTime"
-            android:layout_width="match_parent"
+            android:id="@+id/headerAvailabilities"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_alignParentBottom="true"
-            android:layout_centerHorizontal="true"
-            android:layout_marginBottom="259dp"
-            android:textSize="18sp"
-            android:visibility="visible" />
+            android:layout_alignParentStart="true"
+            android:layout_alignParentLeft="true"
+            android:layout_alignParentTop="true"
+            android:layout_marginStart="27dp"
+            android:layout_marginLeft="27dp"
+            android:layout_marginTop="260dp"
+            android:layout_marginBottom="1dp"
+            android:text="@string/availabilities"
+            android:textSize="22sp" />
 
-        <TextView
-            android:id="@+id/txtEndTime"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_alignParentBottom="true"
-            android:layout_marginBottom="229dp"
-            android:textSize="18sp"
-            android:visibility="visible" />
     </RelativeLayout>
 
 </RelativeLayout>

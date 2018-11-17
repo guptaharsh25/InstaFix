@@ -43,10 +43,6 @@ public class WelcomeActivity extends AppCompatActivity {
         setContentView(R.layout.activity_welcome);
 
         addAvailability = findViewById(R.id.btnAddAvailability);
-        //btnTimeEnd = findViewById(R.id.btnSetAvailabilityEnd);
-
-        startText = findViewById(R.id.txtStartTime);
-        endText = findViewById(R.id.txtEndTime);
 
         user = FirebaseAuth.getInstance().getCurrentUser();
         final TextView welcomeText = (TextView) findViewById(R.id.txtWelcome);

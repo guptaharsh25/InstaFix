@@ -43,6 +43,7 @@
     <string name="btn_Next">Next</string>
     <string name="Availability">Availability</string>
     <string name="availaibility">Set Availability</string>
+    <string name="availabilities">Availabilities:</string>
     <string-array name="days_of_week">
         <item>Sunday</item>
         <item>Monday</item>
