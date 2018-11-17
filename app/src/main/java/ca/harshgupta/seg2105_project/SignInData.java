@@ -1,4 +1,4 @@
-package ca.harshgupta.seg2105_project.user_data_packets;
+package ca.harshgupta.seg2105_project;
 
 
 public class SignInData {

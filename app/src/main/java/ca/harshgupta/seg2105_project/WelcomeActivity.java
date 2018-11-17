@@ -1,16 +1,16 @@
 package ca.harshgupta.seg2105_project;
 
+import android.app.AlertDialog;
 import android.app.DatePickerDialog;
 import android.app.TimePickerDialog;
 import android.content.Intent;
-import android.os.Build;
 import android.support.annotation.NonNull;
-import android.support.annotation.RequiresApi;
+import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.Button;
-import android.widget.CalendarView;
 import android.widget.DatePicker;
 import android.widget.TextView;
 import android.widget.TimePicker;
@@ -23,15 +23,15 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
-import org.w3c.dom.Text;
-
 import java.util.Calendar;
 
 public class WelcomeActivity extends AppCompatActivity {
     FirebaseUser user;
     DatabaseReference userInfo;
-    private Button btnTimeStart;
-    private Button btnTimeEnd;
+    private Button addAvailability;
+    private Button setStartTime;
+    private Button setEndTime;
+    private Button dialogAddAvailability;
 
     private TextView startText;
     private TextView endText;
@@ -40,8 +40,8 @@ public class WelcomeActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_welcome);
 
-        btnTimeStart = findViewById(R.id.btnSetAvailabilityStart);
-        btnTimeEnd = findViewById(R.id.btnSetAvailabilityEnd);
+        addAvailability = findViewById(R.id.btnAddAvailability);
+        //btnTimeEnd = findViewById(R.id.btnSetAvailabilityEnd);
 
         startText = findViewById(R.id.txtStartTime);
         endText = findViewById(R.id.txtEndTime);
@@ -71,12 +71,12 @@ public class WelcomeActivity extends AppCompatActivity {
                 String userType = dataSnapshot.getValue().toString();
                 roleText.setText("You are logged in as " + userType);
                 if (!userType.equals("ServiceProvider")){
-                    btnTimeStart.setVisibility(View.GONE);
-                    btnTimeEnd.setVisibility(View.GONE);
+                    //btnTimeStart.setVisibility(View.GONE);
+                    addAvailability.setVisibility(View.GONE);
                 }
                 else if (userType.equals("ServiceProvider")){
-                    setTextAvailability("Start", startText);
-                    setTextAvailability("End", endText);
+                    addAvailability.setVisibility(View.VISIBLE);
+
                 }
             }
 
@@ -168,5 +168,40 @@ public class WelcomeActivity extends AppCompatActivity {
             }
         }, hour, minute, true);
         timePickerDialog.show();
+    }
+
+    public void addAvailability (View view){
+        LayoutInflater factory = LayoutInflater.from(this);
+        view = factory.inflate(R.layout.add_availability_dialog, null);
+        final AlertDialog addDialog = new AlertDialog.Builder(this).create();
+        addDialog.setView(view);
+        addDialog.show();
+
+        final Availability availability = new Availability();
+
+        setStartTime = findViewById(R.id.btnSetStart);
+        setStartTime.setOnClickListener(new View.OnClickListener() {
+
+                public void onClick(View v) {
+                    final Calendar calendar = Calendar.getInstance();
+                    int hour = calendar.get(Calendar.HOUR_OF_DAY);
+                    int minute = calendar.get(Calendar.MINUTE);
+
+                    TimePickerDialog timePickerDialog = new TimePickerDialog(WelcomeActivity.this, new TimePickerDialog.OnTimeSetListener() {
+                        @Override
+                        public void onTimeSet(TimePicker timePicker, int iHour, int iMinute) {
+                            //Get Time
+                            //userInfo.child("Availability").child(type).child("Time").setValue(iHour+":"+iMinute);
+                            availability.setTimeStart(Integer.toString(iHour)+":"+Integer.toString(iMinute));
+                        }
+                    }, hour, minute, true);
+                    timePickerDialog.show();
+                }
+            });
+
+
+
+
+
     }
 }
