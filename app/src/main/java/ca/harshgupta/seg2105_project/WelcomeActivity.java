@@ -184,4 +184,8 @@ public class WelcomeActivity extends AppCompatActivity {
         userInfo.child("Availability").child(Integer.toString(availability.getKey())).child("Start Time").setValue(availability.getTimeStart());
         userInfo.child("Availability").child(Integer.toString(availability.getKey())).child("End Time").setValue(availability.getTimeEnd());
     }
+
+    public void loadAvailabilities(){
+        
+    }
 }

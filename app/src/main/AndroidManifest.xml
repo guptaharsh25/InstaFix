@@ -23,7 +23,7 @@
         <activity
             android:name=".ServiceProviderActivity"
             android:label="@string/title_activity_service_provider" />
-        <activity android:name=".ServiceProviderInfo"></activity>
+        <activity android:name=".ServiceProviderInfo" />
     </application>
 
 </manifest>
