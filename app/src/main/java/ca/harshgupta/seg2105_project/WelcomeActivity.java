@@ -3,6 +3,7 @@ package ca.harshgupta.seg2105_project;
 import android.app.AlertDialog;
 import android.app.DatePickerDialog;
 import android.app.TimePickerDialog;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Handler;
 import android.support.annotation.NonNull;
@@ -196,6 +197,36 @@ public class WelcomeActivity extends AppCompatActivity {
             }
         });
 
+        addDialog.findViewById(R.id.btnDeleteAvailability).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Spinner spinner = addDialog.findViewById(R.id.spinner1);
+                availability.setDate(spinner.getSelectedItem().toString());
+
+                final AlertDialog.Builder confirmation = new AlertDialog.Builder(WelcomeActivity.this);
+                confirmation.setMessage("Remove Availabilities for: " + availability.getDate()).setTitle("Remove Availability");
+                confirmation.setCancelable(true);
+
+                confirmation.setPositiveButton("Yes", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialogInterface, int i) {
+                        removeAvailabilityFirebase(availability);
+                        addDialog.dismiss();
+                    }});
+                confirmation.setNegativeButton("No", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialogInterface, int i) { }});
+                confirmation.show();
+            }
+        });
+
+    }
+
+    public void removeAvailabilityFirebase(Availability availability){
+        userInfo.child("Availability").child(Integer.toString(availability.getKey())).child("Date").setValue("N/A");
+        userInfo.child("Availability").child(Integer.toString(availability.getKey())).child("Start Time").setValue("N/A");
+        userInfo.child("Availability").child(Integer.toString(availability.getKey())).child("End Time").setValue("N/A");
+        setAvailabilityAdapter();
     }
 
     public void addAvailabilityFirebase (Availability availability){

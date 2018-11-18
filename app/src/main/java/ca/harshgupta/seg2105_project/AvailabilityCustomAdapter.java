@@ -87,7 +87,7 @@ public class AvailabilityCustomAdapter extends ArrayAdapter {
                     if (name != null)
                         endTimeText.setText(" -    " + name);
                     else
-                        endTimeText.setText("N/A");
+                        endTimeText.setText(" -    N/A");
                 } catch (NullPointerException e){
                     System.out.println(e.getStackTrace());
                 }
