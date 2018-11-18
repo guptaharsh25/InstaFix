@@ -8,6 +8,9 @@ public class Availability {
     private String timeStart;
     private String timeEnd;
     private int key;
+
+    private double startTimeDouble;
+    private double endTimeDouble;
     public Availability (){
 
     }
@@ -62,7 +65,10 @@ public class Availability {
         return key;
     }
 
+    public void setStartTimeDouble(double value){this.startTimeDouble = value; }
+    public void setEndTimeDouble(double value){this.endTimeDouble = value; }
 
-
+    public double getStartTimeDouble(){return startTimeDouble;}
+    public double getEndTimeDouble(){return endTimeDouble;}
 
 }

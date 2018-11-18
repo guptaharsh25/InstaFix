@@ -4,6 +4,7 @@ import android.app.AlertDialog;
 import android.app.DatePickerDialog;
 import android.app.TimePickerDialog;
 import android.content.Intent;
+import android.os.Handler;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
@@ -12,9 +13,11 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.Button;
 import android.widget.DatePicker;
+import android.widget.ListView;
 import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.TimePicker;
+import android.widget.Toast;
 
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
@@ -27,8 +30,9 @@ import com.google.firebase.database.ValueEventListener;
 import java.util.Calendar;
 
 public class WelcomeActivity extends AppCompatActivity {
-    FirebaseUser user;
-    DatabaseReference userInfo;
+    private FirebaseUser user;
+    private DatabaseReference userInfo;
+
     private Button addAvailability;
     private Button setStartTime;
     private Button setEndTime;
@@ -36,13 +40,21 @@ public class WelcomeActivity extends AppCompatActivity {
 
     private TextView startText;
     private TextView endText;
+    private TextView availabilityText;
 
+    private AvailabilityCustomAdapter availabilityAdapter;
+    private ListView listAvailabilities;
+
+    private final String[] keysAvailability = {"0","1","2","3","4","5","6"};
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        setContentView(R.layout.availability_list_layout);
+        listAvailabilities = (ListView) findViewById(R.id.listAvailabilites);
         setContentView(R.layout.activity_welcome);
 
         addAvailability = findViewById(R.id.btnAddAvailability);
+        availabilityText = findViewById(R.id.headerAvailabilities);
 
         user = FirebaseAuth.getInstance().getCurrentUser();
         final TextView welcomeText = (TextView) findViewById(R.id.txtWelcome);
@@ -71,10 +83,11 @@ public class WelcomeActivity extends AppCompatActivity {
                 if (!userType.equals("ServiceProvider")){
                     //btnTimeStart.setVisibility(View.GONE);
                     addAvailability.setVisibility(View.GONE);
+                    availabilityText.setVisibility(View.GONE);
+
                 }
                 else if (userType.equals("ServiceProvider")){
                     addAvailability.setVisibility(View.VISIBLE);
-
                 }
             }
 
@@ -83,6 +96,7 @@ public class WelcomeActivity extends AppCompatActivity {
                 System.out.println(databaseError);
             }
         });
+        setAvailabilityAdapter();
     }
 
     public void onSignOut (View view){
@@ -136,7 +150,8 @@ public class WelcomeActivity extends AppCompatActivity {
                     public void onTimeSet(TimePicker timePicker, int iHour, int iMinute) {
                         //Get Time
                         //userInfo.child("Availability").child(type).child("Time").setValue(iHour+":"+iMinute);
-                        availability.setTimeStart(iHour + ":" + iMinute);
+                        availability.setTimeStart(String.format("%02d",iHour) + ":" + String.format("%02d",iMinute));
+                        availability.setStartTimeDouble(iHour + (iMinute/100));
                         Button button = addDialog.findViewById(R.id.btnSetStart);
                         button.setText("Start: " + availability.getTimeStart());
                     }
@@ -157,7 +172,8 @@ public class WelcomeActivity extends AppCompatActivity {
                     public void onTimeSet(TimePicker timePicker, int iHour, int iMinute) {
                         //Get Time
                         //userInfo.child("Availability").child(type).child("Time").setValue(iHour+":"+iMinute);
-                        availability.setTimeEnd(iHour + ":" + iMinute);
+                        availability.setTimeEnd(String.format("%02d",iHour) + ":" + String.format("%02d",iMinute));
+                        availability.setEndTimeDouble(iHour + (iMinute/100));
                         Button button = addDialog.findViewById(R.id.btnSetEnd);
                         button.setText("End: " + availability.getTimeEnd());
                     }
@@ -169,11 +185,14 @@ public class WelcomeActivity extends AppCompatActivity {
         addDialog.findViewById(R.id.btnAdd).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Spinner spinner = addDialog.findViewById(R.id.spinner1);
-                availability.setDate(spinner.getSelectedItem().toString());
-                addAvailabilityFirebase(availability);
-                addDialog.dismiss();
-
+                if(availability.getEndTimeDouble() < availability.getStartTimeDouble()){
+                    Toast.makeText(WelcomeActivity.this, "The End Time is less than Start Time", Toast.LENGTH_LONG).show();
+                } else{
+                    Spinner spinner = addDialog.findViewById(R.id.spinner1);
+                    availability.setDate(spinner.getSelectedItem().toString());
+                    addAvailabilityFirebase(availability);
+                    addDialog.dismiss();
+                }
             }
         });
 
@@ -183,9 +202,18 @@ public class WelcomeActivity extends AppCompatActivity {
         userInfo.child("Availability").child(Integer.toString(availability.getKey())).child("Date").setValue(availability.getDate());
         userInfo.child("Availability").child(Integer.toString(availability.getKey())).child("Start Time").setValue(availability.getTimeStart());
         userInfo.child("Availability").child(Integer.toString(availability.getKey())).child("End Time").setValue(availability.getTimeEnd());
+        setAvailabilityAdapter();
     }
 
-    public void loadAvailabilities(){
-        
+    public void setAvailabilityAdapter(){
+        new Handler().postDelayed(new Runnable(){
+            @Override
+            public void run() {
+                availabilityAdapter = new AvailabilityCustomAdapter(WelcomeActivity.this, keysAvailability);
+                listAvailabilities = (ListView) findViewById(R.id.listAvailabilites);
+                listAvailabilities.setAdapter(availabilityAdapter);
+                availabilityAdapter.notifyDataSetChanged();
+            }
+        },500); //1000ms = 1sec
     }
 }
