@@ -12,6 +12,13 @@ class Client{
 class ServiceProvider{
   isA User;
   *--* Service;
+  1--* Availability;
+
+  address;
+  phoneNumber;
+  companyName;
+  description;
+  boolean licensed;
 }
 
 class Admin{
@@ -23,4 +30,10 @@ class Admin{
 class Service{
   String name;
   Double rate;
+}
+
+class Availability{
+  String date;
+  String startTime;
+  String endTime;
 }
