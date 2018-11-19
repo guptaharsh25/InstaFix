@@ -15,6 +15,20 @@ public class ExampleUnitTest {
         assertEquals(4, 2 + 2);
     }
 
+    // Deliverable 3 Test Cases below
+
+    public void testGetDate(){
+        Availability a = new Availability("November 20, 2018", "9:00AM", "5:00PM");
+        assertEquals("Check the date of the availability after constructor", "November 20, 2018", a.getDate());
+    }
+
+    public void testGetStartTime(){
+        Availability a = new Availability("November 20, 2018", "9:00AM", "5:00PM");
+        assertEquals("Check the start time of the availability after constructor", "9:00AM", a.getTimeStart());
+    }
+
+    // Deliverable 2 Test Cases below
+    /*
     public void testGetID(){
         Service s = new Service("efkwefwe", "service", 40);
         assertEquals("Check the id of the service after constructor", "efkwefwe", s.getId());
@@ -43,4 +57,5 @@ public class ExampleUnitTest {
         s.setName("newName");
         assertEquals("Check the name of the service after setting", "newName", s.getName());
     }
+    */
 }
