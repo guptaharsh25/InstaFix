@@ -85,6 +85,7 @@ public class WelcomeActivity extends AppCompatActivity {
                     //btnTimeStart.setVisibility(View.GONE);
                     addAvailability.setVisibility(View.GONE);
                     availabilityText.setVisibility(View.GONE);
+                    listAvailabilities.setVisibility(View.GONE);
 
                 }
                 else if (userType.equals("ServiceProvider")){
