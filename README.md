@@ -1,10 +1,8 @@
 # InstaFix
 
-#Starts Here
-Build Status
 [![Build 
-Status](https://circleci.com/gh/SEG2105F18/ProductCatalog.png?branch=master)](https://circleci.com/gh/SEG2105F18/ProductCatalog)
-#Ends Here
+Status](https://circleci.com/gh/SEG2105F18/ProductCatalog.png?branch=master)](https://circleci.com/gh/guptaharsh25/InstaFix/tree/master)
+
 
 <b>Group Members:</b></br>
  - Harsh Gupta</br>
