@@ -1,5 +1,11 @@
 # InstaFix
 
+#Starts Here
+Build Status
+[![Build 
+Status](https://circleci.com/gh/SEG2105F18/ProductCatalog.png?branch=master)](https://circleci.com/gh/SEG2105F18/ProductCatalog)
+#Ends Here
+
 <b>Group Members:</b></br>
  - Harsh Gupta</br>
  - Bhalachandra Malghan</br>
