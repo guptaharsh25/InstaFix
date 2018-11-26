@@ -8,7 +8,18 @@ class User{
 class Client{
   isA User;
 
-  *--
+
+}
+
+class Appointment{
+  boolean isComplete;
+  dayOfWeek;
+  int startHour;
+  int endHour;
+
+  *--1 Client;
+  *--1 ServiceProvider;
+  *--1 Service;
 }
 
 class ServiceProvider{
