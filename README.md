@@ -1,8 +1,6 @@
 # InstaFix
 
 Build Status: 
-[![Build Status](https://circleci.com/gh/guptaharsh25/InstaFix.svg?style=svg)](https://circleci.com/gh/guptaharsh25/InstaFix)
-
 [![CircleCI](https://circleci.com/gh/guptaharsh25/InstaFix.svg?style=svg&circle-token=7e04bb522f54e268680cc73c7650ccb042a95773)](https://circleci.com/gh/guptaharsh25/InstaFix)
 
 <b>Group Members:</b></br>
