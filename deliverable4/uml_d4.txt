@@ -8,6 +8,7 @@ class User{
 class Client{
   isA User;
 
+  *--
 }
 
 class ServiceProvider{
