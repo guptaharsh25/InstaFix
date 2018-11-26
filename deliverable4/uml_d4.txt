@@ -1,0 +1,40 @@
+class User{
+  firstName;
+  lastName;
+  email;
+  password;
+}
+
+class Client{
+  isA User;
+
+}
+
+class ServiceProvider{
+  isA User;
+  *--* Service;
+  1--* Availability;
+
+  address;
+  phoneNumber;
+  companyName;
+  description;
+  boolean licensed;
+}
+
+class Admin{
+  isA User;
+
+  1--* Service;
+}
+
+class Service{
+  String name;
+  Double rate;
+}
+
+class Availability{
+  String date;
+  String startTime;
+  String endTime;
+}
