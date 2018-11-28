@@ -3,7 +3,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context="ca.harshgupta.seg2105_project.ClientHomeFragment1">
+    tools:context="ca.harshgupta.seg2105_project.ServiceProviderHomeFragment1">
 
     <TextView
         android:id="@+id/section_label"
@@ -15,6 +15,6 @@
         android:layout_marginStart="14dp"
         android:layout_marginLeft="14dp"
         android:layout_marginTop="114dp"
-        android:text="Fragment Client 1 " />
+        android:text="Fragment SP 1 " />
 
 </FrameLayout>

@@ -27,6 +27,9 @@
         <activity
             android:name=".ClientHome"
             android:label="@string/title_activity_client_home"></activity>
+        <activity
+            android:name=".ServiceProviderHome"
+            android:label="@string/Service_Provider_Home"></activity>
     </application>
 
 </manifest>

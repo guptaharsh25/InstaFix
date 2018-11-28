@@ -15,7 +15,11 @@ import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
-
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
 
 
 public class SignIn extends AppCompatActivity {
@@ -45,8 +49,25 @@ public class SignIn extends AppCompatActivity {
             @Override
             public void onAuthStateChanged(@NonNull FirebaseAuth firebaseAuth) {
                 if (firebaseAuth.getCurrentUser()!= null){
-                    Intent intentToSignIn = new Intent(getApplicationContext(), WelcomeActivity.class);
-                    startActivityForResult(intentToSignIn,0);
+                    DatabaseReference userInfo = FirebaseDatabase.getInstance().getReference().child("Accounts")
+                            .child(firebaseAuth.getCurrentUser().getUid());
+                    userInfo.child("UserType").addValueEventListener(new ValueEventListener() {
+                         @Override
+                         public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                             if(dataSnapshot.getValue().toString().equals("Client")){
+                                 Intent intentClientHome = new Intent(getApplicationContext(), ClientHome.class);
+                                 startActivityForResult(intentClientHome,0);
+                             } else if (dataSnapshot.getValue().toString().equals("ServiceProvider")){
+                                 Intent intentSPHome = new Intent(getApplicationContext(), ServiceProviderHome.class);
+                                 startActivityForResult(intentSPHome,0);
+                             } else{
+                                 Intent intentToSignIn = new Intent(getApplicationContext(), WelcomeActivity.class);
+                                 startActivityForResult(intentToSignIn,0);
+                             }
+                         }
+                         @Override
+                         public void onCancelled(@NonNull DatabaseError databaseError) { }
+                     });
                 }
             }
         };
@@ -97,8 +118,25 @@ public class SignIn extends AppCompatActivity {
                     setErrorMsg(2);
                 }
                 else {
-                    Intent intentToSignIn = new Intent(getApplicationContext(), WelcomeActivity.class);
-                    startActivityForResult(intentToSignIn,0);
+                    DatabaseReference userInfo = FirebaseDatabase.getInstance().getReference().child("Accounts")
+                            .child(FirebaseAuth.getInstance().getCurrentUser().getUid());
+                    userInfo.child("UserType").addValueEventListener(new ValueEventListener() {
+                        @Override
+                        public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                            if(dataSnapshot.getValue().toString().equals("Client")){
+                                Intent intentClientHome = new Intent(getApplicationContext(), ClientHome.class);
+                                startActivityForResult(intentClientHome,0);
+                            } else if (dataSnapshot.getValue().toString().equals("ServiceProvider")){
+                                Intent intentSPHome = new Intent(getApplicationContext(), ServiceProviderHome.class);
+                                startActivityForResult(intentSPHome,0);
+                            } else{
+                                Intent intentToSignIn = new Intent(getApplicationContext(), WelcomeActivity.class);
+                                startActivityForResult(intentToSignIn,0);
+                            }
+                        }
+                        @Override
+                        public void onCancelled(@NonNull DatabaseError databaseError) { }
+                    });
                 }
             }
         });

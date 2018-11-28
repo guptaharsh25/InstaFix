@@ -1,39 +1,27 @@
 package ca.harshgupta.seg2105_project;
 
-import android.app.Activity;
-
-
-import android.content.Context;
+import android.app.FragmentManager;
 import android.content.Intent;
-import android.os.Build;
 import android.os.Bundle;
 import android.support.design.widget.NavigationView;
-import android.app.Fragment;
-import android.app.FragmentManager;
 import android.support.v4.view.GravityCompat;
+import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
-import android.view.Gravity;
-import android.view.LayoutInflater;
-import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
-import android.view.ViewGroup;
-import android.support.v4.widget.DrawerLayout;
-import android.widget.ArrayAdapter;
-import android.widget.TextView;
 import android.widget.Toast;
 
 import com.google.firebase.auth.FirebaseAuth;
 
-public class ClientHome extends AppCompatActivity{
+public class ServiceProviderHome extends AppCompatActivity{
     private DrawerLayout mDrawerLayout;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_client_home);
+        setContentView(R.layout.activity_service_provider_home);
 
         final Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
@@ -42,13 +30,13 @@ public class ClientHome extends AppCompatActivity{
         actionBar.setDisplayHomeAsUpEnabled(true);
         actionBar.setHomeAsUpIndicator(R.drawable.ic_menu);
 
-        mDrawerLayout = findViewById(R.id.drawer_layout_client);
+        mDrawerLayout = findViewById(R.id.drawer_layout_SP);
 
-        NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view_client);
+        NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view_sp);
 
         FragmentManager fragmentManager = getFragmentManager();
-        fragmentManager.beginTransaction().replace(R.id.containerClient,
-                new ClientHomeFragment1()).commit();
+        fragmentManager.beginTransaction().replace(R.id.containerServiceProvider,
+                new ServiceProviderHomeFragment1()).commit();
         toolbar.setTitle("Home");
 
         navigationView.setNavigationItemSelectedListener(
@@ -60,28 +48,28 @@ public class ClientHome extends AppCompatActivity{
                 FragmentManager fragmentManager = getFragmentManager();
 
                 switch(id){
-                    case R.id.nav_fragment_client_home:
-                        fragmentManager.beginTransaction().replace(R.id.containerClient,
-                                new ClientHomeFragment1()).commit();
+                    case R.id.nav_fragment_service_provider_home:
+                        fragmentManager.beginTransaction().replace(R.id.containerServiceProvider,
+                                new ServiceProviderHomeFragment1()).commit();
                         toolbar.setTitle("Home");
-                        Toast.makeText(ClientHome.this,"Loading First Fragment",Toast.LENGTH_LONG).show();
+                        Toast.makeText(ServiceProviderHome.this,"Loading First Fragment",Toast.LENGTH_LONG).show();
                         break;
 
-                    case R.id.nav_fragment_client_home_2:
-                        fragmentManager.beginTransaction().replace(R.id.containerClient,
-                                new ClientHomeFragment2()).commit();
+                    case R.id.nav_fragment_service_provider_home_2:
+                        fragmentManager.beginTransaction().replace(R.id.containerServiceProvider,
+                                new ServiceProviderHomeFragment2()).commit();
                         toolbar.setTitle("Find Services");
-                        Toast.makeText(ClientHome.this,"Loading Second Fragment",Toast.LENGTH_LONG).show();
+                        Toast.makeText(ServiceProviderHome.this,"Loading Second Fragment",Toast.LENGTH_LONG).show();
                          break;
 
-                    case R.id.nav_fragment_client_home_3:
-                        fragmentManager.beginTransaction().replace(R.id.containerClient,
-                                new ClientHomeFragment3()).commit();
+                    case R.id.nav_fragment_service_provider_home_3:
+                        fragmentManager.beginTransaction().replace(R.id.containerServiceProvider,
+                                new ServiceProviderHomeFragment3()).commit();
                         toolbar.setTitle("Fragment 3");
-                        Toast.makeText(ClientHome.this,"Loading Third Fragment",Toast.LENGTH_LONG).show();
+                        Toast.makeText(ServiceProviderHome.this,"Loading Third Fragment",Toast.LENGTH_LONG).show();
                         break;
-                    case R.id.nav_fragment_client_signout:
-                        Toast.makeText(ClientHome.this,"Signing Out",Toast.LENGTH_LONG).show();
+                    case R.id.nav_fragment_service_provider_signout:
+                        Toast.makeText(ServiceProviderHome.this,"Signing Out",Toast.LENGTH_LONG).show();
                         FirebaseAuth.getInstance().signOut();
                         Intent intentToSignOut = new Intent(getApplicationContext(), MainActivity.class);
                         startActivityForResult(intentToSignOut,0);

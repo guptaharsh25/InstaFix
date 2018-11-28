@@ -83,8 +83,8 @@ public class ServiceProviderInfo extends AppCompatActivity {
                             mServiceProviderRef.child("CompanyInfo").child("Description").setValue(description.getText().toString());
                             mServiceProviderRef.child("CompanyInfo").child("Licence").setValue(license.isChecked());
 
-                            Intent intentToSignIn = new Intent(getApplicationContext(), WelcomeActivity.class);
-                            startActivityForResult(intentToSignIn, 0);
+                            Intent intentToSP = new Intent(getApplicationContext(), ServiceProviderHome.class);
+                            startActivityForResult(intentToSP, 0);
                         } catch (Exception e){
                             e.printStackTrace();
                         } }

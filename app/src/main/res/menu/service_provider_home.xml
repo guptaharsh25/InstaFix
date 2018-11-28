@@ -1,21 +1,21 @@
 <menu xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    tools:context="ca.harshgupta.seg2105_project.ClientHome">
+    tools:context="ca.harshgupta.seg2105_project.ServiceProviderHome">
     <item
-        android:id="@+id/nav_fragment_client_home"
+        android:id="@+id/nav_fragment_service_provider_home"
         android:title="Home"
         app:showAsAction="withText|ifRoom" />
     <item
-        android:id="@+id/nav_fragment_client_home_2"
-        android:title="Find Services"
+        android:id="@+id/nav_fragment_service_provider_home_2"
+        android:title="Availability"
         app:showAsAction="withText|ifRoom" />
     <item
-        android:id="@+id/nav_fragment_client_home_3"
-        android:title="Fragment 3"
+        android:id="@+id/nav_fragment_service_provider_home_3"
+        android:title="Services"
         app:showAsAction="withText|ifRoom" />
     <item
-        android:id="@+id/nav_fragment_client_signout"
+        android:id="@+id/nav_fragment_service_provider_signout"
         android:title="Sign Out"
         app:showAsAction="withText|ifRoom" />
 </menu>
