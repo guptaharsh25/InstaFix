@@ -182,8 +182,8 @@ public class SignUp extends AppCompatActivity {
                         startActivityForResult(intentToSPinfo, 0);
                     } else if(radioValue.equals("Client")){
                         mNewUsernameRef.child("UserType").setValue("Client");
-                        Intent intentToSignIn = new Intent(getApplicationContext(), WelcomeActivity.class);
-                        startActivityForResult(intentToSignIn,0);
+                        Intent intentClassHome = new Intent(getApplicationContext(), ClientHome.class);
+                        startActivityForResult(intentClassHome,0);
                     }
                 }
             }

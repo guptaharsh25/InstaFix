@@ -20,7 +20,7 @@
         android:layout_height="match_parent"
         android:layout_gravity="start"
         android:fitsSystemWindows="true"
-        app:menu="@menu/drawer_view"/>
+        app:menu="@menu/client_home"/>
 
     <!-- The drawer is given a fixed width in dp and extends the full height of
          the container. -->
@@ -29,7 +29,7 @@
         android:name="ca.harshgupta.seg2105_project.NavigationDrawerFragment"
         android:layout_width="@dimen/navigation_drawer_width"
         android:layout_height="match_parent"
-        android:layout_gravity="start"
+        android:layout_gravity="center_horizontal|start"
         tools:layout="@layout/drawer_client_home" />
 
 </android.support.v4.widget.DrawerLayout>

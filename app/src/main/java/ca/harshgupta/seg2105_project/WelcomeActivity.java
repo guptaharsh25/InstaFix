@@ -81,13 +81,20 @@ public class WelcomeActivity extends AppCompatActivity {
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
                 String userType = dataSnapshot.getValue().toString();
                 roleText.setText("You are logged in as " + userType);
-                if (!userType.equals("ServiceProvider")){
+                if(userType.equals("Client")){
+                    Intent intentClientHome = new Intent(getApplicationContext(), ClientHome.class);
+                    startActivityForResult(intentClientHome,0);
+                } else if (!userType.equals("ServiceProvider")){
                     //btnTimeStart.setVisibility(View.GONE);
                     addAvailability.setVisibility(View.GONE);
                     availabilityText.setVisibility(View.GONE);
                     listAvailabilities.setVisibility(View.GONE);
 
+                } else if(userType.equals("Client")){
+                    Intent intentClientHome = new Intent(getApplicationContext(), ClientHome.class);
+                    startActivityForResult(intentClientHome,0);
                 }
+
                 else if (userType.equals("ServiceProvider")){
                     addAvailability.setVisibility(View.VISIBLE);
                 }
