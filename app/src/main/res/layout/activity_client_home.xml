@@ -9,27 +9,44 @@
 
     <!-- As the main content view, the view below consumes the entire
          space available using match_parent in both dimensions. -->
-    <FrameLayout
-        android:id="@+id/container"
+    <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent" />
+        android:layout_height="match_parent"
+        android:orientation="horizontal">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_weight="0"
+            android:orientation="vertical">
+
+            <android.support.v7.widget.Toolbar
+                android:id="@+id/toolbar"
+                android:layout_width="match_parent"
+                android:layout_height="56dp"
+                android:layout_weight="0"
+                android:background="@color/colorPrimary"
+                android:theme="@style/ThemeOverlay.AppCompat.ActionBar" />
+
+            <FrameLayout
+                android:id="@+id/containerClient"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_weight="1"
+                android:visibility="visible" />
+        </LinearLayout>
+
+    </LinearLayout>
 
     <android.support.design.widget.NavigationView
-        android:id="@+id/nav_view"
+        android:id="@+id/nav_view_client"
         android:layout_width="wrap_content"
         android:layout_height="match_parent"
         android:layout_gravity="start"
         android:fitsSystemWindows="true"
-        app:menu="@menu/client_home"/>
+        app:menu="@menu/client_home" />
 
     <!-- The drawer is given a fixed width in dp and extends the full height of
          the container. -->
-    <fragment
-        android:id="@+id/navigation_drawer"
-        android:name="ca.harshgupta.seg2105_project.NavigationDrawerFragment"
-        android:layout_width="@dimen/navigation_drawer_width"
-        android:layout_height="match_parent"
-        android:layout_gravity="center_horizontal|start"
-        tools:layout="@layout/drawer_client_home" />
 
 </android.support.v4.widget.DrawerLayout>

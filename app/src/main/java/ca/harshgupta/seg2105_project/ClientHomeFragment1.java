@@ -10,7 +10,6 @@ import android.view.ViewGroup;
 public class ClientHomeFragment1 extends Fragment {
 
     View myView;
-
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, Bundle savedInstanceState) {
