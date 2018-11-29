@@ -84,6 +84,14 @@ public class WelcomeActivity extends AppCompatActivity {
                     availabilityText.setVisibility(View.GONE);
                     listAvailabilities.setVisibility(View.GONE);
 
+                    userInfo.child("Availability").child(Integer.toString(0)).child("Date").setValue("Sunday");
+                    userInfo.child("Availability").child(Integer.toString(1)).child("Date").setValue("Monday");
+                    userInfo.child("Availability").child(Integer.toString(2)).child("Date").setValue("Tuesday");
+                    userInfo.child("Availability").child(Integer.toString(3)).child("Date").setValue("Wednesday");
+                    userInfo.child("Availability").child(Integer.toString(4)).child("Date").setValue("Thursday");
+                    userInfo.child("Availability").child(Integer.toString(5)).child("Date").setValue("Friday");
+                    userInfo.child("Availability").child(Integer.toString(6)).child("Date").setValue("Saturday");
+
                 } else if(userType.equals("Client")){
                     Intent intentClientHome = new Intent(getApplicationContext(), ClientHome.class);
                     startActivityForResult(intentClientHome,0);
@@ -102,17 +110,7 @@ public class WelcomeActivity extends AppCompatActivity {
         setAvailabilityAdapter();
     }
 
-    public void onStart (){
-        super.onStart();
-        userInfo.child("Availability").child(Integer.toString(0)).child("Date").setValue("Sunday");
-        userInfo.child("Availability").child(Integer.toString(1)).child("Date").setValue("Monday");
-        userInfo.child("Availability").child(Integer.toString(2)).child("Date").setValue("Tuesday");
-        userInfo.child("Availability").child(Integer.toString(3)).child("Date").setValue("Wednesday");
-        userInfo.child("Availability").child(Integer.toString(4)).child("Date").setValue("Thursday");
-        userInfo.child("Availability").child(Integer.toString(5)).child("Date").setValue("Friday");
-        userInfo.child("Availability").child(Integer.toString(6)).child("Date").setValue("Saturday");
 
-    }
     public void onSignOut (View view){
         FirebaseAuth.getInstance().signOut();
         Intent intentToSignOut = new Intent(getApplicationContext(), MainActivity.class);
@@ -149,9 +147,7 @@ public class WelcomeActivity extends AppCompatActivity {
         addDialog.show();
 
         final Availability availability = new Availability();
-        //setContentView(R.layout.add_availability_dialog);
 
-        //setStartTime = (Button) findViewById(R.id.btnSetStart);
         addDialog.findViewById(R.id.btnSetStart).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
