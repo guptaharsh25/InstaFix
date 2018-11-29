@@ -24,6 +24,7 @@ public class AccountCustomAdapter extends ArrayAdapter {
     public TextView serviceRateText;
     public TextView serviceNameText;
     public TextView provider;
+    public TextView rating;
 
     public AccountCustomAdapter(Context context, String[] serviceList, String[] accountList){
         super(context, R.layout.account_layout, serviceList);
@@ -38,19 +39,18 @@ public class AccountCustomAdapter extends ArrayAdapter {
 
         mAccounts = FirebaseDatabase.getInstance().getReference().child("Accounts");
         mServices = FirebaseDatabase.getInstance().getReference().child("Services");
-        final String service = mServices.child(myKeys[position]).getKey().toString();
 
         mAccounts.child(accountList[position]).child("FirstName").addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
                 provider = (TextView) rowView.findViewById(R.id.name);
+                String name;
                 try{
-                    String name = dataSnapshot.getValue().toString();
-                    provider.setText(name);
+                    name = dataSnapshot.getValue().toString();
                 } catch (NullPointerException e){
-                    String name = "";
-                    provider.setText(name);
+                    name = "";
                 }
+                provider.setText(name);
             }
 
             @Override
@@ -63,13 +63,32 @@ public class AccountCustomAdapter extends ArrayAdapter {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
                 provider = (TextView) rowView.findViewById(R.id.name);
+                String name;
                 try{
-                    String name = dataSnapshot.getValue().toString();
-                    provider.setText(provider.getText() + " " + name);
+                    name = dataSnapshot.getValue().toString();
                 } catch (NullPointerException e){
-                    String name = "";
-                    provider.setText(provider.getText() + " " + name);
+                    name = "";
                 }
+                provider.setText(provider.getText() + " " + name);
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError databaseError) {
+
+            }
+        });
+
+        mAccounts.child(accountList[position]).child("AverageRating").addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                rating = (TextView) rowView.findViewById(R.id.rating);
+                String rate;
+                try{
+                    rate = dataSnapshot.getValue(Double.class).toString();
+                } catch (NullPointerException e){
+                    rate = "-";
+                }
+                rating.setText(rate);
             }
 
             @Override
@@ -82,13 +101,13 @@ public class AccountCustomAdapter extends ArrayAdapter {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
                 serviceNameText = (TextView) rowView.findViewById(R.id.serviceName);
+                String name;
                 try{
-                    String name = dataSnapshot.getValue(String.class);
-                    serviceNameText.setText(name);
+                    name = dataSnapshot.getValue(String.class);
                 } catch (NullPointerException e){
-                    String name = "";
-                    serviceNameText.setText(name);
+                    name = "";
                 }
+                serviceNameText.setText(name);
             }
 
             @Override
@@ -99,13 +118,13 @@ public class AccountCustomAdapter extends ArrayAdapter {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
                 serviceRateText = (TextView) rowView.findViewById(R.id.serviceRate);
+                String value;
                 try {
-                    String value = dataSnapshot.getValue(Double.class).toString();
-                    serviceRateText.setText(value);
+                    value = dataSnapshot.getValue(Double.class).toString();
                 } catch (NullPointerException e){
-                    String value = "";
-                    serviceRateText.setText(value);
+                    value = "";
                 }
+                serviceRateText.setText(value);
             }
             @Override
             public void onCancelled(@NonNull DatabaseError databaseError) { }
