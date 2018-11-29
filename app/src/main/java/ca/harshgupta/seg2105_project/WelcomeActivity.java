@@ -35,12 +35,6 @@ public class WelcomeActivity extends AppCompatActivity {
     private DatabaseReference userInfo;
 
     private Button addAvailability;
-    private Button setStartTime;
-    private Button setEndTime;
-    private Button dialogAddAvailability;
-
-    private TextView startText;
-    private TextView endText;
     private TextView availabilityText;
 
     private AvailabilityCustomAdapter availabilityAdapter;

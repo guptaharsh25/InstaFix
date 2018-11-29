@@ -54,15 +54,19 @@ public class SignIn extends AppCompatActivity {
                     userInfo.child("UserType").addValueEventListener(new ValueEventListener() {
                          @Override
                          public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                             if(dataSnapshot.getValue().toString().equals("Client")){
-                                 Intent intentClientHome = new Intent(getApplicationContext(), ClientHome.class);
-                                 startActivityForResult(intentClientHome,0);
-                             } else if (dataSnapshot.getValue().toString().equals("ServiceProvider")){
-                                 Intent intentSPHome = new Intent(getApplicationContext(), ServiceProviderHome.class);
-                                 startActivityForResult(intentSPHome,0);
-                             } else{
-                                 Intent intentToSignIn = new Intent(getApplicationContext(), WelcomeActivity.class);
-                                 startActivityForResult(intentToSignIn,0);
+                             try {
+                                 if (dataSnapshot.getValue().toString().equals("Client")) {
+                                     Intent intentClientHome = new Intent(getApplicationContext(), ClientHome.class);
+                                     startActivityForResult(intentClientHome, 0);
+                                 } else if (dataSnapshot.getValue().toString().equals("ServiceProvider")) {
+                                     Intent intentSPHome = new Intent(getApplicationContext(), ServiceProviderHome.class);
+                                     startActivityForResult(intentSPHome, 0);
+                                 } else {
+                                     Intent intentToSignIn = new Intent(getApplicationContext(), WelcomeActivity.class);
+                                     startActivityForResult(intentToSignIn, 0);
+                                 }
+                             }catch (NullPointerException e){
+
                              }
                          }
                          @Override
