@@ -1,12 +1,17 @@
 package ca.harshgupta.seg2105_project;
 
+import android.app.Dialog;
 import android.app.SearchManager;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Handler;
 import android.support.annotation.NonNull;
+import android.support.annotation.Nullable;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
+import android.widget.AdapterView;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ListView;
@@ -15,6 +20,7 @@ import android.widget.Toast;
 
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.database.ChildEventListener;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
@@ -32,23 +38,27 @@ public class Search extends AppCompatActivity {
     private DatabaseReference mUserRef;
 
     private ArrayList<String> keys;
+    private ArrayList<String> userKeys;
     private String[] allKeys;
+    private String[] allUsers;
     Button search;
 
     private FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
 
-    private ServiceCustomAdapter serviceAdapter;
+    private AccountCustomAdapter accountAdapter;
+    private ServiceCustomAdapter serviceCustomAdapter;
 
     private Button addServices;
-    private ListView serviceSPList;
+    private ListView results;
+    private ListView listResults;
     private TextView listTypeText;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_search);
-        makeToast("Search.class");
-        serviceSPList = (ListView) findViewById(R.id.results);
+        results = (ListView) findViewById(R.id.results);
+        listResults = (ListView) findViewById(R.id.listResults);
 
         mAuth = FirebaseAuth.getInstance();
         mRootRef = FirebaseDatabase.getInstance().getReference();
@@ -58,6 +68,7 @@ public class Search extends AppCompatActivity {
 
         search = (Button) findViewById(R.id.btnSearch);
         keys = new ArrayList<>();//List with positive search results
+        userKeys = new ArrayList<>();
 
 /*
         Intent intent = getIntent();
@@ -69,7 +80,7 @@ public class Search extends AppCompatActivity {
 
     //Get all keys under Users section in database
     private void instantiateAllKeys(){
-        mUserRef.addValueEventListener(new ValueEventListener() {
+        mServicesRef.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
                 int i = 0;
@@ -78,7 +89,20 @@ public class Search extends AppCompatActivity {
                     allKeys[i] = postSnapShot.getKey();
                     i++;
                 }
-                //updateServicesList();
+            }
+            @Override
+            public void onCancelled(@NonNull DatabaseError databaseError) {}
+        });
+
+        mUserRef.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                int i = 0;
+                allUsers = new String[(int) dataSnapshot.getChildrenCount()];
+                for (DataSnapshot postSnapShot : dataSnapshot.getChildren()) {
+                    allUsers[i] = postSnapShot.getKey();
+                    i++;
+                }
             }
             @Override
             public void onCancelled(@NonNull DatabaseError databaseError) {}
@@ -90,23 +114,25 @@ public class Search extends AppCompatActivity {
     }
 
     //Display search results
-    private void updateList(){
+    private void updateResultsList(){
         new Handler().postDelayed(new Runnable() {
             @Override
             public void run() {
-                makeToast(keys.toString());
                 String[] keysArray = new String[keys.size()];
-                serviceAdapter = new ServiceCustomAdapter(Search.this, keys.toArray(keysArray));
-                serviceSPList = (ListView) findViewById(R.id.results);
-                serviceSPList.setAdapter(serviceAdapter);
-                serviceAdapter.notifyDataSetChanged();
+                String[] userArray = new String[userKeys.size()];
+                accountAdapter = new AccountCustomAdapter(Search.this, keys.toArray(keysArray), userKeys.toArray(userArray));
+                results = (ListView) findViewById(R.id.results);
+                results.setAdapter(accountAdapter);
+                accountAdapter.notifyDataSetChanged();
             }
-        }, 1000);
-
+        }, 500);
     }
 
     public void search(View view) {
-        final String name = ((EditText) findViewById(R.id.txtSearch)).getText().toString().toLowerCase();
+        keys.clear();//Clear any previous history so results are not repeated
+        userKeys.clear();
+        updateResultsList();
+        final String serviceName = ((EditText) findViewById(R.id.txtSearch)).getText().toString().toLowerCase();
         final Double rate;
         Double tempRate = null;
         try {
@@ -118,50 +144,48 @@ public class Search extends AppCompatActivity {
         }
 
         //Ask user for input if no inputs entered or entered incorrectly
-        if(rate==0.0 && name.equals("")){
+        if(rate==0.0 && serviceName.equals("")){
             makeToast("Please Enter At Least 1 Valid Search Query");
         }
 
         if(allKeys!=null){
-
-            //search.setOnClickListener();
+            final int pos = 0;
             for(final String key: allKeys){
-                //Search queries if user is service provider
-                mUserRef.child(key).child("UserType").addValueEventListener(new ValueEventListener() {
+                //Search all services
+                mServicesRef.child(key).child("name").addValueEventListener(new ValueEventListener() {
                     @Override
                     public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                        if(0==0){//dataSnapshot.getValue().toString().equals("ServiceProvider")){
-                            //Search first name
-                            mUserRef.child(key).child("FirstName").addValueEventListener(new ValueEventListener() {
+                        String query = dataSnapshot.getValue().toString(); //Value at key
+                        //If name is searched and is a substring of the datasnapshot, add it to list of keys
+                        if(query.toLowerCase().contains(serviceName)||serviceName.contains(query)){
+                            makeToast("MATCH FOUND");
+                            mUserRef.addValueEventListener(new ValueEventListener() {
                                 @Override
                                 public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                                    String query = dataSnapshot.getValue().toString(); //Value at key
-                                    //If name is searched and is a substring of the datasnapshot, add it to list of keys
-                                    if(query.toLowerCase().contains(name)||name.contains(query)){
-                                        keys.add(key);
-                                        makeToast("MATCH FOUND");
+                                    for(DataSnapshot postSnapshot : dataSnapshot.getChildren()){
+                                        final String post = postSnapshot.getKey();
+                                        mUserRef.child(post).child("ProvidedServices").addValueEventListener(new ValueEventListener() {
+                                            @Override
+                                            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                                                for(DataSnapshot postSnapshot2 : dataSnapshot.getChildren()){
+                                                    String post2 = postSnapshot2.getKey();
+                                                    //System.out.println("**********"+post2+"**********"+key);
+                                                    if(key.equals(post2)){
+                                                        keys.add(key);
+                                                        userKeys.add(post);
+                                                    }
+                                                }
+                                            }
+
+                                            @Override
+                                            public void onCancelled(@NonNull DatabaseError databaseError) {}
+                                        });
                                     }
-
                                 }
-                                public void onCancelled(@NonNull DatabaseError databaseError) {}
-
-                            });
-
-                            //Search last name
-                            mUserRef.child(key).child("LastName").addValueEventListener(new ValueEventListener() {
                                 @Override
-                                public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                                    String query = dataSnapshot.getValue().toString(); //Value at key
-                                    //If name is searched and is a substring of the datasnapshot, add it to list of keys
-                                    if(name!=null && query.contains(name)){
-                                        keys.add(key);
-                                    }
-
-                                }
-
                                 public void onCancelled(@NonNull DatabaseError databaseError) {}
                             });
-
+                        }
                             //Search rate
                             /*mUserRef.child(key).child("AverageRating").addValueEventListener(new ValueEventListener() {
                                 @Override
@@ -176,16 +200,15 @@ public class Search extends AppCompatActivity {
 
                                 public void onCancelled(@NonNull DatabaseError databaseError) {}
                             });*/
-                        }
                     }
 
                     @Override
                     public void onCancelled(@NonNull DatabaseError databaseError) {}
                 });
-
             }
         }
-        updateList();
+
+        updateResultsList();
     }
 
     private void makeToast(String message){
