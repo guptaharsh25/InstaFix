@@ -48,12 +48,12 @@ public class WelcomeActivity extends AppCompatActivity {
         listAvailabilities = (ListView) findViewById(R.id.listAvailabilites);
         setContentView(R.layout.activity_welcome);
 
-        addAvailability = findViewById(R.id.btnAddAvailability);
-        availabilityText = findViewById(R.id.headerAvailabilities);
+        addAvailability = findViewById(R.id.btnAddAvailability3);
+        availabilityText = findViewById(R.id.headerAvailabilities3);
 
         user = FirebaseAuth.getInstance().getCurrentUser();
         final TextView welcomeText = (TextView) findViewById(R.id.txtWelcome);
-        final TextView roleText = (TextView) findViewById(R.id.txtRole);
+        final TextView roleText = (TextView) findViewById(R.id.txtRole3);
         userInfo = FirebaseDatabase.getInstance().getReference().child("Accounts")
                 .child(user.getUid());
 

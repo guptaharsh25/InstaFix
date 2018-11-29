@@ -48,6 +48,7 @@ public class ServiceProviderHomeFragment1 extends Fragment {
         super.onStart();
 
         availabilityText = myView.findViewById(R.id.headerAvailabilities2);
+
         listAvailabilities = (ListView) myView.findViewById(R.id.listAvailabilites2);
 
         final TextView welcomeText = (TextView) myView.findViewById(R.id.txtWelcome2);
