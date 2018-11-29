@@ -54,7 +54,16 @@ public class ServiceProviderHomeFragment3 extends Fragment {
         return myView;
     }
 
-    public void onCreate(Bundle savedInstanceState){
+
+
+
+}
+
+/*
+        setContentView(R.layout.service_layout);
+        setContentView(R.layout.activity_service_provider);
+
+        public void onCreate(Bundle savedInstanceState){
         super.onCreate(savedInstanceState);
 
         mAuth = FirebaseAuth.getInstance();
@@ -64,36 +73,18 @@ public class ServiceProviderHomeFragment3 extends Fragment {
         mServicesRef = mRootRef.child("Services");
         mUserRef = mRootRef.child("Accounts").child(userInfo.getUid());
 
-
+        serviceSPList = (ListView) myView.findViewById(R.id.listSPServices);
+        addServices = myView.findViewById(R.id.btnSPAdd2);
+        listTypeText = myView.findViewById(R.id.textSPServices3);
 
         listSet = 1;
-    }
-}
-
-/*public class ServiceProviderActivity extends Activity {
-
-    @Override
-    protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-
-
-        setContentView(R.layout.service_layout);
-        serviceSPList = (ListView) findViewById(R.id.listSPServices);
-        setContentView(R.layout.activity_service_provider);
-
-        addServices = findViewById(R.id.btnSPAdd);
-        listTypeText = findViewById(R.id.textSPServices);
-
-
-
 
         setKeys(1);
         setAdapterServices();
         removeServices();
-
     }
 
-    private void instantiateKeys(DatabaseReference reference){
+        private void instantiateKeys(DatabaseReference reference){
         reference.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
@@ -127,16 +118,16 @@ public class ServiceProviderHomeFragment3 extends Fragment {
         });
     }
 
-    public void setAdapterServices(){
+        public void setAdapterServices(){
         new Handler().postDelayed(new Runnable(){
             @Override
             public void run() {
                 if(listSet==0){
-                    serviceAdapter = new ServiceCustomAdapter(ServiceProviderActivity.this, allKeys);
+                    serviceAdapter = new ServiceCustomAdapter(ServiceProviderHomeFragment3.this, allKeys);
                 } else{
-                    serviceAdapter = new ServiceCustomAdapter(ServiceProviderActivity.this, keys);
+                    serviceAdapter = new ServiceCustomAdapter(ServiceProviderHomeFragment3.this, keys);
                 }
-                serviceSPList = (ListView) findViewById(R.id.listSPServices);
+                serviceSPList = (ListView) myView.findViewById(R.id.listSPServices);
                 serviceSPList.setAdapter(serviceAdapter);
                 serviceAdapter.notifyDataSetChanged();
             }
@@ -172,7 +163,7 @@ public class ServiceProviderHomeFragment3 extends Fragment {
     public void updateServicesList(){
         if(allKeys!=null){
             serviceAdapter = new ServiceCustomAdapter(ServiceProviderActivity.this, allKeys);
-            serviceSPList = (ListView) findViewById(R.id.listSPServices);
+            serviceSPList = (ListView) myView.findViewById(R.id.listSPServices);
             serviceSPList.setAdapter(serviceAdapter);
             serviceAdapter.notifyDataSetChanged();
             final AlertDialog.Builder alertDialog = new AlertDialog.Builder(this);
@@ -209,7 +200,6 @@ public class ServiceProviderHomeFragment3 extends Fragment {
 
                             @Override
                             public void onCancelled(@NonNull DatabaseError databaseError) {
-
                             }
                         });
                     }
@@ -233,7 +223,7 @@ public class ServiceProviderHomeFragment3 extends Fragment {
     public void removeServices() {
         if(keys!=null){
             serviceAdapter = new ServiceCustomAdapter(ServiceProviderActivity.this, keys);
-            serviceSPList = (ListView) findViewById(R.id.listSPServices);
+            serviceSPList = (ListView) myView.findViewById(R.id.listSPServices);
             serviceSPList.setAdapter(serviceAdapter);
             serviceAdapter.notifyDataSetChanged();
             final AlertDialog.Builder alertDialog = new AlertDialog.Builder(this);
@@ -289,4 +279,4 @@ public class ServiceProviderHomeFragment3 extends Fragment {
             }
         }
     }
-}*/
+*/

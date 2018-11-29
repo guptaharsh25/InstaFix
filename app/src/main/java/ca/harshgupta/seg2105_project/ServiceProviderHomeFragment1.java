@@ -53,6 +53,7 @@ public class ServiceProviderHomeFragment1 extends Fragment {
 
         final TextView welcomeText = (TextView) myView.findViewById(R.id.txtWelcome2);
         final TextView roleText = (TextView) myView.findViewById(R.id.txtRole2);
+        final TextView avgRateText = (TextView) myView.findViewById(R.id.txtAverageRate);
 
         user = FirebaseAuth.getInstance().getCurrentUser();
         userInfo = FirebaseDatabase.getInstance().getReference().child("Accounts")
@@ -84,6 +85,19 @@ public class ServiceProviderHomeFragment1 extends Fragment {
             }
         });
 
+        userInfo.child("AverageRating").addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                String userType = dataSnapshot.getValue().toString();
+                avgRateText.setText("Average rate of service is " + userType);
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError databaseError) {
+                System.out.println(databaseError);
+            }
+        });
+
         userInfo.child("Availability").child(Integer.toString(0)).child("Date").setValue("Sunday");
         userInfo.child("Availability").child(Integer.toString(1)).child("Date").setValue("Monday");
         userInfo.child("Availability").child(Integer.toString(2)).child("Date").setValue("Tuesday");
@@ -91,7 +105,6 @@ public class ServiceProviderHomeFragment1 extends Fragment {
         userInfo.child("Availability").child(Integer.toString(4)).child("Date").setValue("Thursday");
         userInfo.child("Availability").child(Integer.toString(5)).child("Date").setValue("Friday");
         userInfo.child("Availability").child(Integer.toString(6)).child("Date").setValue("Saturday");
-
     }
 }
 

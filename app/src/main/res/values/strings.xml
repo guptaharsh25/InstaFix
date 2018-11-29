@@ -64,7 +64,15 @@
     <string name="action_example">Example action</string>
 
     <string name="action_settings">Settings</string>
-    <string name="Service_Provider_Home">ServiceProviderHome</string>
+    <string name="Service_Provider_Home">Home</string>
+
     <string name="welcome">Welcome</string>
     <string name="current_appointments">Current Appointments</string>
+    <string name="Select_Day">Select Day</string>
+    <string name="Set_Availability">Set Availability</string>
+    <string name="Set_Start_TIme">Set Start TIme</string>
+    <string name="Set_End_Time">Set End Time</string>
+    <string name="Remove_Availability">Remove Availability</string>
+    <string name="Add">Add</string>
+    <string name="Set_Availbility2">Set Availability</string>
 </resources>
