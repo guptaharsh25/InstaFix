@@ -9,18 +9,14 @@
     <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_alignParentStart="true"
         android:layout_alignParentTop="true"
-        android:layout_marginStart="0dp"
         android:layout_marginTop="0dp">
 
         <TextView
             android:id="@+id/txtWelcome"
             android:layout_width="match_parent"
             android:layout_height="40dp"
-            android:layout_alignParentStart="true"
             android:layout_alignParentTop="true"
-            android:layout_marginStart="0dp"
             android:layout_marginTop="15dp"
             android:gravity="center_horizontal"
             android:textSize="24sp" />
@@ -30,9 +26,7 @@
             android:layout_width="match_parent"
             android:layout_height="40dp"
             android:layout_below="@+id/txtWelcome"
-            android:layout_alignParentStart="true"
-            android:layout_marginStart="0dp"
-            android:layout_marginTop="21dp"
+            android:layout_marginTop="61dp"
             android:gravity="center_horizontal"
             android:textSize="18sp" />
 
@@ -101,11 +95,11 @@
             android:layout_alignParentEnd="true"
             android:layout_alignParentRight="true"
             android:layout_alignParentBottom="true"
-            android:layout_marginStart="27dp"
-            android:layout_marginLeft="27dp"
-            android:layout_marginEnd="24dp"
-            android:layout_marginRight="24dp"
-            android:layout_marginBottom="144dp" />
+            android:layout_marginStart="15dp"
+            android:layout_marginLeft="15dp"
+            android:layout_marginEnd="36dp"
+            android:layout_marginRight="36dp"
+            android:layout_marginBottom="104dp" />
 
         <TextView
             android:id="@+id/headerAvailabilities"
@@ -116,11 +110,11 @@
             android:layout_alignParentTop="true"
             android:layout_alignParentEnd="true"
             android:layout_alignParentRight="true"
-            android:layout_marginStart="29dp"
-            android:layout_marginLeft="29dp"
-            android:layout_marginTop="208dp"
-            android:layout_marginEnd="191dp"
-            android:layout_marginRight="191dp"
+            android:layout_marginStart="23dp"
+            android:layout_marginLeft="23dp"
+            android:layout_marginTop="250dp"
+            android:layout_marginEnd="197dp"
+            android:layout_marginRight="197dp"
             android:layout_marginBottom="1dp"
             android:text="@string/availabilities"
             android:textSize="22sp" />
