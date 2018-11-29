@@ -18,7 +18,7 @@ import com.google.firebase.database.ValueEventListener;
 
 import org.w3c.dom.Node;
 
-public class ServiceCustomAdapter extends ArrayAdapter{
+public class  ServiceCustomAdapter extends ArrayAdapter{
     private final Context context;
     private final String[] myKeys;
     private String rate;

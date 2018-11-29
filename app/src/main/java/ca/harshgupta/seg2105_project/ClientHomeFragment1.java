@@ -2,11 +2,14 @@ package ca.harshgupta.seg2105_project;
 
 import android.app.Fragment;
 import android.os.Bundle;
+import android.os.Handler;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Adapter;
+import android.widget.ListView;
 import android.widget.TextView;
 
 import com.google.firebase.auth.FirebaseAuth;
@@ -22,6 +25,10 @@ public class ClientHomeFragment1 extends Fragment {
     View myView;
     private FirebaseUser user;
     private DatabaseReference userInfo;
+
+    private AppointmentClientCustomAdapter appointmentAdapter;
+    private ListView appointmentList;
+    private String [] keys;
 
 
     @Nullable
@@ -65,5 +72,17 @@ public class ClientHomeFragment1 extends Fragment {
             }
         });
 
+    }
+
+    public void viewAppointmentAdapter(){
+        new Handler().postDelayed(new Runnable(){
+            @Override
+            public void run() {
+                appointmentAdapter = new AppointmentClientCustomAdapter(myView.getContext(), keys);
+                appointmentList = (ListView) myView.findViewById(R.id.listAvailabilites);
+                appointmentList.setAdapter(appointmentAdapter);
+                appointmentAdapter.notifyDataSetChanged();
+            }
+        },500); //1000ms = 1sec
     }
 }
