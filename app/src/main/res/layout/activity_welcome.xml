@@ -1,124 +1,85 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context=".WelcomeActivity">
 
-    <RelativeLayout
+    <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_alignParentTop="true"
-        android:layout_marginTop="0dp">
+        android:orientation="vertical">
 
         <TextView
-            android:id="@+id/txtWelcome"
+            android:id="@+id/txtWelcome3"
             android:layout_width="match_parent"
             android:layout_height="40dp"
             android:layout_alignParentTop="true"
-            android:layout_marginTop="15dp"
             android:gravity="center_horizontal"
-            android:textSize="24sp" />
+            android:textSize="24sp"
+            tools:layout_editor_absoluteY="15dp" />
 
         <TextView
-            android:id="@+id/txtRole"
+            android:id="@+id/txtRole3"
             android:layout_width="match_parent"
             android:layout_height="40dp"
             android:layout_below="@+id/txtWelcome"
-            android:layout_marginTop="61dp"
+            android:layout_marginTop="10dp"
             android:gravity="center_horizontal"
             android:textSize="18sp" />
 
-        <Button
-            android:id="@+id/btnSignOut"
+        <TextView
+            android:id="@+id/headerAvailabilities3"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_alignParentBottom="true"
-            android:layout_marginStart="8dp"
-            android:layout_marginLeft="8dp"
-            android:layout_marginTop="500dp"
-            android:layout_marginEnd="8dp"
-            android:layout_marginRight="8dp"
-            android:layout_marginBottom="6dp"
-            android:onClick="onSignOut"
-            android:text="Sign Out"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="0.0"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintVertical_bias="0.944" />
-
-        <Button
-            android:id="@+id/btnServices"
-            android:layout_width="146dp"
-            android:layout_height="wrap_content"
-            android:layout_alignParentStart="true"
-            android:layout_alignParentLeft="true"
-            android:layout_alignParentTop="true"
-            android:layout_alignParentEnd="true"
-            android:layout_alignParentRight="true"
-            android:layout_marginStart="220dp"
-            android:layout_marginLeft="220dp"
-            android:layout_marginTop="533dp"
-            android:layout_marginEnd="18dp"
-            android:layout_marginRight="18dp"
-            android:onClick="openServices"
-            android:text="Services" />
-
-        <Button
-            android:id="@+id/btnAddAvailability"
-            android:layout_width="166dp"
-            android:layout_height="wrap_content"
-            android:layout_alignParentStart="true"
-            android:layout_alignParentLeft="true"
-            android:layout_alignParentTop="true"
-            android:layout_alignParentEnd="true"
-            android:layout_alignParentRight="true"
-            android:layout_marginStart="12dp"
-            android:layout_marginLeft="12dp"
-            android:layout_marginTop="533dp"
-            android:layout_marginEnd="204dp"
-            android:layout_marginRight="204dp"
-            android:onClick="addAvailability"
-            android:text="Set Availabilities"
-            android:visibility="visible" />
-
-        <ListView
-            android:id="@+id/listAvailabilites"
-
-            android:layout_width="wrap_content"
-            android:layout_height="259dp"
-            android:layout_alignParentStart="true"
-            android:layout_alignParentLeft="true"
-            android:layout_alignParentEnd="true"
-            android:layout_alignParentRight="true"
-            android:layout_alignParentBottom="true"
-            android:layout_marginStart="15dp"
-            android:layout_marginLeft="15dp"
-            android:layout_marginEnd="36dp"
-            android:layout_marginRight="36dp"
-            android:layout_marginBottom="104dp" />
-
-        <TextView
-            android:id="@+id/headerAvailabilities"
-            android:layout_width="164dp"
-            android:layout_height="wrap_content"
-            android:layout_alignParentStart="true"
-            android:layout_alignParentLeft="true"
-            android:layout_alignParentTop="true"
-            android:layout_alignParentEnd="true"
-            android:layout_alignParentRight="true"
-            android:layout_marginStart="23dp"
-            android:layout_marginLeft="23dp"
-            android:layout_marginTop="250dp"
-            android:layout_marginEnd="197dp"
-            android:layout_marginRight="197dp"
-            android:layout_marginBottom="1dp"
+            android:layout_marginLeft="10dp"
+            android:layout_marginTop="15dp"
+            android:layout_marginRight="10dp"
             android:text="@string/availabilities"
             android:textSize="22sp" />
 
-    </RelativeLayout>
+        <ListView
+            android:id="@+id/listAvailabilites"
+            android:layout_width="match_parent"
+            android:layout_height="310dp"
+            android:layout_marginLeft="10dp"
+            android:layout_marginRight="10dp" />
 
-</RelativeLayout>
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="2.5"
+            android:layout_marginTop="10dp"
+            android:layout_marginRight="2.5"
+            android:orientation="horizontal">
+
+            <Button
+                android:id="@+id/btnAddAvailability3"
+                android:layout_width="187dp"
+                android:layout_height="match_parent"
+                android:onClick="addAvailability"
+                android:text="Set Availabilities"
+                android:visibility="visible" />
+
+            <Button
+                android:id="@+id/btnServices3"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:onClick="openServices"
+                android:text="Services" />
+
+        </LinearLayout>
+
+        <Button
+            android:id="@+id/btnSignOut3"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_alignParentBottom="true"
+            android:layout_marginTop="20dp"
+            android:onClick="onSignOut"
+            android:text="Sign Out" />
+
+    </LinearLayout>
+
+</android.support.constraint.ConstraintLayout>
