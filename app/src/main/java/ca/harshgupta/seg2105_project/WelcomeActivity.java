@@ -86,7 +86,8 @@ public class WelcomeActivity extends AppCompatActivity {
                     addAvailability.setVisibility(View.GONE);
                     availabilityText.setVisibility(View.GONE);
                     listAvailabilities.setVisibility(View.GONE);
-
+                    Button services = (Button) findViewById(R.id.btnServices);
+                    services.setVisibility(View.GONE);
                 }
                 else if (userType.equals("ServiceProvider")){
                     addAvailability.setVisibility(View.VISIBLE);
@@ -116,6 +117,11 @@ public class WelcomeActivity extends AppCompatActivity {
         FirebaseAuth.getInstance().signOut();
         Intent intentToSignOut = new Intent(getApplicationContext(), MainActivity.class);
         startActivityForResult(intentToSignOut,0);
+    }
+
+    public void onSearch(View view){
+        Intent intentToSearch = new Intent(getApplicationContext(), Search.class);
+        startActivityForResult(intentToSearch,0);
     }
 
     public void openServices(View view){
@@ -257,4 +263,5 @@ public class WelcomeActivity extends AppCompatActivity {
             }
         },500); //1000ms = 1sec
     }
+
 }

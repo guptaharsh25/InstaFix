@@ -1,38 +1,69 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context=".WelcomeActivity">
 
-    <RelativeLayout
+    <Button
+        android:id="@+id/btnSearch"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:onClick="onSearch"
+        android:text="Search"
+        tools:layout_editor_absoluteY="269dp" />
+
+    <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_alignParentStart="true"
-        android:layout_alignParentTop="true"
-        android:layout_marginStart="0dp"
-        android:layout_marginTop="0dp">
+        android:orientation="vertical">
+
+        <Button
+            android:id="@+id/btnServices"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_alignParentStart="true"
+            android:layout_alignParentLeft="true"
+            android:layout_alignParentTop="true"
+            android:layout_alignParentEnd="true"
+            android:layout_alignParentRight="true"
+            android:text="Services"
+            tools:layout_editor_absoluteX="220dp" />
+
+        <Button
+            android:id="@+id/btnAddAvailability"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_alignParentStart="true"
+            android:layout_alignParentLeft="true"
+            android:layout_alignParentTop="true"
+            android:layout_alignParentEnd="true"
+            android:layout_alignParentRight="true"
+            android:onClick="addAvailability"
+            android:text="Set Availabilities"
+            android:visibility="visible"
+            tools:layout_editor_absoluteX="12dp"
+            tools:layout_editor_absoluteY="48dp" />
 
         <TextView
             android:id="@+id/txtWelcome"
             android:layout_width="match_parent"
             android:layout_height="40dp"
-            android:layout_alignParentStart="true"
-            android:layout_alignParentTop="true"
-            android:layout_marginStart="0dp"
-            android:layout_marginTop="15dp"
             android:gravity="center_horizontal"
             android:textSize="24sp" />
+
+        <TextView
+            android:id="@+id/headerAvailabilities"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/availabilities"
+            android:textSize="22sp" />
 
         <TextView
             android:id="@+id/txtRole"
             android:layout_width="match_parent"
             android:layout_height="40dp"
-            android:layout_below="@+id/txtWelcome"
-            android:layout_alignParentStart="true"
-            android:layout_marginStart="0dp"
-            android:layout_marginTop="21dp"
             android:gravity="center_horizontal"
             android:textSize="18sp" />
 
@@ -42,11 +73,7 @@
             android:layout_height="wrap_content"
             android:layout_alignParentBottom="true"
             android:layout_marginStart="8dp"
-            android:layout_marginLeft="8dp"
-            android:layout_marginTop="500dp"
             android:layout_marginEnd="8dp"
-            android:layout_marginRight="8dp"
-            android:layout_marginBottom="6dp"
             android:onClick="onSignOut"
             android:text="Sign Out"
             app:layout_constraintBottom_toBottomOf="parent"
@@ -55,41 +82,6 @@
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
             app:layout_constraintVertical_bias="0.944" />
-
-        <Button
-            android:id="@+id/btnServices"
-            android:layout_width="146dp"
-            android:layout_height="wrap_content"
-            android:layout_alignParentStart="true"
-            android:layout_alignParentLeft="true"
-            android:layout_alignParentTop="true"
-            android:layout_alignParentEnd="true"
-            android:layout_alignParentRight="true"
-            android:layout_marginStart="220dp"
-            android:layout_marginLeft="220dp"
-            android:layout_marginTop="533dp"
-            android:layout_marginEnd="18dp"
-            android:layout_marginRight="18dp"
-            android:onClick="openServices"
-            android:text="Services" />
-
-        <Button
-            android:id="@+id/btnAddAvailability"
-            android:layout_width="166dp"
-            android:layout_height="wrap_content"
-            android:layout_alignParentStart="true"
-            android:layout_alignParentLeft="true"
-            android:layout_alignParentTop="true"
-            android:layout_alignParentEnd="true"
-            android:layout_alignParentRight="true"
-            android:layout_marginStart="12dp"
-            android:layout_marginLeft="12dp"
-            android:layout_marginTop="533dp"
-            android:layout_marginEnd="204dp"
-            android:layout_marginRight="204dp"
-            android:onClick="addAvailability"
-            android:text="Set Availabilities"
-            android:visibility="visible" />
 
         <ListView
             android:id="@+id/listAvailabilites"
@@ -106,25 +98,12 @@
             android:layout_marginEnd="24dp"
             android:layout_marginRight="24dp"
             android:layout_marginBottom="144dp" />
+    </LinearLayout>
 
-        <TextView
-            android:id="@+id/headerAvailabilities"
-            android:layout_width="164dp"
-            android:layout_height="wrap_content"
-            android:layout_alignParentStart="true"
-            android:layout_alignParentLeft="true"
-            android:layout_alignParentTop="true"
-            android:layout_alignParentEnd="true"
-            android:layout_alignParentRight="true"
-            android:layout_marginStart="29dp"
-            android:layout_marginLeft="29dp"
-            android:layout_marginTop="208dp"
-            android:layout_marginEnd="191dp"
-            android:layout_marginRight="191dp"
-            android:layout_marginBottom="1dp"
-            android:text="@string/availabilities"
-            android:textSize="22sp" />
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
 
     </RelativeLayout>
 
-</RelativeLayout>
+</android.support.constraint.ConstraintLayout>
