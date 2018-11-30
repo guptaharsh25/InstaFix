@@ -11,57 +11,85 @@
         android:layout_height="match_parent"
         android:orientation="vertical">
 
-        <EditText
-            android:id="@+id/txtSearch"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:ems="10"
-            android:hint="Search" />
-
-        <SeekBar
-            android:id="@+id/rating"
-            style="@style/Widget.AppCompat.SeekBar.Discrete"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:min="0"
-            android:max="5"
-            android:paddingTop="5dp"
-            android:paddingBottom="5dp"
-            android:progress="0" />
-
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="horizontal">
 
             <EditText
-                android:id="@+id/startTime"
-                android:layout_width="wrap_content"
+                android:id="@+id/txtSearch"
+                android:layout_width="315dp"
                 android:layout_height="wrap_content"
-                android:layout_weight="1"
                 android:ems="10"
-                android:gravity="center_horizontal"
-                android:hint="Start Time"
-                android:inputType="textPersonName" />
+                android:hint="Search" />
 
-            <EditText
-                android:id="@+id/endTime"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:ems="10"
-                android:gravity="center_horizontal"
-                android:hint="End Time"
-                android:inputType="textPersonName" />
+            <Button
+                android:id="@+id/btnSearch"
+                android:layout_width="35dp"
+                android:layout_height="35dp"
+                android:layout_marginLeft="7dp"
+                android:layout_marginRight="7dp"
+                android:layout_marginBottom="1dp"
+                android:background="@null"
+                android:foreground="?android:attr/actionModeWebSearchDrawable"
+                android:onClick="search"
+                android:paddingLeft="10dp" />
         </LinearLayout>
 
-        <Button
-            android:id="@+id/btnSearch"
+        <SeekBar
+            android:id="@+id/rating"
+            style="@style/Widget.AppCompat.SeekBar.Discrete"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:onClick="search"
-            android:padding="10dp"
-            android:text="Search" />
+            android:max="5"
+            android:min="0"
+            android:paddingTop="5dp"
+            android:paddingBottom="5dp"
+            android:progress="0"
+            android:thumb="?android:attr/textSelectHandle" />
+
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal">
+
+            <Button
+                android:id="@+id/btnCalendar"
+                android:layout_width="30dp"
+                android:layout_height="30dp"
+                android:layout_weight="1"
+                android:background="@android:color/holo_blue_dark"
+                android:foreground="@android:drawable/ic_menu_my_calendar"
+                android:onClick="setAvailability" />
+
+            <TextView
+                android:id="@+id/dayOfWeek"
+                android:layout_width="115dp"
+                android:layout_height="match_parent"
+                android:layout_weight="1"
+                android:gravity="center_vertical|center_horizontal"
+                android:onClick="setAvailability"
+                android:text="Day" />
+
+            <TextView
+                android:id="@+id/startTime"
+                android:layout_width="115dp"
+                android:layout_height="match_parent"
+                android:layout_weight="1"
+                android:gravity="center_vertical|center"
+                android:onClick="setAvailability"
+                android:text="Start Time" />
+
+            <TextView
+                android:id="@+id/endTime"
+                android:layout_width="115dp"
+                android:layout_height="match_parent"
+                android:layout_weight="1"
+                android:gravity="center_horizontal|center"
+                android:onClick="setAvailability"
+                android:text="End Time" />
+
+        </LinearLayout>
 
         <ListView
             android:id="@+id/results"

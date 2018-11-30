@@ -19,24 +19,28 @@ public class AccountCustomAdapter extends ArrayAdapter {
     private final Context context;
     private final String[] myKeys;
     private final String[] accountList;
+    private final Integer[] dayList;
     private String rate;
     private DatabaseReference mServices, mAccounts;
     public TextView serviceRateText;
     public TextView serviceNameText;
     public TextView provider;
     public TextView rating;
+    public TextView day;
+    public TextView time;
 
-    public AccountCustomAdapter(Context context, String[] serviceList, String[] accountList){
+    public AccountCustomAdapter(Context context, String[] serviceList, String[] accountList, Integer[] daysList){
         super(context, R.layout.account_layout, serviceList);
         this.context = context;
         this.myKeys = serviceList;
         this.accountList = accountList;
+        this.dayList = daysList;
     }
 
     public View getView(final int position, View convertView, ViewGroup parent){
         LayoutInflater inflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
         final View rowView = inflater.inflate(R.layout.account_layout, parent, false);
-
+        System.out.println("-----" + myKeys.length + "-----" + accountList.length + "-----" + dayList.length + "-----");
         mAccounts = FirebaseDatabase.getInstance().getReference().child("Accounts");
         mServices = FirebaseDatabase.getInstance().getReference().child("Services");
 
@@ -54,9 +58,7 @@ public class AccountCustomAdapter extends ArrayAdapter {
             }
 
             @Override
-            public void onCancelled(@NonNull DatabaseError databaseError) {
-
-            }
+            public void onCancelled(@NonNull DatabaseError databaseError) {}
         });
 
         mAccounts.child(accountList[position]).child("LastName").addValueEventListener(new ValueEventListener() {
@@ -73,10 +75,48 @@ public class AccountCustomAdapter extends ArrayAdapter {
             }
 
             @Override
-            public void onCancelled(@NonNull DatabaseError databaseError) {
-
-            }
+            public void onCancelled(@NonNull DatabaseError databaseError) {}
         });
+
+        //Add availability
+        if(dayList[position]>=0) {
+            mAccounts.child(accountList[position]).child("Availability").child(Integer.toString(dayList[position])).addValueEventListener(new ValueEventListener() {
+                @Override
+                public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                    day = (TextView) rowView.findViewById(R.id.day);
+                    time = (TextView) rowView.findViewById(R.id.timing);
+
+                    String tempDay = "";
+                    String tempStart = "N/A";
+                    String tempEnd = "N/A";
+
+                    for (DataSnapshot postSnapshot : dataSnapshot.getChildren()) {
+                        if (postSnapshot.getKey().equals("Date")) {
+                            tempDay = postSnapshot.getValue().toString().substring(0, 3);
+                        } else if (postSnapshot.getKey().equals("Start Time")) {
+                            tempStart = postSnapshot.getValue().toString();
+                        } else if (postSnapshot.getKey().equals("End Time")) {
+                            tempEnd = postSnapshot.getValue().toString();
+                        }
+                    }
+
+                    if (!tempStart.contains("N/A") && !tempEnd.contains("N/A")) {
+                        day.setText(tempDay);
+                        time.setText(tempStart + " - " + tempEnd);
+                    }
+                }
+
+                @Override
+                public void onCancelled(@NonNull DatabaseError databaseError) {
+                }
+            });
+        } else{
+            day = (TextView) rowView.findViewById(R.id.day);
+            time = (TextView) rowView.findViewById(R.id.timing);
+            day.setText("");
+            time.setText("");
+
+        }
 
         mAccounts.child(accountList[position]).child("AverageRating").addValueEventListener(new ValueEventListener() {
             @Override
