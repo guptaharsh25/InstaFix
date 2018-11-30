@@ -9,8 +9,10 @@ import android.support.annotation.Nullable;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.ListView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
@@ -77,11 +79,16 @@ public class ClientHomeFragment1 extends Fragment {
             }
         });
         TextView temp = (TextView) myView.findViewById(R.id.currentAppointment);
-        temp.setOnClickListener(new View.OnClickListener() {
+
+        try{
+            temp.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
                 addReview(v);
             }
-        });
+            });
+        }catch (NullPointerException e) {
+
+        }
 
     }
 
@@ -105,12 +112,28 @@ public class ClientHomeFragment1 extends Fragment {
         addReview.show();
 
         discreteSeekBar = myView.findViewById(R.id.discreteSeekBar);
-        discreteSeekBar.getProgress();
-        int rate = discreteSeekBar.getProgress();
 
         comment = myView.findViewById(R.id.comment);
-        String commentText = comment.getText().toString();
 
-        Review review = new Review(rate, commentText);
+        Button submit = (Button) myView.findViewById(R.id.submitButton);
+        try {
+            submit.setOnClickListener(new View.OnClickListener() {
+                public void onClick(View v) {
+
+                    int rate = discreteSeekBar.getProgress();
+                    String commentText = comment.getText().toString();
+                    Review review = new Review(rate, commentText);
+                    addReviewFirebase(review);
+                    addReview.dismiss();
+                }
+            });
+        }catch (NullPointerException e) {
+
+        }
+
+    }
+
+    public void addReviewFirebase (Review review){
+        Toast.makeText(myView.getContext(), review.getRate() + " " + review.getReview(), Toast.LENGTH_LONG).show();
     }
 }
