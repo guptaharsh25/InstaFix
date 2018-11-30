@@ -30,6 +30,9 @@
         <activity
             android:name=".ServiceProviderHome"
             android:label="@string/Service_Provider_Home"></activity>
+        <activity
+            android:name=".Search"
+            android:label="Find Service"></activity>
     </application>
 
 </manifest>

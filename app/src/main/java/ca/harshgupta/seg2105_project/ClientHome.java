@@ -35,10 +35,7 @@ public class ClientHome extends AppCompatActivity{
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_client_home);
 
-        final Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
-        setSupportActionBar(toolbar);
-
-        ActionBar actionBar = getSupportActionBar();
+        final ActionBar actionBar = getSupportActionBar();
         actionBar.setDisplayHomeAsUpEnabled(true);
         actionBar.setHomeAsUpIndicator(R.drawable.ic_menu);
 
@@ -49,7 +46,7 @@ public class ClientHome extends AppCompatActivity{
         FragmentManager fragmentManager = getFragmentManager();
         fragmentManager.beginTransaction().replace(R.id.containerClient,
                 new ClientHomeFragment1()).commit();
-        toolbar.setTitle("Home");
+        actionBar.setTitle("Home");
 
         navigationView.setNavigationItemSelectedListener(
         new NavigationView.OnNavigationItemSelectedListener() {
@@ -63,21 +60,21 @@ public class ClientHome extends AppCompatActivity{
                     case R.id.nav_fragment_client_home:
                         fragmentManager.beginTransaction().replace(R.id.containerClient,
                                 new ClientHomeFragment1()).commit();
-                        toolbar.setTitle("Home");
+                        actionBar.setTitle("Home");
                         Toast.makeText(ClientHome.this,"Loading First Fragment",Toast.LENGTH_LONG).show();
                         break;
 
                     case R.id.nav_fragment_client_home_2:
                         fragmentManager.beginTransaction().replace(R.id.containerClient,
                                 new ClientHomeFragment2()).commit();
-                        toolbar.setTitle("Find Services");
+                        actionBar.setTitle("Find Services");
                         Toast.makeText(ClientHome.this,"Loading Second Fragment",Toast.LENGTH_LONG).show();
                          break;
 
                     case R.id.nav_fragment_client_home_3:
                         fragmentManager.beginTransaction().replace(R.id.containerClient,
                                 new ClientHomeFragment3()).commit();
-                        toolbar.setTitle("Fragment 3");
+                        actionBar.setTitle("Fragment 3");
                         Toast.makeText(ClientHome.this,"Loading Third Fragment",Toast.LENGTH_LONG).show();
                         break;
                     case R.id.nav_fragment_client_signout:
@@ -89,7 +86,6 @@ public class ClientHome extends AppCompatActivity{
                 }
 
                 // For example, swap UI fragments here
-
                 mDrawerLayout.closeDrawers();
                 return true;
             }
