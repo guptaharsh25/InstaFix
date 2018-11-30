@@ -80,15 +80,14 @@ public class ClientHomeFragment1 extends Fragment {
         });
         TextView temp = (TextView) myView.findViewById(R.id.currentAppointment);
 
-        try{
+
             temp.setOnClickListener(new View.OnClickListener() {
+                @Override
             public void onClick(View v) {
                 addReview(v);
             }
             });
-        }catch (NullPointerException e) {
 
-        }
 
     }
 
@@ -113,23 +112,22 @@ public class ClientHomeFragment1 extends Fragment {
 
         discreteSeekBar = myView.findViewById(R.id.discreteSeekBar);
 
-        comment = myView.findViewById(R.id.comment);
+        comment = getActivity().findViewById(R.id.comment);
 
-        Button submit = (Button) myView.findViewById(R.id.submitButton);
-        try {
-            submit.setOnClickListener(new View.OnClickListener() {
-                public void onClick(View v) {
-
-                    int rate = discreteSeekBar.getProgress();
-                    String commentText = comment.getText().toString();
-                    Review review = new Review(rate, commentText);
-                    addReviewFirebase(review);
-                    addReview.dismiss();
-                }
-            });
-        }catch (NullPointerException e) {
-
-        }
+//        Button submit = (Button) myView.findViewById(R.id.submitReview);
+//
+//            submit.setOnClickListener(new View.OnClickListener() {
+//                @Override
+//                public void onClick(View v) {
+//
+//                    int rate = discreteSeekBar.getProgress();
+//                    String commentText = comment.getText().toString();
+//                    Review review = new Review(rate, commentText);
+//                    addReviewFirebase(review);
+//                    addReview.dismiss();
+//
+//                }
+//            });
 
     }
 
