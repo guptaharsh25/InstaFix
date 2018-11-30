@@ -1,0 +1,101 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".Search">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal">
+
+            <EditText
+                android:id="@+id/txtSearch"
+                android:layout_width="315dp"
+                android:layout_height="wrap_content"
+                android:ems="10"
+                android:hint="Search" />
+
+            <Button
+                android:id="@+id/btnSearch"
+                android:layout_width="35dp"
+                android:layout_height="35dp"
+                android:layout_marginLeft="7dp"
+                android:layout_marginRight="7dp"
+                android:layout_marginBottom="1dp"
+                android:background="@null"
+                android:foreground="?android:attr/actionModeWebSearchDrawable"
+                android:onClick="search"
+                android:paddingLeft="10dp" />
+        </LinearLayout>
+
+        <SeekBar
+            android:id="@+id/rating"
+            style="@style/Widget.AppCompat.SeekBar.Discrete"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:max="5"
+            android:min="0"
+            android:paddingTop="5dp"
+            android:paddingBottom="5dp"
+            android:progress="0"
+            android:thumb="?android:attr/textSelectHandle" />
+
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal">
+
+            <Button
+                android:id="@+id/btnCalendar"
+                android:layout_width="30dp"
+                android:layout_height="30dp"
+                android:layout_weight="1"
+                android:background="@android:color/holo_blue_dark"
+                android:foreground="@android:drawable/ic_menu_my_calendar"
+                android:onClick="setAvailability" />
+
+            <TextView
+                android:id="@+id/dayOfWeek"
+                android:layout_width="115dp"
+                android:layout_height="match_parent"
+                android:layout_weight="1"
+                android:gravity="center_vertical|center_horizontal"
+                android:onClick="setAvailability"
+                android:text="Day" />
+
+            <TextView
+                android:id="@+id/startTime"
+                android:layout_width="115dp"
+                android:layout_height="match_parent"
+                android:layout_weight="1"
+                android:gravity="center_vertical|center"
+                android:onClick="setAvailability"
+                android:text="Start Time" />
+
+            <TextView
+                android:id="@+id/endTime"
+                android:layout_width="115dp"
+                android:layout_height="match_parent"
+                android:layout_weight="1"
+                android:gravity="center_horizontal|center"
+                android:onClick="setAvailability"
+                android:text="End Time" />
+
+        </LinearLayout>
+
+        <ListView
+            android:id="@+id/results"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent" />
+
+    </LinearLayout>
+
+</android.support.constraint.ConstraintLayout>
