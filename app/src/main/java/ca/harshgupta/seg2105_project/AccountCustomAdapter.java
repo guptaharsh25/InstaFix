@@ -40,7 +40,6 @@ public class AccountCustomAdapter extends ArrayAdapter {
     public View getView(final int position, View convertView, ViewGroup parent){
         LayoutInflater inflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
         final View rowView = inflater.inflate(R.layout.account_layout, parent, false);
-        System.out.println("-----" + myKeys.length + "-----" + accountList.length + "-----" + dayList.length + "-----");
         mAccounts = FirebaseDatabase.getInstance().getReference().child("Accounts");
         mServices = FirebaseDatabase.getInstance().getReference().child("Services");
 

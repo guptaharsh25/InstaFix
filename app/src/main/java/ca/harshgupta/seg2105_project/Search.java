@@ -190,6 +190,11 @@ public class Search extends AppCompatActivity {
         addDialog.setView(view);
         addDialog.show();
 
+        Button search = addDialog.findViewById(R.id.btnAdd);
+        Button clear = addDialog.findViewById(R.id.btnDeleteAvailability);
+        search.setText("Search");
+        clear.setText("Clear");
+
         final Availability availability = new Availability();
         //setContentView(R.layout.add_availability_dialog);
 
@@ -256,14 +261,17 @@ public class Search extends AppCompatActivity {
         addDialog.findViewById(R.id.btnDeleteAvailability).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                day.setText("Date");
+                day.setText("Day");
                 start.setText("Start Time");
                 end.setText("End Time");
+                addDialog.dismiss();
             }
         });
     }
 
     private void searchRate(final String user, final String key, final double reqRate, final String[] avail){
+        final String serviceName = ((EditText) findViewById(R.id.txtSearch)).getText().toString().toLowerCase();
+        Double rate = (double) seekBar.getProgress();
         mUserRef.child(user).child("AverageRating").addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
@@ -273,7 +281,11 @@ public class Search extends AppCompatActivity {
                     if(rating>=reqRate){
                         searchAvailability(user, key, avail[0], avail[1], avail[2]);
                     }
-                } catch (Exception e){}
+                } catch (Exception e){
+                    if(avail[0].equals("Day") && serviceName.isEmpty() && reqRate==0.0){
+                        searchAvailability(user, key, avail[0], avail[1], avail[2]);
+                    }
+                }
             }
 
             @Override
@@ -305,11 +317,12 @@ public class Search extends AppCompatActivity {
     String tStart, final String tEnd){
         final double initial = Double.parseDouble(tStart);
         final double fin = Double.parseDouble(tEnd);
-        System.out.println("-----"+date+"-----");
+
         if(date.equals("Day")){
             keys.add(key);
             userKeys.add(user);
             availabilityList.add(-1);
+            return;
         }
 
         for(int i=0; i<=6; i++){
