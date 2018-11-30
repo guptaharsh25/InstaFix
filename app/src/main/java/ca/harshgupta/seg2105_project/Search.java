@@ -1,6 +1,7 @@
 package ca.harshgupta.seg2105_project;
 
 import android.app.Dialog;
+import android.app.FragmentManager;
 import android.app.SearchManager;
 import android.app.TimePickerDialog;
 import android.content.DialogInterface;
@@ -8,10 +9,18 @@ import android.content.Intent;
 import android.os.Handler;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
+import android.support.constraint.ConstraintLayout;
+import android.support.design.widget.NavigationView;
+import android.support.v4.view.GravityCompat;
+import android.support.v4.widget.DrawerLayout;
+import android.support.v7.app.ActionBar;
+import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.LayoutInflater;
+import android.view.Menu;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.Button;
@@ -56,6 +65,8 @@ public class Search extends AppCompatActivity {
     private TextView start;
     private TextView end;
 
+    private ActionBar actionBar;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -78,12 +89,12 @@ public class Search extends AppCompatActivity {
         start = (TextView) findViewById(R.id.startTime);
         end = (TextView) findViewById(R.id.endTime);
 
-/*
-        Intent intent = getIntent();
-        if (Intent.ACTION_SEARCH.equals(intent.getAction())) {
-            String query = intent.getStringExtra(SearchManager.QUERY);
-            search(query);
-        }*/
+        actionBar = getSupportActionBar();
+        actionBar.setDisplayHomeAsUpEnabled(true);
+        actionBar.setHomeAsUpIndicator(R.drawable.ic_menu);
+
+        //NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view_client);
+        //navigationView.setNavigationItemSelectedListener(this);
     }
 
     //Get all keys under Users section in database
@@ -101,11 +112,6 @@ public class Search extends AppCompatActivity {
             @Override
             public void onCancelled(@NonNull DatabaseError databaseError) {}
         });
-
-        //serviceAdapter = new ServiceCustomAdapter(Search.this, allKeys);
-        //serviceSPList = (ListView) findViewById(R.id.results);
-        //serviceSPList.setAdapter(serviceAdapter);
-        //serviceAdapter.notifyDataSetChanged();
     }
 
     //Display search results
@@ -370,5 +376,6 @@ public class Search extends AppCompatActivity {
             });
         }
     }
+
 
 }

@@ -65,9 +65,11 @@ public class ClientHome extends AppCompatActivity{
                         break;
 
                     case R.id.nav_fragment_client_home_2:
-                        fragmentManager.beginTransaction().replace(R.id.containerClient,
+                        /*fragmentManager.beginTransaction().replace(R.id.containerClient,
                                 new ClientHomeFragment2()).commit();
-                        actionBar.setTitle("Find Services");
+                        actionBar.setTitle("Find Services");*/
+                        Intent searchActivity = new Intent(ClientHome.this, Search.class);
+                        startActivity(searchActivity);
                         Toast.makeText(ClientHome.this,"Loading Second Fragment",Toast.LENGTH_LONG).show();
                          break;
 
