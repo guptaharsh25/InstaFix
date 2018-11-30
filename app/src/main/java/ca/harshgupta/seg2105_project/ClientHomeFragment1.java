@@ -1,5 +1,6 @@
 package ca.harshgupta.seg2105_project;
 
+import android.app.AlertDialog;
 import android.app.Fragment;
 import android.os.Bundle;
 import android.os.Handler;
@@ -8,7 +9,6 @@ import android.support.annotation.Nullable;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Adapter;
 import android.widget.ListView;
 import android.widget.TextView;
 
@@ -20,6 +20,8 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
+import org.adw.library.widgets.discreteseekbar.DiscreteSeekBar;
+
 public class ClientHomeFragment1 extends Fragment {
     private TextView clientText;
     View myView;
@@ -28,6 +30,9 @@ public class ClientHomeFragment1 extends Fragment {
 
     private AppointmentClientCustomAdapter appointmentAdapter;
     private ListView appointmentList;
+    private DiscreteSeekBar discreteSeekBar;
+    private TextView comment;
+
     private String [] keys;
 
 
@@ -71,6 +76,12 @@ public class ClientHomeFragment1 extends Fragment {
                 System.out.println(databaseError);
             }
         });
+        TextView temp = (TextView) myView.findViewById(R.id.currentAppointment);
+        temp.setOnClickListener(new View.OnClickListener() {
+            public void onClick(View v) {
+                addReview(v);
+            }
+        });
 
     }
 
@@ -84,5 +95,22 @@ public class ClientHomeFragment1 extends Fragment {
                 appointmentAdapter.notifyDataSetChanged();
             }
         },500); //1000ms = 1sec
+    }
+
+    public void addReview (View view){
+        LayoutInflater factory = LayoutInflater.from(myView.getContext());
+        view = factory.inflate(R.layout.client_review_dialog, null);
+        final AlertDialog addReview = new AlertDialog.Builder(view.getContext()).create();
+        addReview.setView(view);
+        addReview.show();
+
+        discreteSeekBar = myView.findViewById(R.id.discreteSeekBar);
+        discreteSeekBar.getProgress();
+        int rate = discreteSeekBar.getProgress();
+
+        comment = myView.findViewById(R.id.comment);
+        String commentText = comment.getText().toString();
+
+        Review review = new Review(rate, commentText);
     }
 }
