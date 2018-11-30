@@ -134,4 +134,8 @@ public class ClientHomeFragment1 extends Fragment {
     public void addReviewFirebase (Review review){
         Toast.makeText(myView.getContext(), review.getRate() + " " + review.getReview(), Toast.LENGTH_LONG).show();
     }
+
+
+
+
 }
