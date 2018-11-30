@@ -12,7 +12,7 @@
 
 
     <TextView
-        android:id="@+id/rateTitle"
+        android:id="@+id/setAvailability"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginStart="8dp"
@@ -59,7 +59,7 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/rateTitle" />
+        app:layout_constraintTop_toBottomOf="@+id/setAvailability" />
 
     <TextView
         android:id="@+id/textView2"
@@ -74,7 +74,7 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/rateTitle" />
+        app:layout_constraintTop_toBottomOf="@+id/setAvailability" />
 
     <EditText
         android:id="@+id/comment"
