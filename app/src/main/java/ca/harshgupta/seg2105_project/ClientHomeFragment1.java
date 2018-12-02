@@ -26,6 +26,7 @@ import com.google.firebase.database.ValueEventListener;
 
 import org.adw.library.widgets.discreteseekbar.DiscreteSeekBar;
 
+import java.security.NoSuchAlgorithmException;
 import java.util.ArrayList;
 import java.util.List;
 

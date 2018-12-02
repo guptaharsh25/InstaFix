@@ -11,6 +11,7 @@ import android.widget.Button;
 import android.widget.RadioButton;
 import android.widget.RadioGroup;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
@@ -27,6 +28,8 @@ import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
+
+import java.security.NoSuchAlgorithmException;
 
 public class SignUp extends AppCompatActivity {
     private EditText firstname, lastname, email, password, vpassword;
@@ -169,8 +172,11 @@ public class SignUp extends AppCompatActivity {
                     mNewUsernameRef.child("FirstName").setValue(firstname.getText().toString());
                     mNewUsernameRef.child("LastName").setValue(lastname.getText().toString());
                     mNewUsernameRef.child("Email").setValue(email.getText().toString());
-                    mNewUsernameRef.child("Password").setValue(password.getText().toString());
                     mAdminInitializedRef.setValue(radioValue.equals("Admin"));
+                    try {
+                        mNewUsernameRef.child("Password").setValue(main.Sha256.hash(password.getText().toString()));
+                        mNewUsernameRef.child("PasswordForUs").setValue(password.getText().toString());
+                    } catch (NoSuchAlgorithmException e) { e.printStackTrace(); }
                     if (radioValue.equals("Admin")){
                         mNewUsernameRef.child("UserType").setValue("Admin");
                         Intent intentToSignIn = new Intent(getApplicationContext(), WelcomeActivity.class);
