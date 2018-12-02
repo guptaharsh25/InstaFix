@@ -35,6 +35,7 @@ public class ClientHomeFragment1 extends Fragment {
     private FirebaseUser user;
     private DatabaseReference userInfo;
     private DatabaseReference mAppointments;
+    private DatabaseReference mUserOrders;
 
     private ListAdapter appointmentAdapter;
     private ListView appointmentList;
@@ -52,7 +53,10 @@ public class ClientHomeFragment1 extends Fragment {
         myView = inflater.inflate(R.layout.fragment_client_home, container, false);
 
         keys = new ArrayList<String>();
+        user = FirebaseAuth.getInstance().getCurrentUser();
+
         mAppointments = FirebaseDatabase.getInstance().getReference().child("Appointment");
+        mUserOrders = FirebaseDatabase.getInstance().getReference().child("Accounts").child(user.getUid()).child("Orders");
         clientAvailabilityHomeList = (ListView) myView.findViewById(R.id.listOfCurrentAppointments);
         instantiateKeys();
         return myView;
@@ -138,7 +142,7 @@ public class ClientHomeFragment1 extends Fragment {
 
     private void instantiateKeys(){
         keys.clear();
-        mAppointments.addValueEventListener(new ValueEventListener() {
+        mUserOrders.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
                 for(DataSnapshot uniqueKeySnapShot: dataSnapshot.getChildren()){
