@@ -2,6 +2,7 @@ package ca.harshgupta.seg2105_project;
 
 import android.app.AlertDialog;
 import android.app.Fragment;
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.os.Handler;
 import android.support.annotation.NonNull;
@@ -10,6 +11,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.ListAdapter;
 import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -24,24 +26,35 @@ import com.google.firebase.database.ValueEventListener;
 
 import org.adw.library.widgets.discreteseekbar.DiscreteSeekBar;
 
+import java.util.ArrayList;
+import java.util.List;
+
 public class ClientHomeFragment1 extends Fragment {
     private TextView clientText;
     View myView;
     private FirebaseUser user;
     private DatabaseReference userInfo;
+    private DatabaseReference mAppointments;
 
-    private AppointmentClientCustomAdapter appointmentAdapter;
+    private ListAdapter appointmentAdapter;
     private ListView appointmentList;
     private DiscreteSeekBar discreteSeekBar;
     private TextView comment;
 
-    private String [] keys;
+    private List<String> keys;
+    private String[] keyArray;
+    private ListView clientAvailabilityHomeList;
 
 
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, Bundle savedInstanceState) {
         myView = inflater.inflate(R.layout.fragment_client_home, container, false);
+
+        keys = new ArrayList<String>();
+        mAppointments = FirebaseDatabase.getInstance().getReference().child("Appointment");
+        clientAvailabilityHomeList = (ListView) myView.findViewById(R.id.listOfCurrentAppointments);
+        instantiateKeys();
         return myView;
     }
 
@@ -91,18 +104,6 @@ public class ClientHomeFragment1 extends Fragment {
 
     }
 
-    public void viewAppointmentAdapter(){
-        new Handler().postDelayed(new Runnable(){
-            @Override
-            public void run() {
-                appointmentAdapter = new AppointmentClientCustomAdapter(myView.getContext(), keys);
-                appointmentList = (ListView) myView.findViewById(R.id.listAvailabilites);
-                appointmentList.setAdapter(appointmentAdapter);
-                appointmentAdapter.notifyDataSetChanged();
-            }
-        },500); //1000ms = 1sec
-    }
-
     public void addReview (View view){
         LayoutInflater factory = LayoutInflater.from(myView.getContext());
         view = factory.inflate(R.layout.client_review_dialog, null);
@@ -133,5 +134,68 @@ public class ClientHomeFragment1 extends Fragment {
 
     public void addReviewFirebase (Review review){
         Toast.makeText(myView.getContext(), review.getRate() + " " + review.getReview(), Toast.LENGTH_LONG).show();
+    }
+
+    private void instantiateKeys(){
+        keys.clear();
+        mAppointments.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                for(DataSnapshot uniqueKeySnapShot: dataSnapshot.getChildren()){
+                    keys.add(uniqueKeySnapShot.getKey());
+                }
+                try {
+                    Thread.sleep(1000);
+                } catch (InterruptedException e) {
+                    e.printStackTrace();
+                }
+                //setClientAvailabilityAdapter();
+            }
+            @Override
+            public void onCancelled(@NonNull DatabaseError databaseError) {}
+        });
+    }
+
+    private void setClientAvailabilityAdapter (){
+        keyArray = new String[keys.size()];
+        keyArray = keys.toArray(keyArray);
+        //appointmentAdapter = new ClientAvailabilityHomeCustomAdapter(getActivity(), keyArray);
+        //clientAvailabilityHomeList.setAdapter(appointmentAdapter);
+        new addAppointmentsAsyncTask().execute();
+    }
+
+    //Code used to populate list Asynchronously due to multiple nested datasnapshots in appointmentAdapter
+    //Learned to use this class from
+    //https://github.com/commonsguy/cw-android/blob/master/Threads/Asyncer/src/com/commonsware/android/async/AsyncDemo.java7
+    //https://developer.android.com/reference/android/os/AsyncTask.html#onPostExecute(Result)
+    private class addAppointmentsAsyncTask extends AsyncTask<Void, String, String> {
+        @Override
+        protected void onPreExecute() {
+            // start loading animation maybe?
+        }
+        @Override
+        protected String doInBackground(Void... voids) {
+            for(String info : keyArray){
+                publishProgress(info);
+                try {
+                    Thread.sleep(1000);
+                } catch (InterruptedException e) {
+                    e.printStackTrace();
+                }
+            }
+            return "All the Information was Loaded Succesfully";
+        }
+        @Override
+        protected void onProgressUpdate(String... values){
+            appointmentAdapter = new ClientAvailabilityHomeCustomAdapter(getActivity(), keyArray);
+            clientAvailabilityHomeList.setAdapter(appointmentAdapter);
+        }
+        @Override
+        protected void onPostExecute(String result) {
+            // stop the loading animation or something
+            appointmentAdapter = new ClientAvailabilityHomeCustomAdapter(getActivity(), keyArray);
+            clientAvailabilityHomeList.setAdapter(appointmentAdapter);
+            Toast.makeText(getActivity(), result, Toast.LENGTH_SHORT).show();
+        }
     }
 }
