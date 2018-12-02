@@ -144,12 +144,7 @@ public class ClientHomeFragment1 extends Fragment {
                 for(DataSnapshot uniqueKeySnapShot: dataSnapshot.getChildren()){
                     keys.add(uniqueKeySnapShot.getKey());
                 }
-                try {
-                    Thread.sleep(1000);
-                } catch (InterruptedException e) {
-                    e.printStackTrace();
-                }
-                //setClientAvailabilityAdapter();
+                setClientAvailabilityAdapter();
             }
             @Override
             public void onCancelled(@NonNull DatabaseError databaseError) {}
@@ -193,8 +188,8 @@ public class ClientHomeFragment1 extends Fragment {
         @Override
         protected void onPostExecute(String result) {
             // stop the loading animation or something
-            appointmentAdapter = new ClientAvailabilityHomeCustomAdapter(getActivity(), keyArray);
-            clientAvailabilityHomeList.setAdapter(appointmentAdapter);
+            //appointmentAdapter = new ClientAvailabilityHomeCustomAdapter(getActivity(), keyArray);
+            //clientAvailabilityHomeList.setAdapter(appointmentAdapter);
             Toast.makeText(getActivity(), result, Toast.LENGTH_SHORT).show();
         }
     }
