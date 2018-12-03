@@ -81,6 +81,14 @@ public class ServiceProviderHomeFragment1 extends Fragment {
             }
         });
 
+        userInfo.child("Availability").child(Integer.toString(0)).child("Date").setValue("Sunday");
+        userInfo.child("Availability").child(Integer.toString(1)).child("Date").setValue("Monday");
+        userInfo.child("Availability").child(Integer.toString(2)).child("Date").setValue("Tuesday");
+        userInfo.child("Availability").child(Integer.toString(3)).child("Date").setValue("Wednesday");
+        userInfo.child("Availability").child(Integer.toString(4)).child("Date").setValue("Thursday");
+        userInfo.child("Availability").child(Integer.toString(5)).child("Date").setValue("Friday");
+        userInfo.child("Availability").child(Integer.toString(6)).child("Date").setValue("Saturday");
+
         userInfo.child("AverageRating").addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
