@@ -36,6 +36,7 @@ public class ClientHomeFragment1 extends Fragment {
     View myView;
     private FirebaseUser user;
     private DatabaseReference userInfo;
+    private FirebaseAuth mAuth;
     private DatabaseReference mAppointments;
     private DatabaseReference mUserOrders;
 
@@ -49,6 +50,10 @@ public class ClientHomeFragment1 extends Fragment {
     private ListView clientAvailabilityHomeList;
     private AlertDialog addReview;
 
+    private DatabaseReference mRootRef;
+    private DatabaseReference mUserRef;
+    private String selectedListItem;
+
 
 
     @Nullable
@@ -59,17 +64,40 @@ public class ClientHomeFragment1 extends Fragment {
         keys = new ArrayList<String>();
         user = FirebaseAuth.getInstance().getCurrentUser();
 
+        mAuth = FirebaseAuth.getInstance();
+        mRootRef = FirebaseDatabase.getInstance().getReference();
+
+        mUserRef = mRootRef.child("Accounts").child(user.getUid());
+
         mAppointments = FirebaseDatabase.getInstance().getReference().child("Appointment");
         mUserOrders = FirebaseDatabase.getInstance().getReference().child("Accounts").child(user.getUid()).child("Orders");
         clientAvailabilityHomeList = (ListView) myView.findViewById(R.id.listOfCurrentAppointments);
         instantiateKeys();
         clientAvailabilityHomeList.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-                                                              @Override
-                                                              public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
-                                                                  final String selectedListItem = ((TextView) view.findViewById(R.id.text)).getText().toString();
-                                                              }
-                                                          }
-        );
+            @Override
+            public void onItemClick(AdapterView<?> adapterView, final View view, int i, long l) {
+                selectedListItem = ((TextView) view.findViewById(R.id.textClientAvailabilityHomeIdOrder)).getText().toString();
+                mUserOrders.child(selectedListItem).addValueEventListener(new ValueEventListener() {
+                    @Override
+                    public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                        String status = dataSnapshot.getValue().toString();
+                        if (status.equals("Completed"))
+                            addReview(view);
+
+                        if (status.equals("Pending")){
+                            //Edit and remove
+                        }
+                       
+                    }
+
+                    @Override
+                    public void onCancelled(@NonNull DatabaseError databaseError) {
+
+                    }
+                });
+                }
+        });
+
         return myView;
 
 
@@ -145,17 +173,17 @@ public class ClientHomeFragment1 extends Fragment {
     }
 
     public void addReview (View view){
-
         addReview.show();
-
-
-
-//
-
     }
 
     public void addReviewFirebase (Review review){
-        Toast.makeText(myView.getContext(), review.getRate() + " " + review.getReview(), Toast.LENGTH_LONG).show();
+
+        Toast.makeText(myView.getContext(), "Review Successful", Toast.LENGTH_LONG).show();
+        mAppointments.child(selectedListItem).child("Rating").setValue(review.getRate());
+        mUserRef.child("Orders").child(selectedListItem).setValue("Rated");
+        mAppointments.child(selectedListItem).child("OrderStatus").setValue("Rated");
+
+        instantiateKeys();
     }
 
     private void instantiateKeys(){
@@ -195,12 +223,12 @@ public class ClientHomeFragment1 extends Fragment {
             for(String info : keyArray){
                 publishProgress(info);
                 try {
-                    Thread.sleep(1000);
+                    Thread.sleep(500);
                 } catch (InterruptedException e) {
                     e.printStackTrace();
                 }
             }
-            return "All the Information was Loaded Succesfully";
+            return "Loading";
         }
         @Override
         protected void onProgressUpdate(String... values){
