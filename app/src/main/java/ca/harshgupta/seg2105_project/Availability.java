@@ -11,9 +11,10 @@ public class Availability {
 
     private double startTimeDouble;
     private double endTimeDouble;
-    public Availability (){
 
+    public Availability (){
     }
+
     public Availability(String date, String timeStart, String timeEnd) {
         this.date = date;
         this.timeStart = timeStart;

@@ -214,6 +214,8 @@ public class ServiceProviderHomeFragment1 extends Fragment {
     private class addAvailabilityAsyncTask extends AsyncTask<Void, String, String> {
         @Override
         protected void onPreExecute() {
+            availabilityAdapter = new AvailabilityCustomAdapter(getActivity(), keyArray);
+            listAvailabilities.setAdapter(availabilityAdapter);
         }
         @Override
         protected String doInBackground(Void... voids) {
@@ -224,8 +226,6 @@ public class ServiceProviderHomeFragment1 extends Fragment {
         }
         @Override
         protected void onProgressUpdate(String... values){
-            availabilityAdapter = new AvailabilityCustomAdapter(getActivity(), keyArray);
-            listAvailabilities.setAdapter(availabilityAdapter);
         }
         @Override
         protected void onPostExecute(String result) {
