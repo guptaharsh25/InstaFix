@@ -20,14 +20,6 @@
             android:layout_weight="0"
             android:orientation="vertical">
 
-            <android.support.v7.widget.Toolbar
-                android:id="@+id/toolbar"
-                android:layout_width="match_parent"
-                android:layout_height="56dp"
-                android:layout_weight="0"
-                android:background="@color/colorPrimary"
-                android:theme="@style/ThemeOverlay.AppCompat.ActionBar" />
-
             <FrameLayout
                 android:id="@+id/containerServiceProvider"
                 android:layout_width="match_parent"

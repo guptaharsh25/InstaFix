@@ -27,6 +27,8 @@ import android.widget.Toast;
 
 import com.google.firebase.auth.FirebaseAuth;
 
+import java.security.NoSuchAlgorithmException;
+
 public class ClientHome extends AppCompatActivity{
     private DrawerLayout mDrawerLayout;
 
@@ -62,7 +64,6 @@ public class ClientHome extends AppCompatActivity{
                                 new ClientHomeFragment1()).commit();
                         actionBar.setTitle("Home");
                         Toast.makeText(ClientHome.this,"Loading First Fragment",Toast.LENGTH_LONG).show();
-                        break;
 
                     case R.id.nav_fragment_client_home_2:
                         /*fragmentManager.beginTransaction().replace(R.id.containerClient,
