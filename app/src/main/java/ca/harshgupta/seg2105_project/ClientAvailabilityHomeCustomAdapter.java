@@ -19,7 +19,7 @@ public class ClientAvailabilityHomeCustomAdapter extends ArrayAdapter{
     private final Context context;
     private final String[] myKeys;
     private DatabaseReference mAppointments, mAccounts, mServices;
-    private TextView dateText, serviceText, spText, timeText;
+    private TextView dateText, serviceText, spText, timeText, spIDText, orderIDText;
 
     public ClientAvailabilityHomeCustomAdapter(Context context, String[] AppointmentList){
         super(context, R.layout.client_availability_home_list_layout, AppointmentList);
@@ -36,8 +36,12 @@ public class ClientAvailabilityHomeCustomAdapter extends ArrayAdapter{
         mServices = FirebaseDatabase.getInstance().getReference().child("Services");
         setValues(position, rowView, "Date");
         setValues(position, rowView, "Service");
-        setValues(position, rowView, "SPID");
+        setValues(position, rowView, "SPID"); //Does IdSP and Company Name
         setValues(position, rowView, "time");
+
+        orderIDText = (TextView) rowView.findViewById(R.id.textClientAvailabilityHomeIdOrder);  //ID order doesnt need snapshot
+        orderIDText.setText(myKeys[position]);
+
         new Handler().postDelayed(new Runnable() {
             @Override
             public void run() { } },1000); //1000ms = 1sec
@@ -61,6 +65,10 @@ public class ClientAvailabilityHomeCustomAdapter extends ArrayAdapter{
                             timeText.setText(outputTime);
                             break;
                         case "SPID":
+                            spIDText = (TextView) rowView.findViewById(R.id.textClientAvailabilityHomeIdSP);
+                            String outputSPID = dataSnapshot.getValue(String.class);
+                            spIDText.setText(outputSPID);
+
                             spText = (TextView) rowView.findViewById(R.id.textClientAvailabilityHomeSP);
                             mAccounts.child(dataSnapshot.getValue(String.class)).child("CompanyInfo")
                                     .child("Company").addValueEventListener(new ValueEventListener() {
@@ -68,7 +76,6 @@ public class ClientAvailabilityHomeCustomAdapter extends ArrayAdapter{
                                 public void onDataChange(@NonNull DataSnapshot dataSnapshot2) {
                                     if (dataSnapshot2.getValue() != null && dataSnapshot.getValue() != null) {
                                         String outputSP = dataSnapshot2.getValue(String.class);
-                                        System.out.println(outputSP);
                                         spText.setText(outputSP);
                                     }
                                 }

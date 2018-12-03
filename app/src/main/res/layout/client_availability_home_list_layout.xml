@@ -20,6 +20,42 @@
             android:textStyle="bold" />
 
         <TextView
+            android:id="@+id/textClientAvailabilityHomeIdOrder"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:gravity="center_vertical"
+            android:padding="8sp"
+            android:text="ID Order"
+            android:textSize="18sp"
+            android:textStyle="bold"
+            android:visibility="gone" />
+
+        <TextView
+            android:id="@+id/textClientAvailabilityHomeIdClient"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:gravity="center_vertical"
+            android:padding="8sp"
+            android:text="ID Client"
+            android:textSize="18sp"
+            android:textStyle="bold"
+            android:visibility="gone" />
+
+        <TextView
+            android:id="@+id/textClientAvailabilityHomeIdSP"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:gravity="center_vertical"
+            android:padding="8sp"
+            android:text="ID SP"
+            android:textSize="18sp"
+            android:textStyle="bold"
+            android:visibility="gone" />
+
+        <TextView
             android:id="@+id/textClientAvailabilityHomeService"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
