@@ -10,6 +10,7 @@ import android.support.annotation.Nullable;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
 import android.widget.Button;
 import android.widget.ListAdapter;
 import android.widget.ListView;
@@ -45,6 +46,8 @@ public class ClientHomeFragment1 extends Fragment {
     private List<String> keys;
     private String[] keyArray;
     private ListView clientAvailabilityHomeList;
+    private AlertDialog addReview;
+
 
 
     @Nullable
@@ -59,8 +62,18 @@ public class ClientHomeFragment1 extends Fragment {
         mUserOrders = FirebaseDatabase.getInstance().getReference().child("Accounts").child(user.getUid()).child("Orders");
         clientAvailabilityHomeList = (ListView) myView.findViewById(R.id.listOfCurrentAppointments);
         instantiateKeys();
+        clientAvailabilityHomeList.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+                                                              @Override
+                                                              public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
+                                                                  final String selectedListItem = ((TextView) view.findViewById(R.id.text)).getText().toString();
+                                                              }
+                                                          }
+        );
         return myView;
+
+
     }
+
 
     public void onStart (){
         super.onStart();
@@ -106,33 +119,37 @@ public class ClientHomeFragment1 extends Fragment {
             });
 
 
+        LayoutInflater factory = LayoutInflater.from(myView.getContext());
+        myView = factory.inflate(R.layout.client_review_dialog, null);
+        addReview = new AlertDialog.Builder(myView.getContext()).create();
+        addReview.setView(myView);
+
+        Button submit = (Button) myView.findViewById(R.id.submitReview);
+
+
+        submit.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                discreteSeekBar = myView.findViewById(R.id.discreteSeekBar);
+                comment = myView.findViewById(R.id.comment);
+                int rate = discreteSeekBar.getProgress();
+                String commentText = comment.getText().toString();
+                Review review = new Review(rate, commentText);
+                addReviewFirebase(review);
+                addReview.dismiss();
+
+            }
+        });
+
     }
 
     public void addReview (View view){
-        LayoutInflater factory = LayoutInflater.from(myView.getContext());
-        view = factory.inflate(R.layout.client_review_dialog, null);
-        final AlertDialog addReview = new AlertDialog.Builder(view.getContext()).create();
-        addReview.setView(view);
+
         addReview.show();
 
-        discreteSeekBar = myView.findViewById(R.id.discreteSeekBar);
 
-        comment = getActivity().findViewById(R.id.comment);
 
-//        Button submit = (Button) myView.findViewById(R.id.submitReview);
 //
-//            submit.setOnClickListener(new View.OnClickListener() {
-//                @Override
-//                public void onClick(View v) {
-//
-//                    int rate = discreteSeekBar.getProgress();
-//                    String commentText = comment.getText().toString();
-//                    Review review = new Review(rate, commentText);
-//                    addReviewFirebase(review);
-//                    addReview.dismiss();
-//
-//                }
-//            });
 
     }
 
