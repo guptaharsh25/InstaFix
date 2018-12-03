@@ -54,6 +54,7 @@ public class ClientHomeFragment1 extends Fragment {
     private DatabaseReference mUserRef;
     private String selectedListItem;
 
+    private addAppointmentsAsyncTask addingToListTask;
 
 
     @Nullable
@@ -166,7 +167,6 @@ public class ClientHomeFragment1 extends Fragment {
                 Review review = new Review(rate, commentText);
                 addReviewFirebase(review);
                 addReview.dismiss();
-
             }
         });
 
@@ -182,8 +182,6 @@ public class ClientHomeFragment1 extends Fragment {
         mAppointments.child(selectedListItem).child("Rating").setValue(review.getRate());
         mUserRef.child("Orders").child(selectedListItem).setValue("Rated");
         mAppointments.child(selectedListItem).child("OrderStatus").setValue("Rated");
-
-        instantiateKeys();
     }
 
     private void instantiateKeys(){
@@ -206,7 +204,8 @@ public class ClientHomeFragment1 extends Fragment {
         keyArray = keys.toArray(keyArray);
         //appointmentAdapter = new ClientAvailabilityHomeCustomAdapter(getActivity(), keyArray);
         //clientAvailabilityHomeList.setAdapter(appointmentAdapter);
-        new addAppointmentsAsyncTask().execute();
+        addingToListTask = new addAppointmentsAsyncTask();
+        addingToListTask.execute();
     }
 
     //Code used to populate list Asynchronously due to multiple nested datasnapshots in appointmentAdapter
@@ -216,7 +215,7 @@ public class ClientHomeFragment1 extends Fragment {
     private class addAppointmentsAsyncTask extends AsyncTask<Void, String, String> {
         @Override
         protected void onPreExecute() {
-            // start loading animation maybe?
+            // start loading animation
         }
         @Override
         protected String doInBackground(Void... voids) {
@@ -232,14 +231,14 @@ public class ClientHomeFragment1 extends Fragment {
         }
         @Override
         protected void onProgressUpdate(String... values){
-            appointmentAdapter = new ClientAvailabilityHomeCustomAdapter(getActivity(), keyArray);
-            clientAvailabilityHomeList.setAdapter(appointmentAdapter);
+            keys.clear();
+            clientAvailabilityHomeList.setAdapter(null);
         }
         @Override
         protected void onPostExecute(String result) {
             // stop the loading animation or something
-            //appointmentAdapter = new ClientAvailabilityHomeCustomAdapter(getActivity(), keyArray);
-            //clientAvailabilityHomeList.setAdapter(appointmentAdapter);
+            appointmentAdapter = new ClientAvailabilityHomeCustomAdapter(getActivity(), keyArray);
+            clientAvailabilityHomeList.setAdapter(appointmentAdapter);
             Toast.makeText(getActivity(), result, Toast.LENGTH_SHORT).show();
         }
     }
