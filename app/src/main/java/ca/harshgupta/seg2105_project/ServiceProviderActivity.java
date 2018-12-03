@@ -132,7 +132,7 @@ public class ServiceProviderActivity extends Activity {
         }
     }
 
-    public void addServices(View view){
+    /*public void addServices(View view){
         if(listSet == 1){
             setKeys(0);
             setAdapterServices();
@@ -146,7 +146,7 @@ public class ServiceProviderActivity extends Activity {
             listTypeText.setText("Your Services: ");
             removeServices();
         }
-    }
+    }*/
 
     public void updateServicesList(){
         if(allKeys!=null){

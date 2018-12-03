@@ -167,7 +167,7 @@ public class ClientHomeFragment1 extends Fragment {
     //Learned to use this class from
     //https://github.com/commonsguy/cw-android/blob/master/Threads/Asyncer/src/com/commonsware/android/async/AsyncDemo.java7
     //https://developer.android.com/reference/android/os/AsyncTask.html#onPostExecute(Result)
-    private class addAppointmentsAsyncTask extends AsyncTask<Void, String, String> {
+    class addAppointmentsAsyncTask extends AsyncTask<Void, String, String> {
         @Override
         protected void onPreExecute() {
             // start loading animation maybe?

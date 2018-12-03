@@ -95,7 +95,6 @@ public class AvailabilityCustomAdapter extends ArrayAdapter {
             @Override
             public void onCancelled(@NonNull DatabaseError databaseError) { }
         });
-
         return rowView;
     }
 

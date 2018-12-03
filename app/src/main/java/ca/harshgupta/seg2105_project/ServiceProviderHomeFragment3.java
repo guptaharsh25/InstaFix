@@ -26,6 +26,9 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
+import java.util.ArrayList;
+import java.util.List;
+
 public class ServiceProviderHomeFragment3 extends Fragment {
 
     private FirebaseAuth mAuth;
@@ -51,40 +54,35 @@ public class ServiceProviderHomeFragment3 extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, Bundle savedInstanceState) {
         myView = inflater.inflate(R.layout.fragment_service_provider_home_3, container, false);
-        return myView;
-    }
-
-
-
-
-}
-
-/*
-        setContentView(R.layout.service_layout);
-        setContentView(R.layout.activity_service_provider);
-
-        public void onCreate(Bundle savedInstanceState){
-        super.onCreate(savedInstanceState);
 
         mAuth = FirebaseAuth.getInstance();
         userInfo = FirebaseAuth.getInstance().getCurrentUser();
-
         mRootRef = FirebaseDatabase.getInstance().getReference();
+
         mServicesRef = mRootRef.child("Services");
         mUserRef = mRootRef.child("Accounts").child(userInfo.getUid());
 
-        serviceSPList = (ListView) myView.findViewById(R.id.listSPServices);
+        serviceSPList = (ListView) myView.findViewById(R.id.listSPServices2);
         addServices = myView.findViewById(R.id.btnSPAdd2);
         listTypeText = myView.findViewById(R.id.textSPServices3);
 
         listSet = 1;
 
+        //instantiateAllKeys();
         setKeys(1);
         setAdapterServices();
         removeServices();
+        addServices.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                addService();
+            }
+        });
+
+        return myView;
     }
 
-        private void instantiateKeys(DatabaseReference reference){
+    private void instantiateKeys(DatabaseReference reference){
         reference.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
@@ -118,16 +116,16 @@ public class ServiceProviderHomeFragment3 extends Fragment {
         });
     }
 
-        public void setAdapterServices(){
+    public void setAdapterServices(){
         new Handler().postDelayed(new Runnable(){
             @Override
             public void run() {
                 if(listSet==0){
-                    serviceAdapter = new ServiceCustomAdapter(ServiceProviderHomeFragment3.this, allKeys);
+                    serviceAdapter = new ServiceCustomAdapter(getActivity(), allKeys);
                 } else{
-                    serviceAdapter = new ServiceCustomAdapter(ServiceProviderHomeFragment3.this, keys);
+                    serviceAdapter = new ServiceCustomAdapter(getActivity(), keys);
                 }
-                serviceSPList = (ListView) myView.findViewById(R.id.listSPServices);
+                serviceSPList = (ListView) myView.findViewById(R.id.listSPServices2);
                 serviceSPList.setAdapter(serviceAdapter);
                 serviceAdapter.notifyDataSetChanged();
             }
@@ -144,7 +142,7 @@ public class ServiceProviderHomeFragment3 extends Fragment {
         }
     }
 
-    public void addServices(View view){
+    public void addService(){
         if(listSet == 1){
             setKeys(0);
             setAdapterServices();
@@ -162,11 +160,11 @@ public class ServiceProviderHomeFragment3 extends Fragment {
 
     public void updateServicesList(){
         if(allKeys!=null){
-            serviceAdapter = new ServiceCustomAdapter(ServiceProviderActivity.this, allKeys);
-            serviceSPList = (ListView) myView.findViewById(R.id.listSPServices);
+            serviceAdapter = new ServiceCustomAdapter(getActivity(), allKeys);
+            serviceSPList = (ListView) myView.findViewById(R.id.listSPServices2);
             serviceSPList.setAdapter(serviceAdapter);
             serviceAdapter.notifyDataSetChanged();
-            final AlertDialog.Builder alertDialog = new AlertDialog.Builder(this);
+            final AlertDialog.Builder alertDialog = new AlertDialog.Builder(getActivity());
             serviceSPList.setOnItemClickListener(new AdapterView.OnItemClickListener() {
                 @Override
                 public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
@@ -177,7 +175,7 @@ public class ServiceProviderHomeFragment3 extends Fragment {
                             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
                                 if(dataSnapshot.getValue()!=null && dataSnapshot.getValue(String.class).equals(selectedListItem)){
                                     final String selectedItemKey = key;
-                                    final AlertDialog alertDialog = new AlertDialog.Builder(ServiceProviderActivity.this).create();
+                                    final AlertDialog alertDialog = new AlertDialog.Builder(getActivity()).create();
                                     alertDialog.setTitle("Add Service");
                                     alertDialog.setMessage("Would you like to do with the service: " + selectedListItem);
                                     alertDialog.setButton(Dialog.BUTTON_POSITIVE,"Add", new DialogInterface.OnClickListener() {
@@ -197,7 +195,6 @@ public class ServiceProviderHomeFragment3 extends Fragment {
                                     }
                                 }
                             }
-
                             @Override
                             public void onCancelled(@NonNull DatabaseError databaseError) {
                             }
@@ -211,22 +208,22 @@ public class ServiceProviderHomeFragment3 extends Fragment {
     public void addServiceKey(String itemKey){
         for(String key: keys){
             if(itemKey.equals(key)){
-                Toast.makeText(ServiceProviderActivity.this,"Service Already Provided",Toast.LENGTH_LONG).show();
+                Toast.makeText(getActivity(),"Service Already Provided",Toast.LENGTH_LONG).show();
                 return;
             }
         }
         mUserRef.child("ProvidedServices").child(itemKey).setValue(1);
         setKeys(0);
-        Toast.makeText(ServiceProviderActivity.this,"Service Added",Toast.LENGTH_LONG).show();
+        Toast.makeText(getActivity(),"Service Added",Toast.LENGTH_LONG).show();
     }
 
     public void removeServices() {
         if(keys!=null){
-            serviceAdapter = new ServiceCustomAdapter(ServiceProviderActivity.this, keys);
-            serviceSPList = (ListView) myView.findViewById(R.id.listSPServices);
+            serviceAdapter = new ServiceCustomAdapter(getActivity(), keys);
+            serviceSPList = (ListView) myView.findViewById(R.id.listSPServices2);
             serviceSPList.setAdapter(serviceAdapter);
             serviceAdapter.notifyDataSetChanged();
-            final AlertDialog.Builder alertDialog = new AlertDialog.Builder(this);
+            final AlertDialog.Builder alertDialog = new AlertDialog.Builder(getActivity());
             serviceSPList.setOnItemClickListener(new AdapterView.OnItemClickListener() {
                 @Override
                 public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
@@ -237,7 +234,7 @@ public class ServiceProviderHomeFragment3 extends Fragment {
                             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
                                 if(dataSnapshot.getValue()!=null && dataSnapshot.getValue(String.class).equals(selectedListItem)){
                                     final String selectedItemKey = key;
-                                    final AlertDialog alertDialog = new AlertDialog.Builder(ServiceProviderActivity.this).create();
+                                    final AlertDialog alertDialog = new AlertDialog.Builder(getActivity()).create();
                                     alertDialog.setTitle("Remove Service");
                                     alertDialog.setMessage("Would you like to do with the service: " + selectedListItem);
                                     alertDialog.setButton(Dialog.BUTTON_POSITIVE,"Remove", new DialogInterface.OnClickListener() {
@@ -275,8 +272,8 @@ public class ServiceProviderHomeFragment3 extends Fragment {
                 mUserRef.child("ProvidedServices").child(itemKey).removeValue();
                 setKeys(1);
                 setAdapterServices();
-                Toast.makeText(ServiceProviderActivity.this,"Service Removed",Toast.LENGTH_LONG).show();
+                Toast.makeText(getActivity(),"Service Removed",Toast.LENGTH_LONG).show();
             }
         }
     }
-*/
+}
