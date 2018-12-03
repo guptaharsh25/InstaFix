@@ -63,15 +63,15 @@ public class ClientHome extends AppCompatActivity{
                         fragmentManager.beginTransaction().replace(R.id.containerClient,
                                 new ClientHomeFragment1()).commit();
                         actionBar.setTitle("Home");
-                        Toast.makeText(ClientHome.this,"Loading First Fragment",Toast.LENGTH_LONG).show();
+                        break;
 
                     case R.id.nav_fragment_client_home_2:
-                        /*fragmentManager.beginTransaction().replace(R.id.containerClient,
+                        fragmentManager.beginTransaction().replace(R.id.containerClient,
                                 new ClientHomeFragment2()).commit();
-                        actionBar.setTitle("Find Services");*/
-                        Intent searchActivity = new Intent(ClientHome.this, Search.class);
-                        startActivity(searchActivity);
-                        Toast.makeText(ClientHome.this,"Loading Second Fragment",Toast.LENGTH_LONG).show();
+                        actionBar.setTitle("Find Services");
+//                        Intent searchActivity = new Intent(ClientHome.this, Search.class);
+//                        startActivity(searchActivity);
+//                        Toast.makeText(ClientHome.this,"Loading Second Fragment",Toast.LENGTH_LONG).show();
                          break;
 
                     case R.id.nav_fragment_client_home_3:
@@ -90,6 +90,7 @@ public class ClientHome extends AppCompatActivity{
 
                 // For example, swap UI fragments here
                 mDrawerLayout.closeDrawers();
+
                 return true;
             }
         });
@@ -104,20 +105,24 @@ public class ClientHome extends AppCompatActivity{
                     @Override
                     public void onDrawerOpened(View drawerView) {
                         // Respond when the drawer is opened
+                        mDrawerLayout.setDrawerLockMode(DrawerLayout.LOCK_MODE_UNLOCKED);
                     }
 
                     @Override
                     public void onDrawerClosed(View drawerView) {
                         // Respond when the drawer is closed
+                        mDrawerLayout.setDrawerLockMode(DrawerLayout.LOCK_MODE_UNLOCKED);
                     }
 
                     @Override
                     public void onDrawerStateChanged(int newState) {
                         // Respond when the drawer motion state changes
+                        mDrawerLayout.setDrawerLockMode(DrawerLayout.LOCK_MODE_UNLOCKED);
                     }
                 }
         );
 
+        mDrawerLayout.setDrawerLockMode(DrawerLayout.LOCK_MODE_UNLOCKED);
     }
 
     @Override
@@ -125,8 +130,10 @@ public class ClientHome extends AppCompatActivity{
         switch (item.getItemId()) {
             case android.R.id.home:
                 mDrawerLayout.openDrawer(GravityCompat.START);
+                mDrawerLayout.setDrawerLockMode(DrawerLayout.LOCK_MODE_UNLOCKED);
                 return true;
         }
+        mDrawerLayout.setDrawerLockMode(DrawerLayout.LOCK_MODE_UNLOCKED);
         return super.onOptionsItemSelected(item);
     }
 }

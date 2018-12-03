@@ -88,7 +88,7 @@ public class ClientHomeFragment1 extends Fragment {
                         if (status.equals("Pending")){
                             //Edit and remove
                         }
-                       
+
                     }
 
                     @Override
