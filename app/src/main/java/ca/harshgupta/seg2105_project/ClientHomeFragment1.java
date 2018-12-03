@@ -39,6 +39,7 @@ public class ClientHomeFragment1 extends Fragment {
     private FirebaseAuth mAuth;
     private DatabaseReference mAppointments;
     private DatabaseReference mUserOrders;
+    private DatabaseReference mSP;
 
     private ListAdapter appointmentAdapter;
     private ListView appointmentList;
@@ -53,6 +54,7 @@ public class ClientHomeFragment1 extends Fragment {
     private DatabaseReference mRootRef;
     private DatabaseReference mUserRef;
     private String selectedListItem;
+    private String selectedListItemSP;
 
     private addAppointmentsAsyncTask addingToListTask;
 
@@ -67,6 +69,7 @@ public class ClientHomeFragment1 extends Fragment {
 
         mAuth = FirebaseAuth.getInstance();
         mRootRef = FirebaseDatabase.getInstance().getReference();
+        mSP = FirebaseDatabase.getInstance().getReference().child("Accounts");
 
         mUserRef = mRootRef.child("Accounts").child(user.getUid());
 
@@ -78,6 +81,7 @@ public class ClientHomeFragment1 extends Fragment {
             @Override
             public void onItemClick(AdapterView<?> adapterView, final View view, int i, long l) {
                 selectedListItem = ((TextView) view.findViewById(R.id.textClientAvailabilityHomeIdOrder)).getText().toString();
+                selectedListItemSP = ((TextView) view.findViewById(R.id.textClientAvailabilityHomeIdSP)).getText().toString();
                 mUserOrders.child(selectedListItem).addValueEventListener(new ValueEventListener() {
                     @Override
                     public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
@@ -182,6 +186,7 @@ public class ClientHomeFragment1 extends Fragment {
         mAppointments.child(selectedListItem).child("Rating").setValue(review.getRate());
         mUserRef.child("Orders").child(selectedListItem).setValue("Rated");
         mAppointments.child(selectedListItem).child("OrderStatus").setValue("Rated");
+        mSP.child(selectedListItemSP).child("Orders").child(selectedListItem).setValue("Rated");
     }
 
     private void instantiateKeys(){
