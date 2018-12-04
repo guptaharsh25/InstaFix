@@ -74,18 +74,14 @@ public class ClientHome extends AppCompatActivity{
 //                        Toast.makeText(ClientHome.this,"Loading Second Fragment",Toast.LENGTH_LONG).show();
                          break;
 
-                    case R.id.nav_fragment_client_home_3:
-                        fragmentManager.beginTransaction().replace(R.id.containerClient,
-                                new ClientHomeFragment3()).commit();
-                        actionBar.setTitle("Fragment 3");
-                        Toast.makeText(ClientHome.this,"Loading Third Fragment",Toast.LENGTH_LONG).show();
-                        break;
+
                     case R.id.nav_fragment_client_signout:
                         Toast.makeText(ClientHome.this,"Signing Out",Toast.LENGTH_LONG).show();
                         FirebaseAuth.getInstance().signOut();
                         Intent intentToSignOut = new Intent(getApplicationContext(), MainActivity.class);
                         startActivityForResult(intentToSignOut,0);
                         ClientHomeFragment1.stopAsyncClient();
+
                         break;
                 }
 
