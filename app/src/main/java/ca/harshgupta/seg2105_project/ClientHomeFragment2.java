@@ -6,12 +6,12 @@ import android.os.Bundle;
 import android.os.Handler;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
-import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AlertDialog;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ListView;
@@ -36,7 +36,6 @@ public class ClientHomeFragment2 extends Fragment {
     View myView;
 
     private FirebaseAuth mAuth;
-    private FirebaseAuth.AuthStateListener mAuthListener;
 
     private DatabaseReference mRootRef;
     private DatabaseReference mServicesRef;
@@ -57,8 +56,6 @@ public class ClientHomeFragment2 extends Fragment {
 
     private Button search;
     private Button calendar;
-
-    private ActionBar actionBar;
 
     @Nullable
     @Override
@@ -99,14 +96,6 @@ public class ClientHomeFragment2 extends Fragment {
             }
         });
 
-
-
-//        actionBar = getSupportActionBar();
-//        actionBar.setDisplayHomeAsUpEnabled(true);
-//        actionBar.setHomeAsUpIndicator(R.drawable.ic_menu);
-
-        //NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view_client);
-        //navigationView.setNavigationItemSelectedListener(this);
         return myView;
     }
 
@@ -153,7 +142,6 @@ public class ClientHomeFragment2 extends Fragment {
         final Double rate = (double) seekBar.getProgress();
 
         //Ask user for input if no inputs entered then display all services and providers
-
         if(allKeys!=null){
             for(final String key: allKeys){
                 //Search all services
@@ -178,8 +166,12 @@ public class ClientHomeFragment2 extends Fragment {
                                         double initial = -1.0;
                                         double fin = -1.0;
                                         try{
-                                            initial = Double.parseDouble(start.getText().toString());
-                                            fin = Double.parseDouble(end.getText().toString());
+                                            initial = Double.parseDouble(start.getText().toString
+                                                    ().substring(0,2) +
+                                                    start.getText().toString().substring(4));
+                                            fin = Double.parseDouble(end.getText().toString
+                                                    ().substring(0,2) +
+                                                    end.getText().toString().substring(4));
                                         } catch (Exception e){}
                                         tempAvail[1] = Double.toString(initial);
                                         tempAvail[2] = Double.toString(fin);
@@ -288,7 +280,8 @@ public class ClientHomeFragment2 extends Fragment {
         });
     }
 
-    private void searchRate(final String user, final String key, final double reqRate, final String[] avail){
+    private void searchRate(final String user, final String key, final double reqRate, final
+    String[] avail){
         final String serviceName = ((EditText) myView.findViewById(R.id.txtSearch)).getText().toString().toLowerCase();
         Double rate = (double) seekBar.getProgress();
         mUserRef.child(user).child("AverageRating").addValueEventListener(new ValueEventListener() {
@@ -312,7 +305,8 @@ public class ClientHomeFragment2 extends Fragment {
         });
     }
 
-    private void searchServicesProvided(final String user, final String key, final double rate, final String[] avail){
+    private void searchServicesProvided(final String user, final String key, final double rate,
+                                        final String[] avail){
         mUserRef.child(user).child("ProvidedServices").addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
@@ -334,8 +328,9 @@ public class ClientHomeFragment2 extends Fragment {
 
     private void searchAvailability(final String user, final String key, final String date, final
     String tStart, final String tEnd){
-        final double initial = Double.parseDouble(tStart);
-        final double fin = Double.parseDouble(tEnd);
+        final double initial = Double.parseDouble(tStart.substring(0,2) + "."
+                + tStart.substring(4));
+        final double fin = Double.parseDouble(tEnd.substring(0,2) + "." + tStart.substring(4));
 
         if(date.equals("Day")){
             keys.add(key);
@@ -357,9 +352,11 @@ public class ClientHomeFragment2 extends Fragment {
                             if(postSnapshot.getKey().equals("Date")){
                                 day = value;
                             } else if(postSnapshot.getKey().equals("Start Time")){
-                                start = Double.parseDouble(value);
+                                start = Double.parseDouble(value.substring(0,
+                                        2)+"."+value.substring(3));
                             } else if(postSnapshot.getKey().equals("End Time")){
-                                end = Double.parseDouble(value);
+                                end = Double.parseDouble(value.substring(0,2)+"."+value.substring
+                                        (3));
                             }
 
                         } catch (Exception e){}
@@ -387,6 +384,34 @@ public class ClientHomeFragment2 extends Fragment {
                 @Override
                 public void onCancelled(@NonNull DatabaseError databaseError) {}
             });
+        }
+    }
+
+    private void booking(){
+        if(keys!=null) {
+            updateResultsList();
+            String[] keysArray = new String[keys.size()];
+            String[] userArray = new String[userKeys.size()];
+            Integer[] daysArray = new Integer[availabilityList.size()];
+            accountAdapter = new AccountCustomAdapter(myView.getContext(), keys.toArray(keysArray), userKeys.toArray(userArray), availabilityList.toArray(daysArray));
+            results = (ListView) myView.findViewById(R.id.results);
+            results.setAdapter(accountAdapter);
+            accountAdapter.notifyDataSetChanged();
+
+            results.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+                @Override
+                public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
+                    final String selectedListItem = ((TextView) view.findViewById(R.id.serviceName)).getText().toString();
+                    for(String serviceKey: keys){
+
+                    }
+                }
+            });
+
+
+
+
+
         }
     }
 }

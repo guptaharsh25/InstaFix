@@ -9,9 +9,7 @@
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:orientation="vertical"
-        tools:layout_editor_absoluteX="0dp"
-        tools:layout_editor_absoluteY="67dp">
+        android:orientation="vertical">
 
         <LinearLayout
             android:layout_width="match_parent"
@@ -20,10 +18,10 @@
 
             <EditText
                 android:id="@+id/txtSearch"
-                android:layout_width="370dp"
+                android:layout_width="318dp"
                 android:layout_height="wrap_content"
                 android:ems="10"
-                android:hint="Search by Name" />
+                android:hint="Search Service" />
 
             <Button
                 android:id="@+id/btnSearch"
@@ -42,6 +40,8 @@
             style="@style/Widget.AppCompat.SeekBar.Discrete"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:layout_marginTop="7.5dp"
+            android:layout_marginBottom="7.5dp"
             android:max="5"
             android:min="0"
             android:paddingTop="5dp"
@@ -91,7 +91,7 @@
         <ListView
             android:id="@+id/results"
             android:layout_width="match_parent"
-            android:layout_height="485dp" />
+            android:layout_height="wrap_content" />
 
     </LinearLayout>
 
