@@ -85,6 +85,7 @@ public class ClientHome extends AppCompatActivity{
                         FirebaseAuth.getInstance().signOut();
                         Intent intentToSignOut = new Intent(getApplicationContext(), MainActivity.class);
                         startActivityForResult(intentToSignOut,0);
+                        ClientHomeFragment1.stopAsyncClient();
                         break;
                 }
 
