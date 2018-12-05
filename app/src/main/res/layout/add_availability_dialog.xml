@@ -8,6 +8,7 @@
     android:layout_margin="10dp"
     android:background="@color/common_google_signin_btn_text_dark_pressed"
     android:gravity="center_horizontal">
+    tools:context="ca.harshgupta.seg2105_project.ServiceProviderHomeFragment2">
 
 
     <TextView

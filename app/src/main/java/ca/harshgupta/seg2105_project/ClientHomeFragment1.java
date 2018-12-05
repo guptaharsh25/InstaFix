@@ -56,7 +56,7 @@ public class ClientHomeFragment1 extends Fragment {
     private String selectedListItem;
     private String selectedListItemSP;
 
-    private addAppointmentsAsyncTask addingToListTask;
+    private static addAppointmentsAsyncTask addingToListTask;
 
 
     @Nullable
@@ -246,5 +246,8 @@ public class ClientHomeFragment1 extends Fragment {
             clientAvailabilityHomeList.setAdapter(appointmentAdapter);
             Toast.makeText(getActivity(), result, Toast.LENGTH_SHORT).show();
         }
+    }
+    public static void stopAsyncClient(){
+        addingToListTask.cancel(true);
     }
 }
