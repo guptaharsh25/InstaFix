@@ -417,11 +417,10 @@ public class ClientHomeFragment2 extends Fragment {
                             getText().toString();
                     final String[] name = ((TextView) view.findViewById(R.id.name)).getText().
                             toString().split(" ");
-                    System.out.println(name[0] +" "+name[1]);
 
                     final String dayOfWeek = ((TextView) view.findViewById(R.id.day)).getText()
                             .toString();
-                    final String[] info = new String[8];
+                    final String[] info = new String[11];
 
                     info[0] = user.getUid();
 
@@ -488,6 +487,9 @@ public class ClientHomeFragment2 extends Fragment {
                         info[5] = endTime;
                         info[6] = "Pending";
                         info[7] = "-";
+                        info[8] = user.getDisplayName();
+                        info[9] = name[0] + " " + name[1];
+                        info[10] = serviceName;
 
                         //Create dialog to ask user for booking
                         final AlertDialog alertDialog = new AlertDialog.Builder(getContext()).create();
@@ -514,7 +516,6 @@ public class ClientHomeFragment2 extends Fragment {
                                     System.out.println(first.get(j)+" "+last.get(j));
                                     if(first.get(j).equals(name[0]) && last.get(j).equals(name[1])){
                                         info[1] = providerKeys.get(j);
-                                        System.out.println(info[1]+"*****");
                                     }
                                 }
                                 alertDialog.setMessage("Would you like to book the service, " +
@@ -543,6 +544,9 @@ public class ClientHomeFragment2 extends Fragment {
         order.child("EndTime").setValue(info[5]);
         order.child("OrderStatus").setValue(info[6]);
         order.child("Rating").setValue(info[7]);
+        order.child("ClientName").setValue(info[8]);
+        order.child("SPName").setValue(info[9]);
+        order.child("ServiceName").setValue(info[10]);
         //Save order key under client and service provider
         mUserRef.child(info[0]).child("Orders").child(orderID).setValue(info[6]);
         mUserRef.child(info[1]).child("Orders").child(orderID).setValue(info[6]);

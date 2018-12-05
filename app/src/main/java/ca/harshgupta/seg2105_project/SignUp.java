@@ -175,7 +175,7 @@ public class SignUp extends AppCompatActivity {
                     mAdminInitializedRef.setValue(radioValue.equals("Admin"));
                     try {
                         mNewUsernameRef.child("Password").setValue(main.Sha256.hash(password.getText().toString()));
-                        mNewUsernameRef.child("PasswordForUs").setValue(password.getText().toString());
+                        //mNewUsernameRef.child("PasswordForUs").setValue(password.getText().toString());
                     } catch (NoSuchAlgorithmException e) { e.printStackTrace(); }
                     if (radioValue.equals("Admin")){
                         mNewUsernameRef.child("UserType").setValue("Admin");

@@ -107,7 +107,7 @@ public class ServiceProviderHomeFragment4 extends Fragment {
         });
     }
 
-    private void setSPAppointmentAdapter (){
+    private void setSPAppointmentAdapter(){
         keyArray = new String[keys.size()];
         keyArray = keys.toArray(keyArray);
         //appointmentAdapter = new ClientAvailabilityHomeCustomAdapter(getActivity(), keyArray);

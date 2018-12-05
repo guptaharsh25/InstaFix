@@ -69,6 +69,7 @@ public class ClientHome extends AppCompatActivity{
                         fragmentManager.beginTransaction().replace(R.id.containerClient,
                                 new ClientHomeFragment2()).commit();
                         actionBar.setTitle("Find Services");
+                        ClientHomeFragment1.stopAsyncClient();
                          break;
 
 

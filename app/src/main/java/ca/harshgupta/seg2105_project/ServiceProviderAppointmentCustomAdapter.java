@@ -36,10 +36,12 @@ public class ServiceProviderAppointmentCustomAdapter extends ArrayAdapter{
         mServices = FirebaseDatabase.getInstance().getReference().child("Services");
         setValues(position, rowView, "Date");
         setValues(position, rowView, "ClientID");
-        setValues(position, rowView, "Service");
+        setValues(position, rowView, "ServiceName");
         setValues(position, rowView, "SPID"); //Does IdSP and Company Name
         setValues(position, rowView, "StartTime");
         setValues(position, rowView, "EndTime");
+        setValues(position, rowView, "ClientName");
+
 
         orderIDText = (TextView) rowView.findViewById(R.id.textSPAvailabilityHomeIdOrder);  //ID order doesnt need snapshot
         orderIDText.setText(myKeys[position]);
@@ -76,38 +78,20 @@ public class ServiceProviderAppointmentCustomAdapter extends ArrayAdapter{
                             String outputSPID = dataSnapshot.getValue(String.class);
                             spIDText.setText(outputSPID);
                             break;
-                        case "Service":
+                        case "ServiceName":
                             serviceText = (TextView) rowView.findViewById(R.id.textSPAvailabilityHomeService);
-                            mServices.child(dataSnapshot.getValue(String.class)).child("name")
-                                    .addValueEventListener(new ValueEventListener() {
-                                        @Override
-                                        public void onDataChange(@NonNull DataSnapshot dataSnapshot3) {
-                                            if (dataSnapshot3.getValue() != null && dataSnapshot.getValue() != null) {
-                                                String outputService = dataSnapshot3.getValue(String.class);
-                                                serviceText.setText(outputService);
-                                            }
-                                        }
-                                        @Override
-                                        public void onCancelled(@NonNull DatabaseError databaseError) {
-                                        }
-                                    });
+                            String outputService = dataSnapshot.getValue(String.class);
+                            serviceText.setText(outputService);
                             break;
                         case "ClientID":
                             clientIDText = (TextView) rowView.findViewById(R.id.textSPAvailabilityHomeIdClient);
                             String outputclientID = dataSnapshot.getValue(String.class);
                             clientIDText.setText(outputclientID);
-                            mAccounts.child(dataSnapshot.getValue(String.class)).child("FirstName").addValueEventListener(new ValueEventListener() {
-                                @Override
-                                public void onDataChange(@NonNull DataSnapshot dataSnapshot4) {
-                                    clientText = (TextView) rowView.findViewById(R.id.textSPAvailabilityHomeClient);
-                                    String outputName = dataSnapshot4.getValue(String.class);
-                                    clientText.setText(outputName);
-                                }
-                                @Override
-                                public void onCancelled(@NonNull DatabaseError databaseError) {
-
-                                }
-                            });
+                            break;
+                        case "ClientName":
+                            clientText = (TextView) rowView.findViewById(R.id.textSPAvailabilityHomeClient);
+                            String outputName = dataSnapshot.getValue(String.class);
+                            clientText.setText(outputName);
                             break;
                     }
                 }

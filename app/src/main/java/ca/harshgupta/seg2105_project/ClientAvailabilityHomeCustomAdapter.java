@@ -19,7 +19,7 @@ public class ClientAvailabilityHomeCustomAdapter extends ArrayAdapter{
     private final Context context;
     private final String[] myKeys;
     private DatabaseReference mAppointments, mAccounts, mServices;
-    private TextView dateText, serviceText, spText, timeText, spIDText, orderIDText;
+    private TextView dateText, serviceText, spText, timeText, spIDText, orderIDText, spNameText, clientNameText;
 
     public ClientAvailabilityHomeCustomAdapter(Context context, String[] AppointmentList){
         super(context, R.layout.client_availability_home_list_layout, AppointmentList);
@@ -34,18 +34,15 @@ public class ClientAvailabilityHomeCustomAdapter extends ArrayAdapter{
         mAppointments = FirebaseDatabase.getInstance().getReference().child("Appointment");
         mAccounts = FirebaseDatabase.getInstance().getReference().child("Accounts");
         mServices = FirebaseDatabase.getInstance().getReference().child("Services");
+        setValues(position, rowView, "SPName");
         setValues(position, rowView, "Date");
-        setValues(position, rowView, "Service");
         setValues(position, rowView, "SPID"); //Does IdSP and Company Name
         setValues(position, rowView, "StartTime");
         setValues(position, rowView, "EndTime");
+        setValues(position, rowView, "ServiceName");
 
         orderIDText = (TextView) rowView.findViewById(R.id.textClientAvailabilityHomeIdOrder);  //ID order doesnt need snapshot
         orderIDText.setText(myKeys[position]);
-
-        new Handler().postDelayed(new Runnable() {
-            @Override
-            public void run() { } },1000); //1000ms = 1sec
         return rowView;
     }
 
@@ -62,51 +59,33 @@ public class ClientAvailabilityHomeCustomAdapter extends ArrayAdapter{
                             break;
                         case "StartTime":
                             timeText = (TextView) rowView.findViewById(R.id.textClientAvailabilityHomeTime);
-                            String outputTime = dataSnapshot.getValue(String.class);
+                            final String outputTime = dataSnapshot.getValue(String.class);
                             timeText.setText(outputTime);
+                            break;
+                        case "SPName":
+                            spText = (TextView) rowView.findViewById(R.id.textClientAvailabilityHomeSP);
+                            final String outputSPName = dataSnapshot.getValue(String.class);
+                            System.out.println(outputSPName);
+                            spText.setText(outputSPName);
                             break;
                         case "EndTime":
                             timeText = (TextView) rowView.findViewById(R.id.textClientAvailabilityHomeTime);
-                            String outputTimeEnd = dataSnapshot.getValue(String.class);
+                            final String outputTimeEnd = dataSnapshot.getValue(String.class);
                             timeText.setText(timeText.getText() + " - " + outputTimeEnd);
                             break;
                         case "SPID":
                             spIDText = (TextView) rowView.findViewById(R.id.textClientAvailabilityHomeIdSP);
-                            String outputSPID = dataSnapshot.getValue(String.class);
+                            final String outputSPID = dataSnapshot.getValue(String.class);
                             spIDText.setText(outputSPID);
-
-                            spText = (TextView) rowView.findViewById(R.id.textClientAvailabilityHomeSP);
-                            mAccounts.child(dataSnapshot.getValue(String.class)).child("CompanyInfo")
-                                    .child("Company").addValueEventListener(new ValueEventListener() {
-                                @Override
-                                public void onDataChange(@NonNull DataSnapshot dataSnapshot2) {
-                                    if (dataSnapshot2.getValue() != null && dataSnapshot.getValue() != null) {
-                                        String outputSP = dataSnapshot2.getValue(String.class);
-                                        spText.setText(outputSP);
-                                    }
-                                }
-                                @Override
-                                public void onCancelled(@NonNull DatabaseError databaseError) {
-                                }
-                            });
                             break;
-                        case "Service":
+                        case "ServiceName":
                             serviceText = (TextView) rowView.findViewById(R.id.textClientAvailabilityHomeService);
-                            mServices.child(dataSnapshot.getValue(String.class)).child("name")
-                                    .addValueEventListener(new ValueEventListener() {
-                                        @Override
-                                        public void onDataChange(@NonNull DataSnapshot dataSnapshot3) {
-                                            if (dataSnapshot3.getValue() != null && dataSnapshot.getValue() != null) {
-                                                String outputService = dataSnapshot3.getValue(String.class);
-                                                System.out.println(outputService);
-                                                serviceText.setText(outputService);
-                                            }
-                                        }
-                                        @Override
-                                        public void onCancelled(@NonNull DatabaseError databaseError) {
-                                        }
-                                    });
+                            final String outputService = dataSnapshot.getValue(String.class);
+                            serviceText.setText(outputService);
                             break;
+                        default:
+                            break;
+
                     }
                 }
             }
