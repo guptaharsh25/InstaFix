@@ -38,7 +38,8 @@ public class ServiceProviderAppointmentCustomAdapter extends ArrayAdapter{
         setValues(position, rowView, "ClientID");
         setValues(position, rowView, "Service");
         setValues(position, rowView, "SPID"); //Does IdSP and Company Name
-        setValues(position, rowView, "time");
+        setValues(position, rowView, "StartTime");
+        setValues(position, rowView, "EndTime");
 
         orderIDText = (TextView) rowView.findViewById(R.id.textSPAvailabilityHomeIdOrder);  //ID order doesnt need snapshot
         orderIDText.setText(myKeys[position]);
@@ -60,10 +61,15 @@ public class ServiceProviderAppointmentCustomAdapter extends ArrayAdapter{
                             final String outputDate = dataSnapshot.getValue(String.class);
                             dateText.setText(outputDate);
                             break;
-                        case "time":
+                        case "StartTime":
                             timeText = (TextView) rowView.findViewById(R.id.textSPAvailabilityHomeTime);
                             String outputTime = dataSnapshot.getValue(String.class);
                             timeText.setText(outputTime);
+                            break;
+                        case "EndTime":
+                            timeText = (TextView) rowView.findViewById(R.id.textSPAvailabilityHomeTime);
+                            String outputTimeEnd = dataSnapshot.getValue(String.class);
+                            timeText.setText(timeText.getText() + " - " + outputTimeEnd);
                             break;
                         case "SPID":
                             spIDText = (TextView) rowView.findViewById(R.id.textSPAvailabilityHomeIdSP);

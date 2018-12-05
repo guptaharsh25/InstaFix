@@ -423,7 +423,7 @@ public class ClientHomeFragment2 extends Fragment {
                             .toString();
                     final String[] info = new String[8];
 
-                    info[0] = user.getUid().toString();
+                    info[0] = user.getUid();
 
                     //Do only when availability searched
                     if(!dayOfWeek.equals("")){
@@ -476,7 +476,14 @@ public class ClientHomeFragment2 extends Fragment {
                         }
 
                         //Save all info
-                        info[3] = dayOfWeek+"day";
+                        if(dayOfWeek.equals("Wed")){
+                            info[3] = dayOfWeek+"nesday";
+                        } else if(dayOfWeek.equals("Thu")){
+                            info[3] = dayOfWeek+"rsday";
+                        } else {
+                            info[3] = dayOfWeek+"day";
+                        }
+
                         info[4] = startTime;
                         info[5] = endTime;
                         info[6] = "Pending";

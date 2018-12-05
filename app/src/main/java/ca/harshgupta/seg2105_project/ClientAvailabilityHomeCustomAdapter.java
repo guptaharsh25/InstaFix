@@ -68,7 +68,7 @@ public class ClientAvailabilityHomeCustomAdapter extends ArrayAdapter{
                         case "EndTime":
                             timeText = (TextView) rowView.findViewById(R.id.textClientAvailabilityHomeTime);
                             String outputTimeEnd = dataSnapshot.getValue(String.class);
-                            timeText.setText(timeText.getText()+outputTimeEnd);
+                            timeText.setText(timeText.getText() + " - " + outputTimeEnd);
                             break;
                         case "SPID":
                             spIDText = (TextView) rowView.findViewById(R.id.textClientAvailabilityHomeIdSP);
