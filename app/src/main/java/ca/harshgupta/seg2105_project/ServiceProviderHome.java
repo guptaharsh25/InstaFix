@@ -74,7 +74,11 @@ public class ServiceProviderHome extends AppCompatActivity{
                         FirebaseAuth.getInstance().signOut();
                         Intent intentToSignOut = new Intent(getApplicationContext(), MainActivity.class);
                         startActivityForResult(intentToSignOut,0);
-                        ServiceProviderHomeFragment4.stopAsync();
+                        try{
+                            ServiceProviderHomeFragment4.stopAsync();
+                        } catch (Exception e){
+                            
+                        }
                         break;
                 }
 
