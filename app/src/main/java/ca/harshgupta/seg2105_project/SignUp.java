@@ -184,6 +184,7 @@ public class SignUp extends AppCompatActivity {
                     } else if(radioValue.equals("Service Provider")){
                         mNewUsernameRef.child("UserType").setValue("ServiceProvider");
                         mNewUsernameRef.child("providedServices");
+                        mNewUsernameRef.child("AverageRating").setValue(0);
                         Intent intentToSPinfo = new Intent(getApplicationContext(), ServiceProviderInfo.class);
                         startActivityForResult(intentToSPinfo, 0);
                     } else if(radioValue.equals("Client")){
