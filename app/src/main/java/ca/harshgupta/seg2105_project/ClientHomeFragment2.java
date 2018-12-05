@@ -384,7 +384,7 @@ public class ClientHomeFragment2 extends Fragment {
                             userKeys.add(user);
                             availabilityList.add(pos);
                             return;
-                        } else if(start<initial && end>=fin && start>=0){
+                        } else if(start<=initial && end>=fin){
                             keys.add(key);
                             userKeys.add(user);
                             availabilityList.add(pos);

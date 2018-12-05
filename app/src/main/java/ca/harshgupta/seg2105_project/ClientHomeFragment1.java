@@ -242,9 +242,11 @@ public class ClientHomeFragment1 extends Fragment {
         @Override
         protected void onPostExecute(String result) {
             // stop the loading animation or something
-            appointmentAdapter = new ClientAvailabilityHomeCustomAdapter(getActivity(), keyArray);
-            clientAvailabilityHomeList.setAdapter(appointmentAdapter);
-            Toast.makeText(getActivity(), result, Toast.LENGTH_SHORT).show();
+            try {
+                appointmentAdapter = new ClientAvailabilityHomeCustomAdapter(getActivity(), keyArray);
+                clientAvailabilityHomeList.setAdapter(appointmentAdapter);
+                Toast.makeText(getActivity(), result, Toast.LENGTH_SHORT).show();
+            } catch (Exception e){}
         }
     }
     public static void stopAsyncClient(){
