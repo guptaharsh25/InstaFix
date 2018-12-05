@@ -219,7 +219,8 @@ public class ServiceProviderActivity extends Activity {
             serviceSPList.setOnItemClickListener(new AdapterView.OnItemClickListener() {
                 @Override
                 public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
-                    final String selectedListItem = ((TextView) view.findViewById(R.id.serviceName)).getText().toString();
+                    final String selectedListItem = ((TextView) view.findViewById(R.id.serviceName))
+                            .getText().toString();
                     for(final String key: keys){
                         mServicesRef.child(key).child("name").addValueEventListener(new ValueEventListener() {
                             @Override
