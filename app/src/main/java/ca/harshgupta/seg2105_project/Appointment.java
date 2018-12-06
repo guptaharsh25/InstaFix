@@ -45,6 +45,31 @@ public class Appointment {
         return endTime;
     }
 
+    public void setSpID(String spID) {
+        this.spID = spID;
+    }
+
+    public void setClientID(String clientID) {
+        this.clientID = clientID;
+    }
+
+    public void setDay(DayOfWeek day) {
+        this.day = day;
+    }
+
+    public void setStartTime(int startTime) {
+        this.startTime = startTime;
+        setEndTime();
+    }
+
+    private void setEndTime() {
+        this.endTime = startTime + 1;
+    }
+
+    public void setOrderCompleted(boolean orderCompleted) {
+        isOrderCompleted = orderCompleted;
+    }
+
     public boolean isOrderCompleted() {
         return isOrderCompleted;
     }
