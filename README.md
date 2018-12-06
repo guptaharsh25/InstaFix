@@ -27,7 +27,7 @@ Build Status:
 </br>
 Sept 20, 2018: Android Studio project initialized. Connected to Firebase Authorization & Database.
 
-# Features
+<b> Features</b></br>
 Search:
 - To view all services provided and their service providers, do not change anything and press search.
 - To search by service name, type the service name or a substring in the text box and press the search button. For example,
