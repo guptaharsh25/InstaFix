@@ -51,25 +51,34 @@ public class ServiceProviderHome extends AppCompatActivity{
                         actionBar.setTitle("Home");
                         Toast.makeText(ServiceProviderHome.this,"Loading First Fragment",Toast.LENGTH_LONG).show();
                         break;
-
                     case R.id.nav_fragment_service_provider_home_2:
                         fragmentManager.beginTransaction().replace(R.id.containerServiceProvider,
                                 new ServiceProviderHomeFragment2()).commit();
-                        actionBar.setTitle("Find Services");
+                        actionBar.setTitle("Availability");
                         Toast.makeText(ServiceProviderHome.this,"Loading Second Fragment",Toast.LENGTH_LONG).show();
                          break;
-
                     case R.id.nav_fragment_service_provider_home_3:
                         fragmentManager.beginTransaction().replace(R.id.containerServiceProvider,
                                 new ServiceProviderHomeFragment3()).commit();
-                        actionBar.setTitle("Fragment 3");
+                        actionBar.setTitle("Services");
                         Toast.makeText(ServiceProviderHome.this,"Loading Third Fragment",Toast.LENGTH_LONG).show();
+                        break;
+                    case R.id.nav_fragment_service_provider_home_4:
+                        fragmentManager.beginTransaction().replace(R.id.containerServiceProvider,
+                                new ServiceProviderHomeFragment4()).commit();
+                        actionBar.setTitle("Orders");
+                        Toast.makeText(ServiceProviderHome.this,"Loading Fourth Fragment",Toast.LENGTH_LONG).show();
                         break;
                     case R.id.nav_fragment_service_provider_signout:
                         Toast.makeText(ServiceProviderHome.this,"Signing Out",Toast.LENGTH_LONG).show();
                         FirebaseAuth.getInstance().signOut();
                         Intent intentToSignOut = new Intent(getApplicationContext(), MainActivity.class);
                         startActivityForResult(intentToSignOut,0);
+                        try{
+                            ServiceProviderHomeFragment4.stopAsync();
+                        } catch (Exception e){
+                            
+                        }
                         break;
                 }
 

@@ -15,14 +15,14 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
-public class ClientAvailabilityHomeCustomAdapter extends ArrayAdapter{
+public class ServiceProviderAppointmentCustomAdapter extends ArrayAdapter{
     private final Context context;
     private final String[] myKeys;
     private DatabaseReference mAppointments, mAccounts, mServices;
-    private TextView dateText, serviceText, spText, timeText, spIDText, orderIDText, spNameText, clientNameText;
+    private TextView dateText, serviceText, clientText, timeText, spIDText, orderIDText, clientIDText;
 
-    public ClientAvailabilityHomeCustomAdapter(Context context, String[] AppointmentList){
-        super(context, R.layout.client_availability_home_list_layout, AppointmentList);
+    public ServiceProviderAppointmentCustomAdapter(Context context, String[] AppointmentList){
+        super(context, R.layout.service_provider_appointment_list_layout, AppointmentList);
         this.context = context;
         this.myKeys = AppointmentList;
     }
@@ -30,19 +30,25 @@ public class ClientAvailabilityHomeCustomAdapter extends ArrayAdapter{
     @NonNull
     public View getView(int position, View convertView, ViewGroup parent){
         LayoutInflater inflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-        final View rowView = inflater.inflate(R.layout.client_availability_home_list_layout, parent, false);
+        final View rowView = inflater.inflate(R.layout.service_provider_appointment_list_layout, parent, false);
         mAppointments = FirebaseDatabase.getInstance().getReference().child("Appointment");
         mAccounts = FirebaseDatabase.getInstance().getReference().child("Accounts");
         mServices = FirebaseDatabase.getInstance().getReference().child("Services");
-        setValues(position, rowView, "SPName");
         setValues(position, rowView, "Date");
+        setValues(position, rowView, "ClientID");
+        setValues(position, rowView, "ServiceName");
         setValues(position, rowView, "SPID"); //Does IdSP and Company Name
         setValues(position, rowView, "StartTime");
         setValues(position, rowView, "EndTime");
-        setValues(position, rowView, "ServiceName");
+        setValues(position, rowView, "ClientName");
 
-        orderIDText = (TextView) rowView.findViewById(R.id.textClientAvailabilityHomeIdOrder);  //ID order doesnt need snapshot
+
+        orderIDText = (TextView) rowView.findViewById(R.id.textSPAvailabilityHomeIdOrder);  //ID order doesnt need snapshot
         orderIDText.setText(myKeys[position]);
+
+        new Handler().postDelayed(new Runnable() {
+            @Override
+            public void run() { } },1000); //1000ms = 1sec
         return rowView;
     }
 
@@ -53,39 +59,40 @@ public class ClientAvailabilityHomeCustomAdapter extends ArrayAdapter{
                 if (dataSnapshot.getValue() != null) {
                     switch (info) {
                         case "Date":
-                            dateText = (TextView) rowView.findViewById(R.id.textClientAvailabilityHomeDate);
+                            dateText = (TextView) rowView.findViewById(R.id.textSPAvailabilityHomeDate);
                             final String outputDate = dataSnapshot.getValue(String.class);
                             dateText.setText(outputDate);
                             break;
                         case "StartTime":
-                            timeText = (TextView) rowView.findViewById(R.id.textClientAvailabilityHomeTime);
-                            final String outputTime = dataSnapshot.getValue(String.class);
+                            timeText = (TextView) rowView.findViewById(R.id.textSPAvailabilityHomeTime);
+                            String outputTime = dataSnapshot.getValue(String.class);
                             timeText.setText(outputTime);
                             break;
-                        case "SPName":
-                            spText = (TextView) rowView.findViewById(R.id.textClientAvailabilityHomeSP);
-                            final String outputSPName = dataSnapshot.getValue(String.class);
-                            System.out.println(outputSPName);
-                            spText.setText(outputSPName);
-                            break;
                         case "EndTime":
-                            timeText = (TextView) rowView.findViewById(R.id.textClientAvailabilityHomeTime);
-                            final String outputTimeEnd = dataSnapshot.getValue(String.class);
+                            timeText = (TextView) rowView.findViewById(R.id.textSPAvailabilityHomeTime);
+                            String outputTimeEnd = dataSnapshot.getValue(String.class);
                             timeText.setText(timeText.getText() + " - " + outputTimeEnd);
                             break;
                         case "SPID":
-                            spIDText = (TextView) rowView.findViewById(R.id.textClientAvailabilityHomeIdSP);
-                            final String outputSPID = dataSnapshot.getValue(String.class);
+                            spIDText = (TextView) rowView.findViewById(R.id.textSPAvailabilityHomeIdSP);
+                            String outputSPID = dataSnapshot.getValue(String.class);
                             spIDText.setText(outputSPID);
                             break;
                         case "ServiceName":
-                            serviceText = (TextView) rowView.findViewById(R.id.textClientAvailabilityHomeService);
-                            final String outputService = dataSnapshot.getValue(String.class);
+                            serviceText = (TextView) rowView.findViewById(R.id.textSPAvailabilityHomeService);
+                            String outputService = dataSnapshot.getValue(String.class);
                             serviceText.setText(outputService);
                             break;
-                        default:
+                        case "ClientID":
+                            clientIDText = (TextView) rowView.findViewById(R.id.textSPAvailabilityHomeIdClient);
+                            String outputclientID = dataSnapshot.getValue(String.class);
+                            clientIDText.setText(outputclientID);
                             break;
-
+                        case "ClientName":
+                            clientText = (TextView) rowView.findViewById(R.id.textSPAvailabilityHomeClient);
+                            String outputName = dataSnapshot.getValue(String.class);
+                            clientText.setText(outputName);
+                            break;
                     }
                 }
             }

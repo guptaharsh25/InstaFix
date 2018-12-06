@@ -11,10 +11,6 @@
         android:title="Find Services"
         app:showAsAction="withText|ifRoom" />
     <item
-        android:id="@+id/nav_fragment_client_home_3"
-        android:title="Fragment 3"
-        app:showAsAction="withText|ifRoom" />
-    <item
         android:id="@+id/nav_fragment_client_signout"
         android:title="Sign Out"
         app:showAsAction="withText|ifRoom" />

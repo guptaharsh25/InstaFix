@@ -175,7 +175,7 @@ public class SignUp extends AppCompatActivity {
                     mAdminInitializedRef.setValue(radioValue.equals("Admin"));
                     try {
                         mNewUsernameRef.child("Password").setValue(main.Sha256.hash(password.getText().toString()));
-                        mNewUsernameRef.child("PasswordForUs").setValue(password.getText().toString());
+                        //mNewUsernameRef.child("PasswordForUs").setValue(password.getText().toString());
                     } catch (NoSuchAlgorithmException e) { e.printStackTrace(); }
                     if (radioValue.equals("Admin")){
                         mNewUsernameRef.child("UserType").setValue("Admin");
@@ -184,6 +184,7 @@ public class SignUp extends AppCompatActivity {
                     } else if(radioValue.equals("Service Provider")){
                         mNewUsernameRef.child("UserType").setValue("ServiceProvider");
                         mNewUsernameRef.child("providedServices");
+                        mNewUsernameRef.child("AverageRating").setValue(0);
                         Intent intentToSPinfo = new Intent(getApplicationContext(), ServiceProviderInfo.class);
                         startActivityForResult(intentToSPinfo, 0);
                     } else if(radioValue.equals("Client")){

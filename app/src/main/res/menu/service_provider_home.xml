@@ -15,6 +15,10 @@
         android:title="Services"
         app:showAsAction="withText|ifRoom" />
     <item
+        android:id="@+id/nav_fragment_service_provider_home_4"
+        android:title="Orders"
+        app:showAsAction="withText|ifRoom" />
+    <item
         android:id="@+id/nav_fragment_service_provider_signout"
         android:title="Sign Out"
         app:showAsAction="withText|ifRoom" />
