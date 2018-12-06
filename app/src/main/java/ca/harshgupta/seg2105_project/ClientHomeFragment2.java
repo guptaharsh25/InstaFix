@@ -174,16 +174,30 @@ public class ClientHomeFragment2 extends Fragment {
                                         tempAvail[0] = day.getText().toString();
                                         double initial = -1.0;
                                         double fin = -1.0;
+                                        System.out.println(start.getText().toString
+                                                ().substring(0,2) + "." +
+                                                start.getText().toString().substring(3));
                                         try{
                                             initial = Double.parseDouble(start.getText().toString
-                                                    ().substring(0,2) +
-                                                    start.getText().toString().substring(4));
+                                                    ().substring(0,2) + "." +
+                                                    start.getText().toString().substring(3));
                                             fin = Double.parseDouble(end.getText().toString
-                                                    ().substring(0,2) +
-                                                    end.getText().toString().substring(4));
+                                                    ().substring(0,2) + "." +
+                                                    end.getText().toString().substring(3));
                                         } catch (Exception e){}
-                                        tempAvail[1] = Double.toString(initial);
-                                        tempAvail[2] = Double.toString(fin);
+
+                                        if(initial<10){
+                                            tempAvail[1] = "0" + Double.toString(initial);
+                                        } else {
+                                            tempAvail[1] = Double.toString(initial);
+                                        }
+
+                                        if(fin<10){
+                                            tempAvail[2] = "0" + Double.toString(fin);
+                                        } else {
+                                            tempAvail[2] = Double.toString(fin);
+                                        }
+
                                         searchServicesProvided(post, key, rate, tempAvail);
                                     }
                                 }
@@ -339,8 +353,8 @@ public class ClientHomeFragment2 extends Fragment {
     String tStart, final String tEnd){
         //Convert time to decimal
         final double initial = Double.parseDouble(tStart.substring(0,2) + "."
-                + tStart.substring(4));
-        final double fin = Double.parseDouble(tEnd.substring(0,2) + "." + tStart.substring(4));
+                + tStart.substring(3));
+        final double fin = Double.parseDouble(tEnd.substring(0,2) + "." + tStart.substring(3));
 
         //If no availability searched
         if(date.equals("Day")){
