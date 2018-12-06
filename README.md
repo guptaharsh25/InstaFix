@@ -25,7 +25,7 @@ Build Status:
 # Project Log
 </br>This is where we will what the status of the application is by date.
 </br>
-Sept 20, 2018: Android Studio project initialized. Connected to Firebase Authorization & Database.
+Sept 20, 2018: Android Studio project initialized. Connected to Firebase Authorization & Database.</br>
 
 <b> Features</b></br>
 Search:
